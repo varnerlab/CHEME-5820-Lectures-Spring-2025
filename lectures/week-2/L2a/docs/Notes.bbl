@@ -1,3 +1,8 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{golub13}
+Gene~H. Golub and Charles~F. van Loan.
+\newblock {\em Matrix Computations}.
+\newblock JHU Press, fourth edition, 2013.
 
 \end{thebibliography}
