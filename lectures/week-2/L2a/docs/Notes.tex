@@ -1,0 +1,116 @@
+ \documentclass{article}[12pt]
+\usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
+%\usepackage{epstopdf}
+%\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage{amsthm, comment}
+
+\bibliographystyle{plain}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}
+\newtheorem{ex}{Example}
+\usepackage{float}
+
+\newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{algorithmicx}
+\usepackage{algorithm} %http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+
+
+\def\R{\mathbb{R}}
+\def\Eps{\mathcal{E}}
+\def\E{\mathbb{E}}
+\def\V{\mathbb{V}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\H{\mathcal{H}}
+\def\S{\mathcal{S}}
+\def\P{\mathbb{P}}
+\def\1{\mathbf{1}}
+\def\n{\nappa}
+\def\h{\mathbf{w}}
+\def\v{\mathbf{v}}
+\def\x{\mathbf{x}}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\eps{\epsilon}
+\def\y{\mathbf{y}}
+\def\e{\mathbf{e}}
+\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   % \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \setlength{\headsep}{10mm}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf CHEME 5820: Machine Learning for Engineers
+   \hfill Spring 2025} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+
+   \noindent{\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications. }
+   \vspace*{4mm}
+}
+
+
+\begin{document}
+\lecture{2a}{Eigendecomposition of Data and Systems}{Jeffrey Varner}{}
+
+\section{Introduction}
+The eigendecomposition of a matrix is a fundamental concept in linear algebra. 
+In this lecture, we will discuss the eigendecomposition of a matrix, and how it can be used to analyze data and systems 
+in the context of unsupervised machine learning.
+
+\subsection*{What is eigendecomposition?}
+Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
+\href{https://mathworld.wolfram.com/Eigenvalue.html}{eigenvalues} and a set of linearly independent vectors 
+$\left\{\mathbf{v}_{1},\dots,\mathbf{v}_{m}\right\}$ called \href{https://mathworld.wolfram.com/Eigenvector.html}{eigenvectors} such that:
+\begin{equation*}
+\mathbf{A}\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
+\end{equation*}
+where $\mathbf{A}\in\mathbb{R}^{m\times{m}}$, $\mathbf{v}\in\mathbb{R}^{m\times{1}}$, and $\lambda\in\mathbb{R}$. 
+Eigenvalues and eigenvectors are widely used in many areas of mathematics, engineering, and physics:
+\begin{itemize}
+\item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
+\item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
+\item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
+\end{itemize}
+
+
+\section{Computing the Eigendecomposition of a Matrix}
+Let $A$ be a square matrix of size $n \times n$. The eigendecomposition of $A$ is given by:
+\begin{equation}
+A = Q \Lambda Q^{-1}
+\end{equation}
+where $Q$ is a matrix whose columns are the eigenvectors of $A$, 
+and $\Lambda$ is a diagonal matrix whose diagonal elements are the eigenvalues of $A$.
+
+\bibliography{References-L2a.bib}
+
+\end{document}
+
+
