@@ -1,3 +1,15 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{Lloyd-1982}
+Lloyd S.
+\newblock Least squares quantization in PCM.
+\newblock IEEE Transactions on Information Theory. 1982;28(2):129--137.
+\newblock doi:{10.1109/TIT.1982.1056489}.
+
+\bibitem{Kohonen:1982aa}
+Kohonen T.
+\newblock {Self-organized formation of topologically correct feature maps}.
+\newblock Biological Cybernetics. 1982;43(1):59--69.
+\newblock doi:{10.1007/BF00337288}.
 
 \end{thebibliography}
