@@ -116,7 +116,7 @@ Alternatively, we can use the QR algorithm, which is a more robust method that c
 
 \subsection{QR decomposition}
 The QR algorithm relies on the QR decomposition of a matrix, which is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix.
-\href{https://en.wikipedia.org/wiki/QR_decomposition}{QR decomposition} factors a matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$ 
+\href{https://en.wikipedia.org/wiki/QR_decomposition}{QR decomposition}, originally developed by Francis in the early 1960s \cite{Francis-QR-1961, Francis-QR-1962}, factors a matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$ 
 into the product of an orthogonal matrix $\mathbf{Q}\in\mathbb{R}^{n\times{n}}$ and 
 an upper triangular matrix $\mathbf{R}\in\mathbb{R}^{n\times{m}}$:
 \begin{equation}
@@ -138,9 +138,10 @@ of $\mathbf{R}$ is made simple by exploiting the orthogonality of $\mathbf{Q}$, 
 \begin{equation}
 \mathbf{R}=\mathbf{Q}^{T}\mathbf{A}
 \end{equation}
+The computation of the QR decomposition using the Gram-Schmidt orthogonalization procedure is shown in Algorithm \ref{alg:gschmidt}.
 \begin{algorithm}[H]
    \begin{algorithmic}[1]
-   \caption{QR decomposition using Classical Gram-Schmidt Orthogonalization}
+   \caption{QR decomposition using Classical Gram-Schmidt Orthogonalization}\label{alg:gschmidt}
    \State{\textbf{Input}: Matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$}
    \State{\textbf{Output}: Orthogonal matrix $\mathbf{Q}\in\mathbb{R}^{n\times{n}}$ and upper triangular matrix $\mathbf{R}\in\mathbb{R}^{n\times{m}}$}
    \State{$n,m\gets$ dimensions of $\mathbf{A}$}
@@ -157,9 +158,20 @@ of $\mathbf{R}$ is made simple by exploiting the orthogonality of $\mathbf{Q}$, 
 
    \end{algorithmic}
 \end{algorithm}
-The cost of the Gram-Schmidt orthogonalization procedure is $O(nm^{2})$ floating point operations (flops) for an $n\times{m}$ matrix $\mathbf{A}$ \cite{golub13}.
+The cost of the Gram-Schmidt orthogonalization procedure is $\mathcal{O}(nm^{2})$ floating point operations (flops) for an $n\times{m}$ matrix $\mathbf{A}$ \cite{golub13}.
 However, in practice, the Gram-Schmidt orthogonalization procedure as shown \emph{will often fail to generate mutually orthogonal vectors} because of rounding errors; we will address
-this issue subsequently when we discuss the \emph{Modified Gram-Schmidt Orthogonalization} procedure. 
+this issue subsequently when we discuss the \emph{Modified Gram-Schmidt Orthogonalization} 
+procedure which is shown in Algorithm \ref{alg:modgschmidt}.
+
+\begin{algorithm}[H]
+   \begin{algorithmic}[1]
+   \caption{QR decomposition using Modified Gram-Schmidt Orthogonalization}\label{alg:modgschmidt}
+   \State{\textbf{Input}: Matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$}
+   \State{\textbf{Output}: Orthogonal matrix $\mathbf{Q}\in\mathbb{R}^{n\times{n}}$ and upper triangular matrix $\mathbf{R}\in\mathbb{R}^{n\times{m}}$}
+   \State{$n,m\gets$ dimensions of $\mathbf{A}$}
+   \State{$\mathbf{Q}\gets$ zeros matrix of size $n\times{m}$}
+   \end{algorithmic}
+\end{algorithm}
 
 \subsubsection*{Aside: Solution of Linear Systems of Equations}
 In addition to computing the eigendecomposition of a matrix, another handy applications of QR decomposition is to solve the linear systems of equations $\mathbf{A}\cdot\mathbf{x} = \mathbf{b}$.
@@ -183,7 +195,7 @@ Then, the solution of to this system is given by:
 x_{n} & = & \frac{b_{n}}{u_{nn}} \\
 x_{i} & = & \frac{1}{u_{ii}}\left(b_{i} - \sum_{j=i+1}^{n}u_{ij}x_{j}\right)\qquad{i=n-1,\dots,1}
 \end{eqnarray*}
-where $u_{ii}\neq{0}$. Back substitution requires $n^{2}$ floating point operations (flops).
+where $u_{ii}\neq{0}$. Back substitution requires $\mathcal{O}(n^{2})$ floating point operations (flops).
 
 \subsection{The QR Iteration Algorithm}
 To compute the eigendecomposition of a matrix using QR decomposition, we first factorize the matrix $\mathbf{A}$ into the product of $\mathbf{Q}$ and $\mathbf{R}$, 

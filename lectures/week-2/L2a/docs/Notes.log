@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  17 DEC 2024 05:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  17 DEC 2024 05:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -457,7 +457,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 143.
+put line 144.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
@@ -479,13 +479,13 @@ Package rerunfilecheck Info: File `Notes.out' has not changed.
 (rerunfilecheck)             Checksum: 35AE8E6359CB023A4F5B2907BDE086C0;881.
  ) 
 Here is how much of TeX's memory you used:
- 11377 strings out of 474116
- 172999 string characters out of 5743682
+ 11384 strings out of 474116
+ 173115 string characters out of 5743682
  1941187 words of memory out of 5000000
- 33535 multiletter control sequences out of 15000+600000
+ 33539 multiletter control sequences out of 15000+600000
  567190 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,542b,457s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,542b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -503,10 +503,10 @@ ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
 4/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2024
 /texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/
 2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (4 pages, 207383 bytes).
+Output written on Notes.pdf (4 pages, 208958 bytes).
 PDF statistics:
- 157 PDF objects out of 1000 (max. 8388607)
- 115 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
+ 165 PDF objects out of 1000 (max. 8388607)
+ 123 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
