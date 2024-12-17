@@ -119,7 +119,7 @@ Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
 
 \begin{algorithm}[H]
    \begin{algorithmic}[1]
-   \caption{Unsupervised K-Means Clustering}\label{alg:kmeans}
+   \caption{Unsupervised naive k-means clustering (Lloyd's algorithm)}\label{alg:kmeans}
    \State \textbf{Input:} Data points $\mathcal{D} = \{x_1, x_2, \ldots, x_n\in\mathbb{R}^{m}\}$, number of clusters $K$
    \State \textbf{Output:} Cluster assignments $C = \{c_1, c_2, \ldots, c_n\}$ and cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
    \State Randomly initialize $K$ cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\in\mathbb{R}^{m}\}$
