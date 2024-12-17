@@ -17,7 +17,7 @@
 \usepackage{float}
 
 \newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
-
+\usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -78,19 +78,74 @@
 
 
 \begin{document}
-\lecture{1c}{Unsupervised learning and k-means clustering}{Jeffrey Varner}{}
+\lecture{1c}{Unsupervised learning and clustering}{Jeffrey Varner}{}
 
 \section{Introduction}
-This lecture introduces the first unsupervised learning approach we will explore: k-means clustering. 
-The primary objective of clustering is to divide a dataset into distinct clusters, such that the data points within each cluster exhibit a higher degree of similarity than those in other clusters. 
-The k-means algorithm is a straightforward and widely employed method for clustering. The algorithm is easy to understand and implement, and it often produces clusters that are useful in practice. 
+This lecture introduces the first unsupervised learning approaches we will explore: k-means clustering, and self-organizing maps. 
+We will use these algorithms to identify hidden patterns and structures in data without explicit guidance.
 
-The k-means algorithm is an example of an \texttt{unsupervised learning algorithm}. 
-Unsupervised learning focuses on discovering patterns and structures in data without the guidance of labeled examples or explicit feedback. 
-Unlike supervised learning (which we will explore in future lectures), where algorithms are trained on labeled datasets, unsupervised learning algorithms operate with raw, unlabeled data to identify inherent groupings, anomalies, or relationships. This approach is particularly valuable when dealing with large volumes of unstructured data or when the desired outcomes may be unknown. Typical applications of unsupervised learning include clustering (which we are discussing today), dimensionality reduction, and anomaly detection. Unsupervised learning can provide valuable insights and facilitate data by uncovering hidden structures in data.
+\subsubsection*{Key concepts}
+The key concepts covered in this lecture include:
+\begin{itemize}
+\item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. The goal of unsupervised learning is to identify patterns and structures in data without explicit guidance. 
+Unsupervised learning is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.}
+\item{\textbf{Clustering} is a common unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points. 
+Clustering algorithms aim to group data points that are more similar to each other than to those in other clusters.}
+\item{\textbf{K-means clustering} is a popular and straightforward clustering algorithm that partitions a dataset into $k$ clusters. 
+The algorithm iteratively assigns data points to the nearest cluster center and updates the cluster centers based on the mean of the assigned points.}
+\item{\textbf{Self-organizing maps (SOMs)} are another type of unsupervised learning algorithm that uses a neural network to map high-dimensional data onto a lower-dimensional grid.}
+\end{itemize}
 
 \section{K-means clustering}
-Fill me in
+The k-means algorithm is an example of an \texttt{unsupervised learning} algorithm. 
+Unsupervised learning focuses on discovering patterns and structures in data without the guidance of labeled examples or explicit feedback. 
+Unlike supervised learning (which we will explore in future lectures), where algorithms are trained on labeled datasets, unsupervised learning algorithms operate with 
+raw, unlabeled data to identify inherent groupings, anomalies, or relationships. This approach is particularly valuable when dealing with large volumes of unstructured data or when the desired outcomes may be unknown. 
+Typical applications of unsupervised learning include clustering (which we are discussing today), dimensionality reduction, and anomaly detection. 
+
+K-means is a popular unsupervised machine learning algorithm used for clustering data points into K distinct groups based on their similarity.
+In this approach, the algorithm partitions the dataset into $K$ (specified by you) clusters, 
+with each cluster represented by a centroid (the mean of the data points in the cluster). 
+Then the algorithm iteratively assigns data points to the nearest cluster centroid and updates the centroids based on the mean of the assigned points.
+Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
+
+\begin{algorithm}[H]
+   \begin{algorithmic}[1]
+   \caption{Unsupervised K-Means Clustering}\label{alg:kmeans}
+   \State \textbf{Input:} Data points $\mathcal{D} = \{x_1, x_2, \ldots, x_n\in\mathbb{R}^{m}\}$, number of clusters $K$
+   \State \textbf{Output:} Cluster assignments $C = \{c_1, c_2, \ldots, c_n\}$ and cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
+   \State Randomly initialize $K$ cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\in\mathbb{R}^{m}\}$
+   \State{$\text{flag} \gets \texttt{true}$}\Comment{flag to indicate convergence}
+   \While{$\text{flag}$}
+   \For{$x_{i}\in \mathcal{D}$}
+      \State{$c_{i}\gets\underset{j}\argmin \norm{x_{i} - \mu_j}^2$}
+   \EndFor 
+   \State{$\hat{\mu}\gets\mu$}
+   \For{$j=1$ to $K$}
+      \State{$\mu_j\gets{\displaystyle \frac{1}{|C_j|}}\cdot{\displaystyle \sum_{x_i\in C_j} x_i}$}
+   \EndFor
+   \If{$\norm{\mu - \hat{\mu}} < \epsilon$}
+      \State{$\text{flag}\gets\texttt{false}$}
+   \EndIf
+   \EndWhile
+   \State \textbf{return} cluster assignments $C$, cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
+   \end{algorithmic}
+\end{algorithm}
+
+
+
+\section{Self-organizing maps (SOMs)}
+Self-organizing maps (SOMs) are another type of unsupervised learning algorithm that uses a Graph structure to map high-dimensional data onto a lower-dimensional grid.
+SOMs are a type of artificial neural network that can be used for clustering, visualization, and dimensionality reduction. 
+However, they differ from traditional neural networks in that they use a \texttt{competitive learning} approach to map input data to a lower-dimensional grid.
+
+
+\section{Summary and Conclusion}
+In this lecture, we introduced the concept of unsupervised learning and discussed two common unsupervised learning algorithms: k-means clustering and self-organizing maps.
+Unsupervised learning is a type of machine learning that involves training algorithms on \textit{unlabeled data} to identify patterns and structures within data without explicit guidance.
+Clustering is a common unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points.
+We explored two clustering algorithms: k-means clustering, which partitions a dataset into $k$ clusters, and self-organizing maps, which use a neural (like) network to map high-dimensional data onto a lower-dimensional grid.
+These algorithms can be used to uncover hidden structures in data, visualize complex datasets, and identify patterns that may not be immediately apparent.
 
 \bibliography{References-L1c.bib}
 

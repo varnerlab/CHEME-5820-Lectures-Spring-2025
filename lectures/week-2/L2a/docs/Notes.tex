@@ -147,6 +147,7 @@ The computation of the QR decomposition using the Gram-Schmidt orthogonalization
    \State{$n,m\gets$ dimensions of $\mathbf{A}$}
    \State{$\mathbf{Q}\gets$ zeros matrix of size $n\times{m}$}
    \State{$\mathbf{Q}(:,1)\gets\mathbf{A}(:,1)/\norm{\mathbf{A}(:,1)}$}
+   \Statex
    \For{$k=2$ to $m$}
       \State{$\mathbf{Q}(:,k)\gets\mathbf{A}(:,k)$}
       \For{$j=1$ to $k-1$}
