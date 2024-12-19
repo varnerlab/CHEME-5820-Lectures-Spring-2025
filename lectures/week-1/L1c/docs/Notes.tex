@@ -105,16 +105,17 @@ The algorithm iteratively assigns data points to the nearest cluster center and 
 \end{itemize}
 
 \section{K-means clustering}
-The k-means algorithm, originally developed by Lloyd in the 1950s but not published until much later in 1982 \citep{Lloyd-1982}, is an example of an \texttt{unsupervised learning}. 
+The K-means algorithm, originally developed by Lloyd in the 1950s but not published until much later in 1982 \citep{Lloyd-1982}, is an example of an \texttt{unsupervised learning}. 
 Unsupervised learning focuses on discovering patterns and structures in data without the guidance of labeled examples or explicit feedback. 
 Unlike supervised learning (which we will explore in future lectures), where algorithms are trained on labeled datasets, unsupervised learning algorithms operate with 
 raw, unlabeled data to identify inherent groupings, anomalies, or relationships. This approach is particularly valuable when dealing with large volumes of unstructured data or when the desired outcomes may be unknown. 
 Typical applications of unsupervised learning include clustering (which we are discussing today), dimensionality reduction, and anomaly detection. 
 
-K-means is a popular unsupervised machine learning algorithm used for clustering data points into K distinct groups based on their similarity.
+K-means is a popular unsupervised machine learning algorithm used for clustering data points into $K$ distinct groups based on their similarity.
 In this approach, the algorithm partitions the dataset into $K$ (specified by you) clusters, 
 with each cluster represented by a centroid (the mean of the data points in the cluster). 
-Then the algorithm iteratively assigns data points to the nearest cluster centroid and updates the centroids based on the mean of the assigned points.
+Then the algorithm iteratively assigns data points to the nearest cluster centroid and updates the centroids 
+based on the mean of the assigned points.
 Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
 
 \begin{algorithm}[H]
