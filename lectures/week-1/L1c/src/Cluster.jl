@@ -1,7 +1,7 @@
 
 
 function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlgorithm; 
-    d = Euclidean())
+    d = Euclidean(), verbose::Bool = false)
     
     # get data -
     K = algorithm.K;
@@ -19,6 +19,7 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
     while (has_converged == false)
     
         # step 1: assign each data point to the nearest centriod -
+        â = copy(assignments); # old assignments
         for i ∈ 1:number_of_points
             for k ∈ 1:K
                 tmp[k] = d(data[i,:], centroids[k]);
@@ -37,13 +38,16 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
                     centroids[k][d] = mean(data[index_cluter_k, d]);
                 end
             end
+        end
 
-
-            # centroids[k] = mean(data[assignments .== k, :], dims=1);
+        # verbose -
+        if (verbose == true)
+            # if we get here, we are in verbose mode. Dump results to disk
+            # ...
         end
 
         # check: have we reached the maximum number of iterations -or- have the centroids converged?
-        if (loopcount > maxiter)
+        if (loopcount > maxiter || d(â, assignments) ≤ ϵ)
             has_converged = true;
         else
             loopcount += 1; # update the loop count
@@ -51,9 +55,9 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
     end
     
     # return the model -
-    return (algorithm.assignments, algorithm.centroids);
+    return (algorithm.assignments, algorithm.centroids, loopcount);
 end
 
-function cluster(data::Array{<:Number,2}, algorithm::T; d = Euclidean()) where T <: MyAbstractUnsupervisedClusteringAlgorithm
-    return _cluster(data, algorithm, d = d);
+function cluster(data::Array{<:Number,2}, algorithm::T; d = Euclidean(), verbose::Bool = false) where T <: MyAbstractUnsupervisedClusteringAlgorithm
+    return _cluster(data, algorithm, d = d, verbose = verbose);
 end
