@@ -19,7 +19,6 @@
 \usepackage{float}
 
 \newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
-\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[dvipsnames]{xcolor}
@@ -119,25 +118,25 @@ based on the mean of the assigned points.
 Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
 
 \begin{algorithm}[H]
-   \begin{algorithmic}[1]
+   \begin{algorithmic}
    \caption{Unsupervised naive k-means clustering (Lloyd's algorithm)}\label{alg:kmeans}
-   \State \textbf{Input:} Data points $\mathcal{D} = \{x_1, x_2, \ldots, x_n\in\mathbb{R}^{m}\}$, number of clusters $K$
-   \State \textbf{Output:} Cluster assignments $C = \{c_1, c_2, \ldots, c_n\}$ and cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
-   \State Randomly initialize $K$ cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\in\mathbb{R}^{m}\}$
-   \State{$\text{flag} \gets \texttt{true}$}\Comment{flag to indicate convergence}
-   \While{$\text{flag}$}
-   \For{$x_{i}\in \mathcal{D}$}
-      \State{$c_{i}\gets\underset{j}\argmin \norm{x_{i} - \mu_j}^2$}
+   \State \textbf{Input:} $\mathcal{D} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\in\mathbb{R}^{m}\}$, number of clusters $K$ and initial centroids $\{\mu_1, \mu_2, \ldots, \mu_K\in\mathbb{R}^{m}\}$
+   \State \textbf{Output:} Cluster assignments $\mathcal{C} = \{c_1, c_2, \ldots, c_K\}$ and updated cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
+   \State{$\text{flag} \gets \texttt{false}$}\Comment{flag to indicate convergence: \texttt{true} for convergence and \texttt{false} otherwise}
+   \While{$\text{flag}~\text{is}~\texttt{false}$}
+   \For{$\mathbf{x}\in \mathcal{D}$}\Comment{Iterate over all data points in $\mathcal{D}$}
+      \State{$c_{i}\gets\argmin_{j} \norm{\mathbf{x} - \mu_j}^2$}\Comment{Assign data point $\mathbf{x}$ to the closest cluster centroid (Euclidean distance)}
    \EndFor 
-   \State{$\hat{\mu}\gets\mu$}
-   \For{$j=1$ to $K$}
-      \State{$\mu_j\gets{\displaystyle \frac{1}{|C_j|}}\cdot{\displaystyle \sum_{x_i\in C_j} x_i}$}
+   \Statex
+   \State{$\hat{\mu}\gets\mu$}\Comment{Store the current best cluster centroids}
+   \For{$j=1$ to $K$}\Comment{Iterate over all clusters}
+      \State{$\mu_j\gets{\displaystyle \frac{1}{|c_j|}}\cdot{\displaystyle \sum_{\mathbf{x}\in c_j} \mathbf{x}}$}\Comment{Update cluster centroid $\mu_j$ where $|c_j|$ is the number of data points in cluster $c_j$}
    \EndFor
-   \If{$\norm{\mu - \hat{\mu}} < \epsilon$}
-      \State{$\text{flag}\gets\texttt{false}$}
+   \Statex
+   \If{$\norm{\mu - \hat{\mu}} < \epsilon$}\Comment{Check for convergence: based on the change in cluster centroids}
+      \State{$\text{flag}\gets\texttt{true}$}\Comment{Set flag to \texttt{true} to terminate the algorithm}
    \EndIf
    \EndWhile
-   \State \textbf{return} cluster assignments $C$, cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
    \end{algorithmic}
 \end{algorithm}
 

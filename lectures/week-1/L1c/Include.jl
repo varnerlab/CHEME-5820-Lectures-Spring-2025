@@ -18,8 +18,11 @@ using Plots
 using Colors
 using Statistics
 using LinearAlgebra
+using Distances
 
 # load my own packages
-
+include(joinpath(_PATH_TO_SRC, "Types.jl"));
+include(joinpath(_PATH_TO_SRC, "Factory.jl"));
+include(joinpath(_PATH_TO_SRC, "Cluster.jl"));
 
 

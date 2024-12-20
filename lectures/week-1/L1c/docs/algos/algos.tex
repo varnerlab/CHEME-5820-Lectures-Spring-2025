@@ -1,0 +1,78 @@
+\documentclass[aspectratio=169]{beamer}
+
+%Information to be included in the title page:
+% \title{Sample title}
+% \author{Anonymous}
+% \institute{Overleaf}
+% \date{2021}
+
+% \usepackage{xcolor}
+% \usepackage[dvipsnames]{xcolor}
+% \setbeamercolor{background canvas}{bg=black!50}
+% \setbeamercolor{\texttt}{fg=white}\usebeamercolor*{\texttt}
+%\usepackage{epstopdf}
+%\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage{amsthm, comment}
+\usepackage{mdframed}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+% \setbeamercolor{background canvas}{bg=black!50}
+% \setbeamercolor{\texttt}{fg=white}\usebeamercolor*{\texttt}
+
+% \setbeamercolor{normal text}{fg=black!100, bg=black!10}
+
+% \usetheme{Pittsburgh}
+% \usecolortheme{owl}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+\algrenewcommand\alglinenumber[1]{\tiny #1:}
+
+\setbeamertemplate{itemize items}[circle]
+
+% 1- Block title (background and text)
+% \setbeamercolor{block title}{bg=cyan, fg=white}
+% % 2- Block body (background)
+% \setbeamercolor{block body}{bg=cyan!10}
+
+\begin{document}
+\begin{frame}
+    \begin{algorithm}[H]
+        \scriptsize
+        \begin{algorithmic}
+        \caption{\scriptsize Unsupervised naive k-means clustering (Lloyd's algorithm)}\label{alg:kmeans}
+        \State \textbf{Input:} $\mathcal{D} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\in\mathbb{R}^{m}\}$, number of clusters $K$ and initial centroids $\{\mu_1, \mu_2, \ldots, \mu_K\in\mathbb{R}^{m}\}$
+        \State \textbf{Output:} Cluster assignments $\mathcal{C} = \{c_1, c_2, \ldots, c_K\}$ and updated cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
+        \State{$\text{flag} \gets \texttt{false}$}\Comment{flag to indicate convergence: \texttt{true} for convergence and \texttt{false} otherwise}
+        \While{$\text{flag}~\text{is}~\texttt{false}$}
+        \For{$\mathbf{x}\in \mathcal{D}$}\Comment{Iterate over all data points in $\mathcal{D}$}
+           \State{$c_{i}\gets\argmin_{j} \norm{\mathbf{x} - \mu_j}^2$}\Comment{Assign data point $\mathbf{x}$ to the closest cluster centroid (Euclidean distance)}
+        \EndFor 
+        \Statex
+        \State{$\hat{\mu}\gets\mu$}\Comment{Store the current best cluster centroids}
+        \For{$j=1$ to $K$}\Comment{Iterate over all clusters}
+           \State{$\mu_j\gets{\displaystyle \frac{1}{|c_j|}}\cdot{\displaystyle \sum_{\mathbf{x}\in c_j} \mathbf{x}}$}\Comment{Update cluster centroid $\mu_j$ where $|c_j|$ is the number of data points in cluster $c_j$}
+        \EndFor
+        \Statex
+        \If{$\norm{\mu - \hat{\mu}} < \epsilon$}\Comment{Check for convergence: based on the change in cluster centroids}
+           \State{$\text{flag}\gets\texttt{true}$}\Comment{Set flag to \texttt{true} to terminate the algorithm}
+        \EndIf
+        \EndWhile
+        \end{algorithmic}
+     \end{algorithm}
+\end{frame}
+\end{document}  
