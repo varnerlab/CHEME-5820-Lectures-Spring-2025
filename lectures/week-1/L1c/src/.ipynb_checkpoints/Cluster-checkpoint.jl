@@ -1,13 +1,13 @@
 
 
-function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlgorithm)
+function _cluster(data::Array{Float64,2}, algorithm::MyNaiveKMeansClusteringAlgorithm)
     
     # get data -
     K = algorithm.K;
     ϵ = algorithm.ϵ;
     maxiter = algorithm.maxiter;
     assigments = algorithm.assigments;
-    centroids = algorithm.centroids;
+    centriods = algorithm.centriods;
     dimension = algorithm.dimension;
     number_of_points = algorithm.number_of_points;
     loopcount = 1; # how many iterations have we done?\
@@ -20,25 +20,14 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
         # step 1: assign each data point to the nearest centriod -
         for i ∈ 1:number_of_points
             for k ∈ 1:K
-                tmp[k] = euclidean(data[i,:], centroids[k]);
+                tmp[k] = euclidean(data[i,:], centriods[k]);
             end
             assigments[i] = argmin(tmp);
         end
     
         # step 2: update the centroids -
         for k ∈ 1:K
-            index_cluter_k = findall(x-> x == k, assigments); # index of the data vectors assigned to cluster k
-
-            if (isempty(index_cluter_k) == true)
-                continue;
-            else
-                for d ∈ 1:dimension
-                    centroids[k][d] = mean(data[index_cluter_k, d]);
-                end
-            end
-
-
-            # centroids[k] = mean(data[assigments .== k, :], dims=1);
+            centriods[k] = mean(data[assigments .== k, :], dims=1);
         end
 
         # check: have we reached the maximum number of iterations -or- have the centroids converged?
@@ -50,9 +39,9 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
     end
     
     # return the model -
-    return (algorithm.assigments, algorithm.centroids);
+    return algorithm;
 end
 
-function cluster(data::Array{<:Number,2}, algorithm::T) where T <: MyAbstractUnsupervisedClusteringAlgorithm
+function cluster(data::Array{Float64,2}, algorithm::T) where T <: MyAbstractUnsupervisedClusteringAlgorithm
     return _cluster(data, algorithm);
 end

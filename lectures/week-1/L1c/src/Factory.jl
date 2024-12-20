@@ -17,9 +17,9 @@ function build(modeltype::Type{MyNaiveKMeansClusteringAlgorithm}, data::NamedTup
     end
 
     # setup the centriods -
-    centriods = Dict{Int64, Vector{Float64}}();
+    centroids = Dict{Int64, Vector{Float64}}();
     for k ∈ 1:K
-        centriods[k] = rand(Float64, dimension); # randomly generate the centriods
+        centroids[k] = rand(Float64, dimension); # randomly generate the centriods
     end
 
     # set the data on the model -
@@ -29,7 +29,7 @@ function build(modeltype::Type{MyNaiveKMeansClusteringAlgorithm}, data::NamedTup
     model.dimension = dimension;
     model.number_of_points = number_of_points;
     model.assigments = assigments;
-    model.centriods = centriods;
+    model.centroids = centroids;
 
     # return the model -
     return model;
