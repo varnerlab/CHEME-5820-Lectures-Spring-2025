@@ -6,7 +6,7 @@ function _cluster(data::Array{Float64,2}, algorithm::MyNaiveKMeansClusteringAlgo
     K = algorithm.K;
     ϵ = algorithm.ϵ;
     maxiter = algorithm.maxiter;
-    assigments = algorithm.assigments;
+    assignments = algorithm.assignments;
     centriods = algorithm.centriods;
     dimension = algorithm.dimension;
     number_of_points = algorithm.number_of_points;
@@ -22,12 +22,12 @@ function _cluster(data::Array{Float64,2}, algorithm::MyNaiveKMeansClusteringAlgo
             for k ∈ 1:K
                 tmp[k] = euclidean(data[i,:], centriods[k]);
             end
-            assigments[i] = argmin(tmp);
+            assignments[i] = argmin(tmp);
         end
     
         # step 2: update the centroids -
         for k ∈ 1:K
-            centriods[k] = mean(data[assigments .== k, :], dims=1);
+            centriods[k] = mean(data[assignments .== k, :], dims=1);
         end
 
         # check: have we reached the maximum number of iterations -or- have the centroids converged?
