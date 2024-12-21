@@ -2,6 +2,8 @@
 const _ROOT = pwd();
 const _PATH_TO_SRC = joinpath(_ROOT, "src");
 const _PATH_TO_DATA = joinpath(_ROOT, "data");
+const _PATH_TO_TMP = joinpath(_ROOT, "tmp");
+const _PATH_TO_FRAMES = joinpath(_ROOT, "frames");
 
 # check do we have a Manifest.toml file?
 using Pkg;
@@ -19,6 +21,7 @@ using Colors
 using Statistics
 using LinearAlgebra
 using Distances
+using JLD2
 
 # load my own packages
 include(joinpath(_PATH_TO_SRC, "Types.jl"));

@@ -13,13 +13,23 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
     number_of_points = algorithm.number_of_points;
     loopcount = 1; # how many iterations have we done?\
     tmp = zeros(Float64, K);
-    
+
     # main -
     has_converged = false; # convergence flag
     while (has_converged == false)
     
-        # step 1: assign each data point to the nearest centriod -
+        # before we start, copy the old assignments and centroids -
         â = copy(assignments); # old assignments
+        ĉ = copy(centroids); # old centroids
+        
+        # verbose mode -
+        if (verbose == true) # dump the data to disk
+            path_to_save_file = joinpath(pwd(), "tmp", "data-$(loopcount).jld2");
+            save(path_to_save_file, Dict("assignments" => â, "centroids" => ĉ, "loopcount" => loopcount));
+        end
+
+        # update steps -
+        # step 1: assign each data point to the nearest centriod -
         for i ∈ 1:number_of_points
             for k ∈ 1:K
                 tmp[k] = d(data[i,:], centroids[k]);
@@ -38,12 +48,6 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
                     centroids[k][d] = mean(data[index_cluter_k, d]);
                 end
             end
-        end
-
-        # verbose -
-        if (verbose == true)
-            # if we get here, we are in verbose mode. Dump results to disk
-            # ...
         end
 
         # check: have we reached the maximum number of iterations -or- have the centroids converged?
