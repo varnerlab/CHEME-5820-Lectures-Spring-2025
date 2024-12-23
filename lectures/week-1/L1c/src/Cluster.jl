@@ -59,7 +59,7 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
     end
     
     # return the model -
-    return (algorithm.assignments, algorithm.centroids, loopcount);
+    return (assignments = algorithm.assignments, centroids = algorithm.centroids, loopcount = loopcount);
 end
 
 function cluster(data::Array{<:Number,2}, algorithm::T; d = Euclidean(), verbose::Bool = false) where T <: MyAbstractUnsupervisedClusteringAlgorithm
