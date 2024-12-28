@@ -31,11 +31,8 @@ function poweriteration(A::Array{<:Number,2}, v::Array{<:Number,1};
             should_we_stop = true;
             println("Converged in $(loopcount) iterations"); # let the user know how many iterations it took
         else
-            # update the vector
-            v = w;
-
-            # update the loop count
-            loopcount = loopcount + 1;
+            v = w; # update the vector
+            loopcount = loopcount + 1; # update the loop count
         end
     end
     
