@@ -18,6 +18,7 @@ function poweriteration(A::Array{<:Number,2}, v::Array{<:Number,1};
         # check if we should stop
         if (norm(w - v) ≤ ϵ || loopcount ≥ maxiter)
             should_we_stop = true;
+            println("Converged in $(loopcount) iterations");
         else
             # update the vector
             v = w;
