@@ -1,3 +1,8 @@
+function _projection(v::Array{Float64,1}, u::Array{Float64,1})::Array{Float64,1}
+    return (dot(v, u) / dot(u, u)) * u;
+end
+
+
 """
     poweriteration(A::Array{<:Number,2}, v::Array{<:Number,1}; 
         maxiter::Int = 100, ϵ::Float64 = 0.0001)
@@ -43,32 +48,28 @@ function poweriteration(A::Array{<:Number,2}, v::Array{<:Number,1};
     return (v, λ);
 end
 
-function myQRdecomposition(matrix::Array{<:Number,2})::Tuple{Array{Float64,2}, Array{Float64,2}}
-    
-    
-    # initialize -
-    A = matrix; # define the matrix -
-    m, n = size(A); # get the size of the matrix -
-    Q = zeros(m, n); # initialize the Q matrix -
-    R = zeros(n, n); # initialize the R matrix -
+function orthogonalize(A::Array{<:Number,2}, algorithm::T)::Array{Float64,2} where {T<:AbstractGramSchmidtAlgorithm}
 
-    # loop over the columns -
-    for j ∈ 1:n
+    # initialize
+    number_of_rows = size(A, 1); # how many rows do we have?
+    number_of_cols = size(A, 2); # how many columns do we have?
+    Q = zeros(Float64, number_of_rows, number_of_cols); # initialize the Q matrix
 
-        # get the j-th column -
-        v = A[:,j];
-
-        # loop over the columns -
-        for i ∈ 1:j-1
-            R[i,j] = dot(Q[:,i], A[:,j]);
-            v = v - R[i,j] * Q[:,i];
+    # we are going to find the orthogonal basis for the columns of A
+    for i = 1:number_of_cols
+        
+        v = A[:, i]; # get the i-th column
+        
+        for j = 1:i-1
+            
+            if (isa(algorithm, ClassicalGramSchmidtAlgorithm))
+                v = v - _projection(A[:, i], Q[:, j]); # subtract the projection
+            elseif (isa(algorithm, ModifiedGramSchmidtAlgorithm))
+                v = v - _projection(v, Q[:,j]); # subtract the projection
+            end
         end
-
-        # normalize the vector -
-        R[j,j] = norm(v);
-        Q[:,j] = v / R[j,j];
+        Q[:, i] = v / norm(v); # normalize the vector
     end
 
-    # return the result -
-    return (Q, R);
+    return Q;
 end
