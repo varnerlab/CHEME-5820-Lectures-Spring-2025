@@ -57,19 +57,16 @@ function orthogonalize(A::Array{<:Number,2}, algorithm::T)::Array{Float64,2} whe
 
     # we are going to find the orthogonal basis for the columns of A
     for i = 1:number_of_cols
-        
         v = A[:, i]; # get the i-th column
-        
-        for j = 1:i-1
-            
-            if (isa(algorithm, ClassicalGramSchmidtAlgorithm))
-                v = v - _projection(A[:, i], Q[:, j]); # subtract the projection
-            elseif (isa(algorithm, ModifiedGramSchmidtAlgorithm))
-                v = v - _projection(v, Q[:,j]); # subtract the projection
+        if (isa(algorithm, ClassicalGramSchmidtAlgorithm))
+            for j = 1:i-1
+                u = Q[:, j]; # get the j-th column
+                v = v - _projection(v, u); # subtract the projection
             end
+        elseif (isa(algorithm, ModifiedGramSchmidtAlgorithm))
+            throw(ArgumentError("Modified Gram-Schmidt not implemented yet!"));
         end
         Q[:, i] = v / norm(v); # normalize the vector
     end
-
     return Q;
 end
