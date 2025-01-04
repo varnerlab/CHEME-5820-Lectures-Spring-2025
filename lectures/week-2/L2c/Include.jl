@@ -18,6 +18,7 @@ using GLPK
 using JuMP
 using Colors
 using Images
+using Plots
 
 # include my codes
 include(joinpath(_PATH_TO_SRC, "Types.jl"))
