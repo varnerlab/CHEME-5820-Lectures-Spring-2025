@@ -18,5 +18,7 @@ using Distributions
 using StatsPlots
 using PrettyTables
 using DataFrames
+using CSV
+using FileIO
 
 # include my codes -
