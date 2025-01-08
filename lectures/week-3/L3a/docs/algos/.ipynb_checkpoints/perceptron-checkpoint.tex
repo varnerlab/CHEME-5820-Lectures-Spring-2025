@@ -1,0 +1,80 @@
+\documentclass[aspectratio=169]{beamer}
+
+%Information to be included in the title page:
+% \title{Sample title}
+% \author{Anonymous}
+% \institute{Overleaf}
+% \date{2021}
+
+% \usepackage{xcolor}
+% \usepackage[dvipsnames]{xcolor}
+% \setbeamercolor{background canvas}{bg=black!50}
+% \setbeamercolor{\texttt}{fg=white}\usebeamercolor*{\texttt}
+%\usepackage{epstopdf}
+%\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage{amsthm, comment}
+\usepackage{mdframed}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+% \setbeamercolor{background canvas}{bg=black!50}
+% \setbeamercolor{\texttt}{fg=white}\usebeamercolor*{\texttt}
+
+% \setbeamercolor{normal text}{fg=black!100, bg=black!10}
+
+% \usetheme{Pittsburgh}
+% \usecolortheme{owl}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+\algrenewcommand\alglinenumber[1]{\tiny #1:}
+
+\setbeamertemplate{itemize items}[circle]
+
+% 1- Block title (background and text)
+% \setbeamercolor{block title}{bg=cyan, fg=white}
+% % 2- Block body (background)
+% \setbeamercolor{block body}{bg=cyan!10}
+
+\begin{document}
+\begin{frame}
+    \begin{algorithm}[H]
+        \small
+        \begin{algorithmic}[1]
+            % \Procedure{Incremental-Training-Perceptron}{$\mathcal{D}$}
+            \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
+            \State \textbf{Features:} $\mathbf{x}_{i} = \left(x_{i1},\dots, x_{in},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
+            \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{n}, b\right)$
+            \State $\mathbf{\beta} \gets \texttt{rand}$\Comment{Initialize parameter vector $\mathbf{\beta}$ to a random vector}
+            \State $i \gets 0$\Comment{Initialize the loop counter to zero}
+            \While{$\text{true}$}\Comment{Repeat until stopping criterion is met}
+            \State $\text{error} \gets 0$\Comment{Initialize the error count to zero for this pass through $\mathcal{D}$}
+            \For{$(\mathbf{x},y)\in\mathcal{D}$}\Comment{Iterate over each pair $(\mathbf{x},y)$ in data set $\mathcal{D}$}
+                \If{$y\cdot\left(\mathbf{x}^{T}\cdot\mathbf{\beta}\right) \leq 0$}\Comment{Ooops! The data pair $(\mathbf{x},y)$ is misclassified}
+                    \State $\mathbf{\beta} \gets \mathbf{\beta} + {y}\cdot\mathbf{x}$\Comment{Update the weight vector $\mathbf{\beta}$}
+                    \State $\text{error} \gets \text{error} + 1$\Comment{Increment the error count}
+                \EndIf
+            \EndFor
+            \If{$\text{error} \leq \epsilon$ \textbf{or} $i\geq\texttt{maxiter}$ }\Comment{Stopping criterion: tolerance or max iterations?}
+                \State \textbf{break} \Comment{Exit the training loop}    
+            \EndIf
+            \State $i \gets i + 1$\Comment{Increment the loop counter and repeat}
+            \EndWhile
+            % \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+\end{document}
