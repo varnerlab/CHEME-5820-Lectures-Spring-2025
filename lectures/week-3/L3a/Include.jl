@@ -16,5 +16,7 @@ using Plots
 using Colors
 using Distributions
 using StatsPlots
+using PrettyTables
+using DataFrames
 
 # include my codes -
