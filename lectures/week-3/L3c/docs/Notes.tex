@@ -1,0 +1,211 @@
+ \documentclass{article}[12pt]
+ \usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
+ %\usepackage{epstopdf}
+ %\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+ \usepackage{amssymb} %maths
+ \usepackage{amsmath} %maths
+ \usepackage{amsthm, comment}
+ \usepackage[round,comma,sort, numbers]{natbib}
+ 
+ % \bibliographystyle{plain}
+ \bibliographystyle{plos2015}
+ 
+ \newtheorem{theorem}{Theorem}
+ \newtheorem{prop}{Proposition}
+ \newtheorem{corollary}{Corollary}
+ \newtheorem{lemma}{Lemma}
+ \newtheorem{defn}{Definition}
+ \newtheorem{ex}{Example}
+ \usepackage{float}
+ 
+ \newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
+ \usepackage{graphicx}
+ \usepackage{xcolor}
+ \usepackage[dvipsnames]{xcolor}
+ \usepackage{algorithmicx}
+ \usepackage{algorithm} %http://ctan.org/pkg/algorithms
+ \usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+ \usepackage{enumitem}
+ \usepackage{simplemargins}
+ \usepackage{hyperref}
+ 
+ \renewcommand{\bibnumfmt}[1]{#1.}
+ \setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
+ \setallmargins{1in}
+ \linespread{1.1}
+ 
+ 
+ \def\R{\mathbb{R}}
+ \def\Eps{\mathcal{E}}
+ \def\E{\mathbb{E}}
+ \def\V{\mathbb{V}}
+ \def\F{\mathcal{F}}
+ \def\G{\mathcal{G}}
+ \def\H{\mathcal{H}}
+ \def\S{\mathcal{S}}
+ \def\P{\mathbb{P}}
+ \def\1{\mathbf{1}}
+ \def\n{\nappa}
+ \def\h{\mathbf{w}}
+ \def\v{\mathbf{v}}
+ \def\x{\mathbf{x}}
+ \def\X{\mathcal{X}}
+ \def\Y{\mathcal{Y}}
+ \def\eps{\epsilon}
+ \def\y{\mathbf{y}}
+ \def\e{\mathbf{e}}
+ \newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+ \DeclareMathOperator*{\argmin}{arg\,min}
+ \DeclareMathOperator*{\argmax}{arg\,max}
+ \newcommand{\lecture}[4]{
+    \pagestyle{myheadings}
+    \thispagestyle{plain}
+    \newpage
+    % \setcounter{lecnum}{#1}
+    \setcounter{page}{1}
+    \setlength{\headsep}{10mm}
+    \noindent
+    \begin{center}
+    \framebox{
+       \vbox{\vspace{2mm}
+     \hbox to 6.28in { {\bf CHEME 5820: Machine Learning for Engineers
+    \hfill Spring 2025} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it Lecturer: #3 \hfill #4} }
+       \vspace{2mm}}
+    }
+    \end{center}
+    \markboth{Lecture #1: #2}{Lecture #1: #2}
+ 
+    \noindent{\bf Disclaimer}: {\it These notes have not been subjected to the
+    usual scrutiny reserved for formal publications. }
+    \vspace*{4mm}
+ }
+
+
+\begin{document}
+\lecture{3c}{Logistic Regression for Binary Classification Problems}{Jeffrey Varner}{}
+
+\section{Introduction}
+In this lecture, we will introduce logistic regression for binary classification problems. 
+We will start by discussing the logistic regression model, and then we will discuss the maximum likelihood estimation of the model parameters. 
+We will also discuss the gradient descent algorithm for estimating the model parameters. 
+Finally, we will discuss the evaluation of the logistic regression model using the confusion matrix, accuracy, precision, recall, and the F1 score.
+The key concepts covered in this lecture include:
+
+\begin{itemize}[leftmargin=16pt]
+\item{\textbf{Logistic regression} is a statistical method used for binary classification that models the relationship between a dependent categorical variable (label) and one or more independent variables (features) by estimating probabilities through the logistic function.}
+\item{\textbf{Maximum likelihood estimation (MLE)} is a statistical technique to estimate the parameters of a probability distribution by maximizing the likelihood function, thereby determining the parameter values that make the observed data most probable.}
+\item{\textbf{Gradient descent} is an optimization algorithm used to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient. Iteration continous until finding the local minimum of the function.}
+\item{\textbf{Performance assesment}. Evaluating the performance of a logistic regression model involves assessing its accuracy and predictive power through various metrics such as accuracy, precision, recall, F1-score, and the area under the receiver operating characteristic (ROC) curve. 
+These metrics provide insights into how well the model distinguishes between the binary classes and helps in fine-tuning its parameters for improved performance.}
+\end{itemize}
+
+\section{Logistic Regression}
+Logistic regression is a statistical method used for binary classification problems, where the dependent variable (label) is a binary categorical variable (e.g., $\pm{1}$, etc), 
+and the independent variables (features) are continuous or categorical variables. Unlike the Perceptron model, which outputs the class label directly, logistic regression models the probability that a given input belongs to a particular class based on the input features.
+The logistic regression model estimates the probability that a given input belongs to a particular class based on the input features.
+In particular, logistic regression is a type of discrimeinative model, which means it directly models the conditional probability of the label given the features, i.e., $P(y|\mathbf{x})$.
+This is in contrast to generative models, e.g., Naive Bayes which we'll explore later, which model the joint probability of the features and the label, i.e., $P(y,\mathbf{x}) = P(\mathbf{x}|y)\cdot{P(y)}$.
+The logistic regression model uses the logistic function to model the probability of the binary label $y\in\{-1,+1\}$ given the feature vector $\mathbf{x}$:
+\begin{equation}
+P(y|\mathbf{x};\theta) = \frac{1}{1 + e^{-y\cdot\theta^{T}\mathbf{x}}}
+\end{equation}
+where $\theta\in\R^{n}$ is an (unknown) parameter vector (that we need to estimate somehow), and $e$ is the base of the natural logarithm.
+The logistic function is a sigmoid function that maps the input, i.e., $-y\cdot\theta^{T}\mathbf{x}$ to the range $[0,1]$, which is suitable for modeling probabilities.
+The logistic regression model predicts the label $y\in\{-1,+1\}$ for a given feature vector $\mathbf{x}$ by comparing the probability $P(y|\mathbf{x};\theta)$ to a threshold, e.g., 0.5.
+If the probability is greater than the threshold, the model predicts the positive class ($y = 1$), otherwise it predicts the negative class ($y = -1$).
+The logistic regression model is trained by estimating the parameters $\theta$ that maximize the likelihood of the observed labels given the features.
+We'll discuss the maximum likelihood estimation of the logistic regression model parameters in the next section.
+
+\subsection{Maximum Likelihood Estimation (MLE)}
+Maximum likelihood estimation (MLE) is a technique to estimate the parameters of a probability distribution by maximizing the likelihood function.
+In the context of logistic regression, MLE is used to estimate the parameters of the logistic regression model that make the observed label conditioned on the features the most probable.
+Given a set of training examples $\mathcal{D} = \left\{\left(\mathbf{x}_{1}, y_{1}\right),\dots,\left(\mathbf{x}_{m}, y_{m}\right)\right\}$, where $\mathbf{x}_{i}\in\mathbb{R}^{n}$ is an $n$-dimensional feature vector and $y_{i}\in\mathbb{R}$ is the binary (scalar) label, the likelihood function is defined as:
+\begin{equation}
+\mathcal{L}(\theta) = \prod_{i=1}^{m}P(y_{i}|\mathbf{x}_{i};\theta)
+\end{equation}
+where $P(y_{i}|\mathbf{x}_{i};\theta)$ is the probability of observing the label $y_{i}$ given the feature vector $\mathbf{x}_{i}$ and the model parameters $\theta$.
+It's hard to maximize the likelihood function directly (because of the product), so we take the logarithm of the likelihood function to simplify the optimization:
+\begin{equation}
+\log\mathcal{L}(\theta) = \sum_{i=1}^{m}\log P(y_{i}|\mathbf{x}_{i};\theta)
+\end{equation}
+The \texttt{log} is a monotonic function, so maximizing the log-likelihood is equivalent to maximizing the likelihood.
+The logistic regression model uses the logistic function to model the probability of the binary label:
+\begin{equation}
+P(y_{i}|\mathbf{x}_{i};\theta) = \frac{1}{1 + e^{-y_{i}\cdot\left(\theta^{T}\mathbf{x}_{i}\right)}}
+\end{equation}
+where $\theta\in\mathbb{R}^{n}$ is the parameter vector, $\theta^{T}$ is the transpose of $\theta$, and $e$ is the base of the natural logarithm.
+Substituting the $P(y_{i}|\mathbf{x}_{i};\theta)$ function into the log-likelihood function gives:
+\begin{equation}
+\log\mathcal{L}(\theta) = -\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)
+\end{equation}
+where we inverted the $P(y_{i}|\mathbf{x}_{i};\theta)$ function to get the log-likelihood function.
+The maximium likelihood estimation (MLE) of the logistic regression model parameters $\theta^{\star}$ is obtained by maximizing the log-likelihood function
+$\log\mathcal{L}(\theta)$:
+\begin{equation}
+\theta^{\star} = \argmax_{\theta}\left[-\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)\right]
+\end{equation}
+There is no closed form analytical solution to this optimization problem, so we need to use an numerical algorithm to estimate the model parameters.
+To solve this optimization problem, we can use the gradient descent algorithm (or one of many other approaches) to iteratively update the parameters $\theta$ to maximize the log-likelihood function, 
+or alternatively, minimize the negative log-likelihood function, i.e., $l(\theta) = \sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)$.
+We'll start by discussing the gradient descent algorithm, and then consider some alternatives to gradient descent.
+
+\subsection{Gradient Descent}
+Gradient descent is an optimization algorithm used to minimize a function by iteratively adjusting the parameters in the opposite direction of the gradient.
+Suppose there exists an objective function $l(\theta)$ that we want to minimize with respect to the parameter $\theta$, i.e., the negative log-likelihood function.
+In general, an objective function measures the difference between the predicted values and the observed values in some way, e.g., the mean squared error (MSE) or cross-entropy loss.
+In the context of logistic regression, the objective function is the negative log-likelihood function, which measures the difference between the predicted probabilities and the observed labels.
+Whatever form the objective function takes, we assume that it is differentiable, and we can compute the gradient, i.e., $\nabla{l}(\theta)$ for the negative log-likelihood function, 
+which points in the direction of the steepest increase of the function. This gives us a way to update the parameters to minimize the objective function, using the update rule:
+\begin{equation*}
+\theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla{l}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
+\end{equation*}
+The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla{l}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
+We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the a maximum number of iterations is reached, or some other stopping criterion is met.
+
+\subsection{Alternatives to Gradient Descent}
+The central issue with gradient descent is that it can be slow to converge, especially when the objective function is non-convex or has many local minima.
+The choice of the learning rate $\alpha$ is crucial, as a too large value can cause the algorithm to diverge, while a too small value can slow down convergence.
+Further, the objective function may not be differentiable, or the gradient may be difficult to compute.
+In these cases, alternative heuristic optimization algorithms can be used to estimate the model parameters.
+Let's walk through some of the alternatives to gradient descent.
+
+\subsubsection*{Simulated Annealing}
+Simulated annealing is a probabilistic optimization algorithm inspired by the physical process of 
+heating and then slowly cooling materials to minimize defects, allowing for a thorough exploration of the solution space by accepting worse solutions with a certain 
+probability to avoid local minima. This method is particularly effective in solving complex optimization problems with large search spaces, 
+where traditional techniques may struggle to find the global optimum.
+
+\subsubsection*{Genetic Algorithms}
+Genetic algorithms (GAs) are adaptive heuristic search techniques inspired by the principles of natural selection and genetics, designed to solve optimization and search problems by iteratively evolving a population of candidate solutions through processes such as selection, crossover, and mutation. 
+By mimicking the evolutionary process, GAs aim to improve solution quality over generations, making them particularly effective for complex problems that may be discontinuous, non-differentiable, or highly nonlinear.
+
+\subsubsection*{Particle Swarm Optimization}
+Particle Swarm Optimization (PSO) is a meta-heuristic optimization algorithm inspired by the social behavior of birds and fish, which utilizes a population of candidate solutions, referred to as particles, that move through the search space to find optimal solutions. 
+Each particle adjusts its position based on its own experience and the collective knowledge of the swarm, allowing for efficient exploration and exploitation of the solution space to address complex optimization problems across various fields.
+
+
+\section{Performance Evaluation}
+Evaluating the performance of a logistic regression model involves assessing its accuracy and predictive power through various metrics such as accuracy, precision, recall, F1-score, and the area under the receiver operating characteristic (ROC) curve.
+The accuracy of a model is the proportion of correctly classified instances, while precision measures the proportion of true positive predictions among all positive predictions.
+The recall is the proportion of true positive predictions among all actual positive instances, and the F1-score is the harmonic mean of precision and recall.
+The area under the ROC curve is a measure of the model's ability to distinguish between the two classes, with a higher AUC indicating better performance.
+
+\section{Summary and Conclusions}
+In this lecture, we introduced logistic regression for binary classification problems and discussed the maximum likelihood estimation of the model parameters.
+We also discussed the gradient descent algorithm for estimating the model parameters and evaluated the logistic regression model using the confusion matrix, accuracy, precision, recall, and the F1 score.
+Gradient descent is an optimization algorithm used to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient.
+However, there are many other optimization algorithms that can be used to estimate the model parameters, that do not rely on the gradient. 
+For example, simulated annealing, genetic algorithms, and particle swarm optimization are all optimization algorithms that can be used to estimate the model parameters.
+Finally, we discussed the evaluation of the logistic regression model using various performance metrics, including accuracy, precision, recall, F1-score, and the area under the ROC curve.
+Logistic regression is a powerful tool for binary classification problems and is widely used in various applications, including healthcare, finance, and marketing.
+
+
+\bibliography{References-L3c.bib}
+
+\end{document}
+
+
