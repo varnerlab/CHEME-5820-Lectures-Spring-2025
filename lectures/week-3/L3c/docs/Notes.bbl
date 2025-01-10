@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{Kirkpatrick:1983aa}
+Kirkpatrick S, Gelatt CD Jr, Vecchi MP.
+\newblock Optimization by simulated annealing.
+\newblock Science. 1983;220(4598):671--80.
+\newblock doi:{10.1126/science.220.4598.671}.
+
 \bibitem{SG2019}
 Sidey-Gibbons JAM, Sidey-Gibbons CJ.
 \newblock Machine learning in medicine: a practical introduction.

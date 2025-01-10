@@ -173,8 +173,11 @@ In these cases, alternative heuristic optimization algorithms can be used to est
 Let's walk through some of the alternatives to gradient descent.
 
 \subsubsection*{Simulated Annealing}
-Simulated annealing is a probabilistic optimization algorithm inspired by the physical process of 
-heating and then slowly cooling materials to minimize defects, allowing for a thorough exploration of the solution space by accepting worse solutions with a certain probability of avoiding local minima. This method effectively solves complex optimization problems with large search spaces, where traditional techniques may struggle to find the global optimum.
+Simulated annealing, originally developed by Kirkpatrick et al \cite{Kirkpatrick:1983aa}, is a probabilistic optimization algorithm inspired by the physical process of 
+heating and then slowly cooling (annealing) materials to minimize defects.
+Simulated annealing works by iteratively exploring the solution space by accepting worse solutions with a certain probability, allowing for a more thorough exploration of the solution space and avoiding local minima.
+This method effectively solves complex optimization problems with large search spaces, where traditional techniques may struggle to find the global optimum.
+However, simulated annealing can be computationally expensive and may require tuning of hyperparameters, particularly the annealing schedule, i.e., the decrease is temperature to achieve optimal performance.
 
 \subsubsection*{Genetic Algorithms}
 Genetic algorithms (GAs) are adaptive heuristic search techniques inspired by natural selection and genetics principles. They are designed to solve optimization and search problems by iteratively evolving a population of candidate solutions through selection, crossover, and mutation. By mimicking the evolutionary process, GAs aim to improve solution quality over generations, making them particularly effective for complex problems that may be discontinuous, non-differentiable, or highly nonlinear.
