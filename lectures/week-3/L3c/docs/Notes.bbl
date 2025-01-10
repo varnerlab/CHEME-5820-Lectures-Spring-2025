@@ -6,6 +6,18 @@ Kirkpatrick S, Gelatt CD Jr, Vecchi MP.
 \newblock Science. 1983;220(4598):671--80.
 \newblock doi:{10.1126/science.220.4598.671}.
 
+\bibitem{Holland:1975aa}
+Holland JH.
+\newblock Adaptation in natural and artificial systems: an introductory
+  analysis with applications to biology, control, and artificial intelligence.
+\newblock Ann Arbor: University of Michigan Press; 1975.
+
+\bibitem{PSO1995}
+Kennedy J, Eberhart R.
+\newblock Particle swarm optimization.
+\newblock In: Proceedings of ICNN'95 - International Conference on Neural
+  Networks. vol.~4; 1995. p. 1942--1948 vol.4.
+
 \bibitem{SG2019}
 Sidey-Gibbons JAM, Sidey-Gibbons CJ.
 \newblock Machine learning in medicine: a practical introduction.

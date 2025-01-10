@@ -165,6 +165,27 @@ which points in the direction of the steepest increase of the function. This giv
 The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla{l}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
 We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
 
+
+\begin{algorithm}[H]
+\caption{Gradient Descent for Negative Log-Likelihood}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\eta$, stopping criterion $\epsilon$, maximum iterations $N$
+\State \textbf{Output:} Optimal parameters $\theta^*$
+
+\State Initialize $\theta \gets \theta_0$
+\State $k \gets 0$
+
+\While{$k < N$ \textbf{and} $\|\nabla \mathcal{L}(\theta)\| > \epsilon$}
+    \State Compute gradient $\nabla \mathcal{L}(\theta)$ of the negative log-likelihood $\mathcal{L}(\theta)$
+    \State Update parameters: $\theta \gets \theta - \eta \cdot \nabla \mathcal{L}(\theta)$
+    \State $k \gets k + 1$
+\EndWhile
+
+\State \textbf{return} $\theta$
+\end{algorithmic}
+\end{algorithm}
+
+
 \subsection{Alternatives to Gradient Descent}
 The central issue with gradient descent is that it can be slow to converge, especially when the objective function is non-convex or has many local minima.
 The choice of the learning rate $\alpha$ is crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
@@ -179,12 +200,147 @@ Simulated annealing works by iteratively exploring the solution space by accepti
 This method effectively solves complex optimization problems with large search spaces, where traditional techniques may struggle to find the global optimum.
 However, simulated annealing can be computationally expensive and may require tuning of hyperparameters, particularly the annealing schedule, i.e., the decrease is temperature to achieve optimal performance.
 
+\begin{algorithm}[H]
+\caption{Simulated Annealing}
+\begin{algorithmic}[1]
+\State Initialize current solution $x \gets x_0$
+\State Initialize temperature $T \gets T_0$
+\State Define cooling schedule $T \gets \alpha \cdot T$, where $0 < \alpha < 1$
+\State Define maximum iterations $N$
+\State Initialize best solution $x_\text{best} \gets x$
+
+\For{$i = 1$ to $N$}
+    \State Generate a new candidate solution $x_\text{new}$ in the neighborhood of $x$
+    \State Compute $\Delta E \gets f(x_\text{new}) - f(x)$
+    \If{$\Delta E < 0$} 
+        \State Accept $x_\text{new}$: $x \gets x_\text{new}$
+    \Else
+        \State Accept $x_\text{new}$ with probability $P \gets e^{-\Delta E / T}$
+        \State Draw a random number $r \in [0, 1]$
+        \If{$r < P$}
+            \State $x \gets x_\text{new}$
+        \EndIf
+    \EndIf
+    \If{$f(x) < f(x_\text{best})$}
+        \State Update $x_\text{best} \gets x$
+    \EndIf
+    \State Update temperature: $T \gets \alpha \cdot T$
+    \If{$T$ is below a threshold $T_\text{min}$}
+        \State \textbf{break}
+    \EndIf
+\EndFor
+
+\State \textbf{return} $x_\text{best}$
+\end{algorithmic}
+\end{algorithm}
+
+
 \subsubsection*{Genetic Algorithms}
-Genetic algorithms (GAs) are adaptive heuristic search techniques inspired by natural selection and genetics principles. They are designed to solve optimization and search problems by iteratively evolving a population of candidate solutions through selection, crossover, and mutation. By mimicking the evolutionary process, GAs aim to improve solution quality over generations, making them particularly effective for complex problems that may be discontinuous, non-differentiable, or highly nonlinear.
+Genetic algorithms (GAs), popularized by John Holland in the 1970s \cite{Holland:1975aa}, are adaptive heuristic search techniques inspired by natural selection and genetics principles. 
+They are designed to solve optimization and search problems by iteratively evolving a population of candidate solutions through selection, crossover, and mutation. 
+By mimicking the evolutionary process, GAs aim to improve solution quality over generations, making them particularly effective for complex problems that may be discontinuous, non-differentiable, or highly nonlinear.
+
+\begin{algorithm}[H]
+\caption{Genetic Algorithm}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Population size $P$, crossover rate $p_c$, mutation rate $p_m$, maximum generations $G$, fitness function $f$
+\State \textbf{Output:} Best solution found after $G$ generations (individual with highest fitness)
+\State Initialize population $P_0$ randomly
+\State Evaluate fitness of each individual in $P_0$
+\State $t \gets 0$
+
+\While{$t < G$}
+    \State Select parents from $P_t$ based on fitness
+    \State Apply crossover with probability $p_c$ to produce offspring
+    \State Apply mutation with probability $p_m$ to offspring
+    \State Evaluate fitness of offspring
+    \State Form new population $P_{t+1}$ by selecting the best individuals from parents and offspring
+    \State $t \gets t + 1$
+\EndWhile
+
+\State Identify the best individual in $P_t$
+\State \textbf{return} Best individual
+\end{algorithmic}
+\end{algorithm}
+
+
+% \begin{itemize}
+%     \item \textbf{Selection:}
+%     \begin{itemize}
+%         \item Selection is the process of choosing individuals from the current population to serve as parents for generating offspring.
+%         \item The goal is to favor individuals with higher fitness, ensuring the propagation of desirable traits.
+%         \item Common methods include:
+%         \begin{itemize}
+%             \item \textit{Roulette Wheel Selection}: Probability of selection is proportional to an individual's fitness.
+%             \item \textit{Tournament Selection}: A group of individuals is randomly chosen, and the fittest among them is selected.
+%             \item \textit{Rank-Based Selection}: Individuals are ranked based on fitness, and selection is made based on rank probabilities.
+%         \end{itemize}
+%     \end{itemize}
+
+%     \item \textbf{Crossover:}
+%     \begin{itemize}
+%         \item Crossover is a genetic operator used to combine the genetic information of two parent individuals to create one or more offspring.
+%         \item It promotes exploration of the solution space by mixing traits from both parents.
+%         \item Common crossover techniques include:
+%         \begin{itemize}
+%             \item \textit{Single-Point Crossover}: A single crossover point is selected, and genetic material is exchanged between parents beyond this point.
+%             \item \textit{Two-Point Crossover}: Two crossover points are selected, and the segment between them is swapped between parents.
+%             \item \textit{Uniform Crossover}: Each gene is independently swapped between parents with a fixed probability.
+%         \end{itemize}
+%     \end{itemize}
+
+%     \item \textbf{Mutation:}
+%     \begin{itemize}
+%         \item Mutation introduces random changes to the genetic material of individuals.
+%         \item It helps maintain genetic diversity and prevents the algorithm from converging prematurely to local optima.
+%         \item Common mutation methods include:
+%         \begin{itemize}
+%             \item \textit{Bit Flip Mutation}: A bit in a binary string representation is randomly flipped (e.g., from 0 to 1 or vice versa).
+%             \item \textit{Gaussian Mutation}: A small random value from a Gaussian distribution is added to a real-valued gene.
+%             \item \textit{Swap Mutation}: Two genes in a sequence are randomly swapped.
+%         \end{itemize}
+%     \end{itemize}
+% \end{itemize}
+
 
 \subsubsection*{Particle Swarm Optimization}
-Particle Swarm Optimization (PSO) is a meta-heuristic optimization algorithm inspired by the social behavior of birds and fish, which utilizes a population of candidate solutions, referred to as particles, that move through the search space to find optimal solutions. 
+Particle Swarm Optimization (PSO), developed by Kennedy and Eberhart in the mid-1990s \cite{PSO1995} is an example of a meta-heuristic optimization algorithm inspired by the social behavior of birds and fish, which utilizes a population of candidate solutions, referred to as particles, that move through the search space to find optimal solutions. 
 Each particle adjusts its position based on its own experience and the collective knowledge of the swarm, allowing for efficient exploration and exploitation of the solution space to address complex optimization problems across various fields.
+
+\begin{algorithm}[H]
+\caption{Particle Swarm Optimization (PSO)}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Number of particles $N$, maximum iterations $T$, inertia weight $\omega$, cognitive parameter $c_1$, social parameter $c_2$, objective function $f$
+\State \textbf{Output:} Best solution found $x_\text{best}$
+
+\State Initialize particles' positions $x_i$ and velocities $v_i$ randomly for $i = 1, \dots, N$
+\State Evaluate fitness of each particle and initialize personal best positions $p_i \gets x_i$
+\State Set global best position $g \gets \arg\min_{p_i} f(p_i)$
+
+\For{$t = 1$ to $T$}
+    \For{each particle $i = 1$ to $N$}
+        \State Update velocity: 
+        \[
+        v_i \gets \omega v_i + c_1 r_1 (p_i - x_i) + c_2 r_2 (g - x_i)
+        \]
+        where $r_1, r_2 \sim U(0, 1)$
+        \State Update position: 
+        \[
+        x_i \gets x_i + v_i
+        \]
+        \State Evaluate fitness $f(x_i)$
+        \If{$f(x_i) < f(p_i)$}
+            \State Update personal best: $p_i \gets x_i$
+        \EndIf
+        \If{$f(p_i) < f(g)$}
+            \State Update global best: $g \gets p_i$
+        \EndIf
+    \EndFor
+\EndFor
+
+\State \textbf{return} $g$
+\end{algorithmic}
+\end{algorithm}
 
 
 \section{Performance Evaluation}
