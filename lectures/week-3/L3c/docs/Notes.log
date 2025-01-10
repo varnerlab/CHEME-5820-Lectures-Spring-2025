@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  10 JAN 2025 16:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  10 JAN 2025 17:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -505,8 +505,16 @@ Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[6] (./Notes.bbl
-Underfull \hbox (badness 2073) in paragraph at lines 4--8
+[6]
+Overfull \vbox (6.94444pt too high) has occurred while \output is active []
+
+
+[7]
+Overfull \vbox (6.94444pt too high) has occurred while \output is active []
+
+
+[8] (./Notes.bbl
+Underfull \hbox (badness 2073) in paragraph at lines 20--24
 []\OT1/cmr/m/n/10 Kirkpatrick S, Gelatt CD Jr, Vec-chi MP.  Op-ti-miza-tion by 
 sim-u-lated an-neal-ing.  Sci-ence.
  []
@@ -515,7 +523,7 @@ sim-u-lated an-neal-ing.  Sci-ence.
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[7] (./Notes.aux)
+[9] (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -524,10 +532,10 @@ Package rerunfilecheck Info: File `Notes.out' has not changed.
 (rerunfilecheck)             Checksum: 6330EA575383EC4D68BC22270476722C;1177.
  ) 
 Here is how much of TeX's memory you used:
- 12067 strings out of 474116
- 183608 string characters out of 5743682
- 1941187 words of memory out of 5000000
- 34213 multiletter control sequences out of 15000+600000
+ 12091 strings out of 474116
+ 183956 string characters out of 5743682
+ 1945187 words of memory out of 5000000
+ 34229 multiletter control sequences out of 15000+600000
  563724 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,1132b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -549,10 +557,10 @@ e/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texlive
 4/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024
 /texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/
 2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (7 pages, 227819 bytes).
+Output written on Notes.pdf (9 pages, 239532 bytes).
 PDF statistics:
- 190 PDF objects out of 1000 (max. 8388607)
- 143 compressed objects within 2 object streams
- 33 named destinations out of 1000 (max. 500000)
+ 215 PDF objects out of 1000 (max. 8388607)
+ 166 compressed objects within 2 object streams
+ 41 named destinations out of 1000 (max. 500000)
  57 words of extra memory for PDF output out of 10000 (max. 10000000)
 

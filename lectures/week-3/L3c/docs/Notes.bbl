@@ -1,5 +1,21 @@
 \begin{thebibliography}{1}
 
+\bibitem{ADAM-2014}
+Kingma DP, Ba J. Adam: A Method for Stochastic Optimization; 2017.
+\newblock Available from: \url{https://arxiv.org/abs/1412.6980}.
+
+\bibitem{ADAGrad2011}
+Duchi J, Hazan E, Singer Y.
+\newblock {Adaptive Subgradient Methods for Online Learning and Stochastic
+  Optimization}.
+\newblock J Mach Learn Res. 2011;12(null):2121--2159.
+
+\bibitem{NelderMead-1965}
+Nelder JA, Mead R.
+\newblock {A Simplex Method for Function Minimization}.
+\newblock The Computer Journal. 1965;7(4):308--313.
+\newblock doi:{10.1093/comjnl/7.4.308}.
+
 \bibitem{Kirkpatrick:1983aa}
 Kirkpatrick S, Gelatt CD Jr, Vecchi MP.
 \newblock Optimization by simulated annealing.

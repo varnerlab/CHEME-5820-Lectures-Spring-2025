@@ -163,11 +163,11 @@ which points in the direction of the steepest increase of the function. This giv
 \end{equation*}
 The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla\mathcal{L}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
 We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
-Pusedo-code for the gradient descent algorithm is shown in Algorithm \ref{alg:gd}.
+Pusedo-code for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
 
 
 \begin{algorithm}[H]
-\caption{Gradient Descent for Negative Log-Likelihood $\mathcal{L}(\theta)$}\label{alg:gd}
+\caption{Naive Gradient Descent for Negative Log-Likelihood $\mathcal{L}(\theta)$}\label{alg:gd}
 \begin{algorithmic}[1]
 \State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\alpha$, stopping criterion $\epsilon$, maximum iterations $N$
 \State \textbf{Output:} Optimal parameter estimates $\theta$
@@ -184,23 +184,74 @@ Pusedo-code for the gradient descent algorithm is shown in Algorithm \ref{alg:gd
 \end{algorithmic}
 \end{algorithm}
 
+\subsubsection*{Choose the learning Rate $\alpha$}
+The choice of the learning rate $\alpha$ is crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
+Choosing an appropriate learning rate is often challenging and may require tuning through hyperparameter optimization techniques. 
+In practice, we may use adaptive learning rate methods, such as the Adam optimizer, which adjusts the learning rate based on the gradient's magnitude and the second moment of the gradient \cite{ADAM-2014}.
+Alternatively, Adagrad and RMSprop (unpublished) are other adaptive learning rate methods that can be used to improve the convergence of the gradient descent algorithm \cite{ADAGrad2011}.
+
 
 \subsection{Alternatives to Gradient Descent}
 The central issue with gradient descent is that it can be slow to converge, especially when the objective function is non-convex or has many local minima.
-The choice of the learning rate $\alpha$ is crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
+The choice of the learning rate $\alpha$ is also crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
 Further, the objective function may not be differentiable, or the gradient may be challenging to compute.
 In these cases, alternative heuristic optimization algorithms can be used to estimate the model parameters.
+The central theme of these approaches to is to directly evaluate the objective function at different points in the parameter space to find the optimal solution.
+New search points are generated based randomly or with some heuristic, and the objective function is evaluated at these points to determine the next search direction.
 Let's walk through some of the alternatives to gradient descent.
+
+\subsubsection*{Nelder-Mead Simplex Algorithm}
+The Nelder-Mead algorithm \cite{NelderMead-1965}, also known as the simplex algorithm, is a direct search optimization algorithm that does not require the gradient of the objective function.
+It works by maintaining a simplex (a geometric shape with $n+1$ vertices in an $n$-dimensional space) that evolves through reflection, expansion, contraction, and shrinkage operations.
+Thus, the Nelder-Mead algorithm can be used for optimizing non-differentiable or noisy objective functions, making it suitable for a wide range of optimization problems.
+However, the Nelder-Mead algorithm may struggle with high-dimensional problems or functions with many local minima, as it does not leverage gradient information to guide the search.
+Pseudo-code for the Nelder-Mead algorithm is shown in Algorithm \ref{alg:nm}.
+\begin{algorithm}[H]
+\caption{Nelder-Mead Simplex Algorithm}\label{alg:nm}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Initial simplex vertices $x_0, x_1, \ldots, x_n$, reflection coefficient $\rho$, expansion coefficient $\chi$, contraction coefficient $\gamma$, shrinkage coefficient $\sigma$
+\State \textbf{Output:} Optimal solution $x^*$
+\State Sort vertices such that $f(x_0) \leq f(x_1) \leq \ldots \leq f(x_n)$
+\While{stopping criterion not met}
+    \State Compute the centroid $x_c$ of the $n$ best vertices
+    \State Reflect: $x_r = x_c + \rho(x_c - x_n)$
+    \If{$f(x_0) \leq f(x_r) < f(x_{n-1})$}
+        \State Replace $x_n$ with $x_r$
+    \ElsIf{$f(x_r) < f(x_0)$}
+        \State Expand: $x_e = x_c + \chi(x_r - x_c)$
+        \If{$f(x_e) < f(x_r)$}
+            \State Replace $x_n$ with $x_e$
+        \Else
+            \State Replace $x_n$ with $x_r$
+        \EndIf
+    \Else
+        \State Contract: $x_c = x_c + \gamma(x_n - x_c)$
+        \If{$f(x_c) < f(x_n)$}
+            \State Replace $x_n$ with $x_c$
+        \Else
+            \State Shrink: $x_i = x_0 + \sigma(x_i - x_0)$ for $i = 1, \ldots, n$
+        \EndIf
+    \EndIf
+\EndWhile
+\State \textbf{return} $x^*$
+\end{algorithmic}
+\end{algorithm}
+
 
 \subsubsection*{Simulated Annealing}
 Simulated annealing, originally developed by Kirkpatrick et al \cite{Kirkpatrick:1983aa}, is a probabilistic optimization algorithm inspired by the physical process of 
 heating and then slowly cooling (annealing) materials to minimize defects.
-Simulated annealing works by iteratively exploring the solution space by accepting worse solutions with a certain probability, allowing for a more thorough exploration of the solution space and avoiding local minima.
+Simulated annealing works by iteratively exploring the solution space. First a random (candidate) solution is generated, and the objective function is evaluated at this point.
+The difference in the objective function between the current and candidate solutions is computed, and the candidate solution is accepted if it improves the objective function.
+Alternatively, the candidate solution may be accepted with a certain probability even if it worsens the objective function. 
+Thus, simulated annealing can escape local minima and explore the solution space more thoroughly than gradient descent, at least when the system is hot.
+As the number of iterations increases, the algorithm gradually decreases the temperature, i.e., the probability of accepting worse solutions, allowing it to converge to the global optimum.
 This method effectively solves complex optimization problems with large search spaces, where traditional techniques may struggle to find the global optimum.
-However, simulated annealing can be computationally expensive and may require tuning of hyperparameters, particularly the annealing schedule, i.e., the decrease is temperature to achieve optimal performance.
+However, simulated annealing can be computationally expensive and may require tuning of hyperparameters, particularly the annealing schedule, i.e., the decrease is temperature at each iteration which impacts
+how willing the algorithm is to accept worse solutions to perform well. Pseudo-code for the simulated annealing algorithm is shown in Algorithm \ref{alg:sa}.
 
 \begin{algorithm}[H]
-\caption{Simulated Annealing}
+\caption{Simulated Annealing}\label{alg:sa}
 \begin{algorithmic}[1]
 \State Initialize current solution $x \gets x_0$
 \State Initialize temperature $T \gets T_0$
@@ -238,9 +289,13 @@ However, simulated annealing can be computationally expensive and may require tu
 Genetic algorithms (GAs), popularized by John Holland in the 1970s \cite{Holland:1975aa}, are adaptive heuristic search techniques inspired by natural selection and genetics principles. 
 They are designed to solve optimization and search problems by iteratively evolving a population of candidate solutions through selection, crossover, and mutation. 
 By mimicking the evolutionary process, GAs aim to improve solution quality over generations, making them particularly effective for complex problems that may be discontinuous, non-differentiable, or highly nonlinear.
+However, GAs have several hyperparameters that need to be tuned, such as the population size, crossover rate, mutation rate, and the number of generations.
+Further, GAs can be computationally expensive, especially for large search spaces, and may require significant computational resources to converge to the optimal solution.
+This will be especially true for complex objective functions that are expensive to evaluate, as the algorithm will need to evaluate the objective function for each candidate solution in the population.
+Pseudo-code for the genetic algorithm is shown in Algorithm \ref{alg:ga}.
 
 \begin{algorithm}[H]
-\caption{Genetic Algorithm}
+\caption{Genetic Algorithm}\label{alg:ga}
 \begin{algorithmic}[1]
 \State \textbf{Input:} Population size $P$, crossover rate $p_c$, mutation rate $p_m$, maximum generations $G$, fitness function $f$
 \State \textbf{Output:} Best solution found after $G$ generations (individual with highest fitness)
