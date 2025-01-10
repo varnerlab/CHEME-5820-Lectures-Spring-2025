@@ -1,0 +1,163 @@
+\documentclass{article}[12pt]
+\usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
+%\usepackage{epstopdf}
+%\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage{amsthm, comment}
+\usepackage[round,comma,sort, numbers]{natbib}
+
+% \bibliographystyle{plain}
+\bibliographystyle{plos2015}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}
+\newtheorem{ex}{Example}
+\usepackage{float}
+
+\newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{algorithmicx}
+\usepackage{algorithm} %http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+\usepackage{enumitem}
+\usepackage{simplemargins}
+\usepackage{hyperref}
+
+\renewcommand{\bibnumfmt}[1]{#1.}
+\setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
+\setallmargins{1in}
+\linespread{1.1}
+
+
+\def\R{\mathbb{R}}
+\def\Eps{\mathcal{E}}
+\def\E{\mathbb{E}}
+\def\V{\mathbb{V}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\H{\mathcal{H}}
+\def\S{\mathcal{S}}
+\def\P{\mathbb{P}}
+\def\1{\mathbf{1}}
+\def\n{\nappa}
+\def\h{\mathbf{w}}
+\def\v{\mathbf{v}}
+\def\x{\mathbf{x}}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\eps{\epsilon}
+\def\y{\mathbf{y}}
+\def\e{\mathbf{e}}
+\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   % \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \setlength{\headsep}{10mm}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf CHEME 5820: Machine Learning for Engineers
+   \hfill Spring 2025} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+
+   \noindent{\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications. }
+   \vspace*{4mm}
+}
+
+
+\begin{document}
+\lecture{3a}{The Perceptron for Binary Classification Problems}{Jeffrey Varner}{}
+
+\section{Introduction}
+In this lecture, we will introduce the perceptron algorithm for binary classification problems. 
+The perceptron is a simple linear classifier that can be used to separate two classes of data points. 
+The perceptron algorithm is a simple iterative algorithm that incrementally updates the weights of the linear classifier to minimize the classification error. 
+We will first introduce the perceptron algorithm and then discuss its convergence properties, i.e., when the algorithm converges to a solution and when it does not.
+The key concepts covered in this lecture include:
+\begin{itemize}[leftmargin=16pt]
+    \item The perceptron algorithm for binary classification problems.
+    \item The convergence properties of the perceptron algorithm.
+\end{itemize}
+
+\section{The Perceptron Algorithm}
+The Perceptron \cite{Perceptron1960} is a simple yet powerful algorithm used in machine learning for binary classification tasks. It operates by \textit{incrementally} learning a linear decision boundary (linear regression model) 
+that separates two classes based on input features by directly mapping the continuous output to a class such as $\sigma:\mathbb{R}\rightarrow\{-1,+1\}$, where the output function is $\sigma(\star) = \text{sign}(\star)$.
+Suppose there exists a data set
+$\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{N},y_{N})\right\}$ with $N$ examples, with labels $y_{i}\in\{-1,1\}$, and features $\mathbf{x}_{i}\in\mathbb{R}^{n}$.
+The Perceptron computes label $y$ for feature vector $\mathbf{x}$ as:
+\begin{equation*}
+    y = \text{sign}\left(\mathbf{w}^{T}\cdot\mathbf{x}\right)
+\end{equation*}
+where $\mathbf{w}=\left(w_{1},\dots,w_{N}, b\right)$ is a vector of weights $w$ and a bias $b$, 
+$\mathbf{x}=\left(x_{1},\dots,x_{n}, 1\right)$ is a feature vector,
+and $\text{sign}(z)$ is the sign function:
+\begin{equation*}
+    \text{sign}(z) = 
+    \begin{cases}
+        1 & \text{if}~z\geq{0}\\
+        -1 & \text{if}~z<0
+    \end{cases}
+\end{equation*}
+If data set $\mathcal{D}$ is linearly separable, the Perceptron will find a separating hyperplane in a finite number of passes 
+through $\mathcal{D}$. However, if the data set $\mathcal{D}$ is not linearly separable, the Perceptron will not converge.
+Pusedo code for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptron}.
+
+\begin{algorithm}[H]
+    \caption{The Perceptron Algorithm}\label{alg:perceptron}
+    \begin{algorithmic}[1]
+        % \Procedure{Incremental-Training-Perceptron}{$\mathcal{D}$}
+        \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
+        \State \textbf{Features:} $\mathbf{x}_{i} = \left(x_{i1},\dots, x_{in},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
+        \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{n}, b\right)$
+        \State $\mathbf{\beta} \gets \texttt{rand}$\Comment{Initialize parameter vector $\mathbf{\beta}$ to a random vector}
+        \State $i \gets 0$\Comment{Initialize the loop counter to zero}
+        \While{$\text{true}$}\Comment{Repeat until stopping criterion is met}
+        \State $\text{error} \gets 0$\Comment{Initialize the error count to zero for this pass through $\mathcal{D}$}
+        \For{$(\mathbf{x},y)\in\mathcal{D}$}\Comment{Iterate over each pair $(\mathbf{x},y)$ in data set $\mathcal{D}$}
+            \If{$y\cdot\left(\mathbf{x}^{T}\cdot\mathbf{\beta}\right) \leq 0$}\Comment{Ooops! The data pair $(\mathbf{x},y)$ is misclassified}
+                \State $\mathbf{\beta} \gets \mathbf{\beta} + {y}\cdot\mathbf{x}$\Comment{Update the weight vector $\mathbf{\beta}$}
+                \State $\text{error} \gets \text{error} + 1$\Comment{Increment the error count}
+            \EndIf
+        \EndFor
+        \If{$\text{error} \leq \epsilon$ \textbf{or} $i\geq\texttt{maxiter}$ }\Comment{Stopping criterion: tolerance or max iterations?}
+            \State \textbf{break} \Comment{Exit the training loop}    
+        \EndIf
+        \State $i \gets i + 1$\Comment{Increment the loop counter and repeat}
+        \EndWhile
+        % \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Summary}
+In this lecture, we introduced the perceptron algorithm for binary classification problems.
+The perceptron is a simple linear classifier that can be used to separate two classes of data points.
+The perceptron algorithm is a simple iterative algorithm that incrementally updates the weights of the linear classifier to minimize the classification error.
+Thus, it is one of the first examples of on online learning algorithm, i.e., an algorithm that learns from data in an incremental fashion.
+The perceptron algorithm is guaranteed to converge to a solution if the data set is linearly separable.
+However, if the data set is not linearly separable, the perceptron algorithm will not converge to a perfect solution.
+If we are willing to accept some classification errors, we can use the perceptron algorithm to find a separating hyperplane in a finite number of passes through the data set, 
+even if the data set is not linearly separable.
+
+\bibliography{References-L3a.bib}
+
+\end{document}
