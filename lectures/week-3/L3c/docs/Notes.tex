@@ -110,7 +110,7 @@ The logistic regression model estimates the probability that a given input belon
 In particular, logistic regression is a discriminative model, which means it directly models the conditional probability of the label given the features, i.e., $P(y|\mathbf{x})$.
 This is in contrast to generative models, e.g., Naive Bayes, which we'll explore later, which model the joint probability of the features and the label, i.e., $P(y,\mathbf{x}) = P(\mathbf{x}|y)\cdot{P(y)}$.
 The logistic regression model uses the logistic function to model the probability of the binary label $y\in\{-1,+1\}$ given the feature vector $\mathbf{x}$:
-\begin{equation}
+\begin{equation}\label{eq:logistic}
 P(y|\mathbf{x};\theta) = \frac{1}{1 + e^{-y\cdot\theta^{T}\mathbf{x}}}
 \end{equation}
 where $\theta\in\R^{n}$ is an (unknown) parameter vector (that we need to estimate somehow), and $e$ is the base of the natural logarithm.
@@ -125,59 +125,58 @@ Maximum likelihood estimation (MLE) is a technique to estimate the parameters of
 In logistic regression, MLE estimates the parameters of the logistic regression model that make the observed label conditioned on the features the most probable.
 Given a set of training examples $\mathcal{D} = \left\{\left(\mathbf{x}_{1}, y_{1}\right),\dots,\left(\mathbf{x}_{m}, y_{m}\right)\right\}$, where $\mathbf{x}_{i}\in\mathbb{R}^{n}$ is an $n$-dimensional feature vector and $y_{i}\in\mathbb{R}$ is the binary (scalar) label, the likelihood function is defined as:
 \begin{equation}
-\mathcal{L}(\theta) = \prod_{i=1}^{m}P(y_{i}|\mathbf{x}_{i};\theta)
+L(\theta) = \prod_{i=1}^{m}P(y_{i}|\mathbf{x}_{i};\theta)
 \end{equation}
 where $P(y_{i}|\mathbf{x}_{i};\theta)$ is the probability of observing the label $y_{i}$ given the feature vector $\mathbf{x}_{i}$ and the model parameters $\theta$.
 It's hard to maximize the likelihood function directly (because of the product), so we take the logarithm of the likelihood function to simplify the optimization:
 \begin{equation}
-\log\mathcal{L}(\theta) = \sum_{i=1}^{m}\log P(y_{i}|\mathbf{x}_{i};\theta)
+\log{L}(\theta) = \sum_{i=1}^{m}\log P(y_{i}|\mathbf{x}_{i};\theta)
 \end{equation}
 The \texttt{log} is a monotonic function, so maximizing the log-likelihood is equivalent to maximizing the likelihood.
-The logistic regression model uses the logistic function to model the probability of the binary label:
+Substituting our model for the $P(y_{i}|\mathbf{x}_{i};\theta)$ function, i.e., Eqn \eqref{eq:logistic} into the log-likelihood function gives:
 \begin{equation}
-P(y_{i}|\mathbf{x}_{i};\theta) = \frac{1}{1 + e^{-y_{i}\cdot\left(\theta^{T}\mathbf{x}_{i}\right)}}
-\end{equation}
-where $\theta\in\mathbb{R}^{n}$ is the parameter vector, $\theta^{T}$ is the transpose of $\theta$, and $e$ is the base of the natural logarithm.
-Substituting the $P(y_{i}|\mathbf{x}_{i};\theta)$ function into the log-likelihood function gives:
-\begin{equation}
-\log\mathcal{L}(\theta) = -\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)
+\log{L}(\theta) = -\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)
 \end{equation}
 where we inverted the $P(y_{i}|\mathbf{x}_{i};\theta)$ function to get the log-likelihood function.
 The maximum likelihood estimation (MLE) of the logistic regression model parameters $\theta^{\star}$ is obtained by maximizing the log-likelihood function
-$\log\mathcal{L}(\theta)$:
+$\log{L}(\theta)$:
 \begin{equation}
 \theta^{\star} = \argmax_{\theta}\left[-\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)\right]
 \end{equation}
-No closed-form analytical solution exists to this optimization problem, so we must estimate the model parameters using a numerical algorithm.
-To solve this optimization problem, we can use the gradient descent algorithm (or one of many other approaches) to iteratively update the parameters $\theta$ to maximize the log-likelihood function, 
-alternatively, minimize the negative log-likelihood function, i.e., $l(\theta) = \sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)$.
-We'll start by discussing the gradient descent algorithm and then consider some alternatives to gradient descent.
+No closed-form analytical solution exists to this optimization problem, so we must estimate the model parameters using a numerical algorithm, 
+such as gradient descent algorithm (or one of many other approaches) to iteratively update the parameters $\theta$ to maximize the log-likelihood function 
+or alternatively, to minimize the negative log-likelihood function:
+\begin{equation}
+\mathcal{L}(\theta) =-\log{L}(\theta) = \sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)
+\end{equation}
+We'll start by discussing the gradient descent algorithm and then consider some alternatives to gradient descent to 
+minimize the negative log-likelihood function and estimate the model parameters.
 
 \subsection{Gradient Descent}
-Gradient descent is an optimization algorithm that minimizes a function by iteratively adjusting the parameters in the opposite direction of the gradient.
-Suppose there exists an objective function $l(\theta)$ that we want to minimize with respect to the parameter $\theta$, i.e., the negative log-likelihood function.
+Gradient descent is a numerical seach algorithm that minimizes a function by iteratively adjusting the parameters in the opposite direction of the gradient.
+Suppose there exists an objective function $\mathcal{L}(\theta)$ that we want to minimize with respect to the parameter $\theta$, i.e., the negative log-likelihood function.
 In general, an objective function measures the difference between the predicted values and the observed values in some way, e.g., the mean squared error (MSE), the cross-entropy loss, or the negative log-likelihood.
 In logistic regression, the objective function is the negative log-likelihood function, which measures the difference between the predicted probabilities and the observed labels. However, whatever form the objective function takes, we assume that it is differentiable and that we can compute the gradient, i.e., $\nabla{l}(\theta)$ for the negative log-likelihood function, 
 which points in the direction of the steepest increase of the function. This gives us a way to update the parameters to minimize the objective function using the update rule:
 \begin{equation*}
-\theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla{l}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
+\theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla\mathcal{L}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
 \end{equation*}
-The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla{l}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
+The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla\mathcal{L}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
 We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
+Pusedo-code for the gradient descent algorithm is shown in Algorithm \ref{alg:gd}.
 
 
 \begin{algorithm}[H]
-\caption{Gradient Descent for Negative Log-Likelihood}
+\caption{Gradient Descent for Negative Log-Likelihood $\mathcal{L}(\theta)$}\label{alg:gd}
 \begin{algorithmic}[1]
-\State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\eta$, stopping criterion $\epsilon$, maximum iterations $N$
-\State \textbf{Output:} Optimal parameters $\theta^*$
+\State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\alpha$, stopping criterion $\epsilon$, maximum iterations $N$
+\State \textbf{Output:} Optimal parameter estimates $\theta$
 
-\State Initialize $\theta \gets \theta_0$
-\State $k \gets 0$
-
-\While{$k < N$ \textbf{and} $\|\nabla \mathcal{L}(\theta)\| > \epsilon$}
-    \State Compute gradient $\nabla \mathcal{L}(\theta)$ of the negative log-likelihood $\mathcal{L}(\theta)$
-    \State Update parameters: $\theta \gets \theta - \eta \cdot \nabla \mathcal{L}(\theta)$
+\State Initialize $\theta \gets \theta_0$\Comment{Initialize parameters to the initial guess}
+\State $k \gets 0$\Comment{Initialize iteration counter}
+\While{$k \leq N$ \textbf{or} $\|\theta_{k+1}  - \theta_{k} \| \leq \epsilon$}
+    \State $\mathbf{d} \gets \nabla \mathcal{L}(\theta_{k})$\Comment{Compute gradient using analytical or numerical method, evaluate at $\theta_{k}$}
+    \State $\theta_{k+1} \gets \theta_{k} - \alpha \cdot \mathbf{d}$\Comment{Update parameters using the gradient direction $\mathbf{d}$}
     \State $k \gets k + 1$
 \EndWhile
 
