@@ -86,7 +86,7 @@
 
 
 \begin{document}
-\lecture{3a}{The Perceptron for Binary Classification Problems}{Jeffrey Varner}{}
+\lecture{3a}{Linear Regression, Perceptron and Binary Classification}{Jeffrey Varner}{}
 
 \section{Introduction}
 In this lecture, we will introduce the perceptron algorithm for binary classification problems. 
@@ -95,22 +95,69 @@ The perceptron algorithm is a simple iterative algorithm that incrementally upda
 We will first introduce the perceptron algorithm and then discuss its convergence properties, i.e., when the algorithm converges to a solution and when it does not.
 The key concepts covered in this lecture include:
 \begin{itemize}[leftmargin=16pt]
-    \item The perceptron algorithm for binary classification problems.
-    \item The convergence properties of the perceptron algorithm.
+    \item{\textbf{Linear regression models}: A class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continuous or discrete input features. 
+    Linear regression models assume that the output variable is a linear combination of the input features.}
+    \item{\textbf{Binary classification}: The problem of classifying data points into one of two classes. Binary classification is a type of supervised machine learning task that involves categorizing data points into one of two distinct classes based on their features.
+    These features can be continuous or discrete, and the classes can be represented as binary labels, e.g., $\{-1,1\}$ or $\{0,1\}$.}
+    \item{\textbf{Perceptron}: The perceptron algorithm for binary classification problems is a linear classifier that separates two classes of data points. The perceptron algorithm is an iterative algorithm that incrementally updates the weights of the linear classifier to minimize the classification error.
+    The perceptron algorithm is guaranteed to converge to a solution with no mistakes in a finite number of iterations if the data set is linearly separable. However, if the data set is not linearly separable, the perceptron algorithm will not converge to a perfect solution, but rather to a solution with some classification errors.}
 \end{itemize}
 
-\section{The Perceptron Algorithm}
-The Perceptron \cite{Perceptron1960} is a simple yet powerful algorithm used in machine learning for binary classification tasks. It operates by \textit{incrementally} learning a linear decision boundary (linear regression model) 
-that separates two classes based on input features by directly mapping the continuous output to a class such as $\sigma:\mathbb{R}\rightarrow\{-1,+1\}$, where the output function is $\sigma(\star) = \text{sign}(\star)$.
-Suppose there exists a data set
-$\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{N},y_{N})\right\}$ with $N$ examples, with labels $y_{i}\in\{-1,1\}$, and features $\mathbf{x}_{i}\in\mathbb{R}^{n}$.
-The Perceptron computes label $y$ for feature vector $\mathbf{x}$ as:
+\section{Linear Regression Models}
+Linear regression models are a class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continous or discrete input features.
+Linear regression models assume that the output variable is a linear combination of the input features, i.e., the output variable is a linear function of the input features.
+Linear in this context is a misnomer in the sense that the features are not necessarily linear, but the model is linear in the parameters and the features.
+Suppose we have a data set $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$ with $m$ examples, where each example where $\mathbf{x}_{i}\in\R^{n}$ is a feature vector and $y_{i}\in\R$ is the output variable.
+The linear regression model predicts the output variable $y_{i}$ for feature vector $\mathbf{x}_{i}$ using the linear function:
 \begin{equation*}
-    y = \text{sign}\left(\mathbf{w}^{T}\cdot\mathbf{x}\right)
+    y_{i} = \mathbf{x}_{i}^{T}\cdot\beta + \epsilon_{i}
 \end{equation*}
-where $\mathbf{w}=\left(w_{1},\dots,w_{N}, b\right)$ is a vector of weights $w$ and a bias $b$, 
-$\mathbf{x}=\left(x_{1},\dots,x_{n}, 1\right)$ is a feature vector,
-and $\text{sign}(z)$ is the sign function:
+where we have augmented the feature vector $\mathbf{x}_{i}$ with a bias term, i.e., $\mathbf{x}_{i}^{T} = \left(x^{(i)}_{1},\dots,x^{(i)}_{n},1\right)$, $\beta = \left(w_{1},\dots,w_{n},b\right)$ is a column vector of (unknown) parameters $w_{j}\in\R$ corresponding to the importance (weight) of feature $j$ and a bias parameter $b\in\R$
+and $\epsilon_{i}\sim\mathcal{N}(0,\sigma^{2})$ is a noise term, typically assumed to be a Normal distribution with mean zero and variance $\sigma^{2}$.
+Depending upon the shape of the data and various other problem constraints, there are analytical solutions to the linear regression problem, e.g., the normal equations, or iterative solutions, e.g., gradient descent can be used to estimate the parameters $\beta$.
+
+\subsection{Overdetemined Linear Regression models}
+If the number of examples $m$ is greater than the number of features $n$, the linear regression model is said to be overdetermined.
+In other words, there are more examples than features.  Regularized linear regression models incorporate penalty terms to constrain the size of the coefficient estimates, thereby reducing overfitting and enhancing the model's generalizability to new data. 
+Consider an overdetermined data matrix $\mathbf{X}\in\mathbb{R}^{m\times{n}}$, i.e., the case where $m>n$ (more examples than unknown parameters).
+A regularized least squares estimate of the unknown parameters $\mathbf{\beta}$ for an overdetermined system will minimize a loss (objective) function of the form:
+\begin{equation*}
+\hat{\mathbf{\beta}}_{\lambda} = \arg\min_{\mathbf{\beta}} ||~\mathbf{y} - \mathbf{X}\cdot\mathbf{\beta}~||^{2}_{2} + \lambda\cdot||~\mathbf{\beta}~||^{2}_{2}
+\end{equation*}
+where $||\star||^{2}_{2}$ is the square of the $l2$-vector norm, $\lambda\geq{0}$ denotes a regularization parameter, and $\hat{\mathbf{\beta}}_{\lambda}$ denotes the estimated parameter vector. 
+The parameters $\hat{\mathbf{\beta}}_{\lambda}$ that minimize the $||\star||^{2}_{2}$ loss plus penalty for overdetermined data matrix $\mathbf{X}$ are given by:
+\begin{equation*}
+\hat{\mathbf{\beta}}_{\lambda} = \left(\mathbf{X}^{T}\mathbf{X}+\lambda\cdot\mathbf{I}\right)^{-1}\mathbf{X}^{T}\mathbf{y} - \left(\mathbf{X}^{T}\mathbf{X}+\lambda\cdot\mathbf{I}\right)^{-1}\mathbf{X}^{T}\mathbf{\epsilon}
+\end{equation*}
+The matrix $\mathbf{X}^{T}\mathbf{X}+\lambda\cdot\mathbf{I}$ is the $\texttt{regularized normal matrix}$, while $\mathbf{X}^{T}\mathbf{y}$ is the $\texttt{moment vector}$. 
+The inverse $\left(\mathbf{X}^{T}\mathbf{X}+\lambda\cdot\mathbf{I}\right)^{-1}$ must exist to obtain the estimated parameter vector $\hat{\mathbf{\beta}}_{\lambda}$.
+
+\subsection{Underdetermined Linear Regression models}
+Assume the data matrix $\mathbf{X}$ is $\texttt{underdetermined}$, i.e., $m < n$ (more columns than rows), and 
+the error vector $\mathbf{\epsilon}\sim\mathcal{N}(\mathbf{0},\sigma^{2}\cdot\mathbf{I})$.
+Then, an \href{https://en.wikipedia.org/wiki/Ordinary_least_squares}{ordinary least squares} estimate of the unknown parameters is the $\textit{smallest}$ parameter vector $\beta$ that satisfies the original equations:
+\begin{eqnarray*}
+\text{minimize}~& & ||\,\mathbf{\beta}\,|| \\
+\text{subject to} & & \mathbf{X}\cdot\mathbf{\beta} = \mathbf{y}
+\end{eqnarray*}
+The least-norm problem has an analytical estimate for the unknown parameter vector $\hat{\mathbf{\beta}}$ given by:
+\begin{equation*}
+\hat{\mathbf{\beta}} =\mathbf{X}^{T}\left(\mathbf{X}\mathbf{X}^{T}\right)^{-1}\cdot\mathbf{y} - \mathbf{X}^{T}\left(\mathbf{X}\mathbf{X}^{T}\right)^{-1}\cdot\mathbf{\epsilon}
+\end{equation*}
+where inverse $\left(\mathbf{X}\mathbf{X}^{T}\right)^{-1}$ must exist to obtain the estimated model parameter vectors $\hat{\mathbf{\beta}}$.
+
+\section{The Perceptron and Binary Classification}
+The Perceptron \cite{Perceptron1960} is a simple yet powerful algorithm used in machine learning for binary classification tasks.
+\href{https://en.wikipedia.org/wiki/Perceptron}{The Perceptron (Rosenblatt, 1957)} takes the (scalar) output of a linear regression model $y_{i}\in\mathbb{R}$ and transforms it, using a transform function $\sigma(\star) = \text{sign}(\star)$, into a discrete value representing a category, e.g., $\sigma:\mathbb{R}\rightarrow\{-1,1\}$ in the binary classification case. 
+Suppose there exists a data set $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$ with $m$ \textit{labeled} examples, where each example $1,2,\dots,m$ has been labeled by an expert, i.e., a human to be in a category $\hat{y}_{i}\in\{-1,1\}$, given the feature vector $\mathbf{x}_{i}\in\mathbb{R}^{n}$. 
+The Perceptron \textit{incrementally} learns a linear decision boundary between two classes of possible objects (binary classification) in $\mathcal{D}$ by repeatedly processing the data. 
+During each pass, a regression parameter vector $\mathbf{\beta}$ is updated until it makes no more than a specified number of mistakes. 
+
+The Perceptron computes the label $\hat{y}_{i}$ for feature vector $\mathbf{x}_{i}$ using the $\sigma(\star) = \text{sign}(\star)$ function:
+\begin{equation*}
+    \hat{y}_{i} = \text{sign}\left(\mathbf{x}_{i}^{T}\cdot\beta\right)
+\end{equation*}
+where $\beta=\left(w_{1},\dots,w_{n}, b\right)$ is a column vector of (unknown) weight parameters $w_{j}\in\mathbb{R}$ corresponding to the importance of feature $j$ and a   bias parameter $b\in\mathbb{R}$, the features $\mathbf{x}^{T}_{i}=\left(x^{(i)}_{1},\dots,x^{(i)}_{n}, 1\right)$ is the $n+1$-dimensional feature (row) vector (features augmented with bias term), and $\text{sign}(z)$ is the $\texttt{sign}$ function:
 \begin{equation*}
     \text{sign}(z) = 
     \begin{cases}
@@ -121,7 +168,6 @@ and $\text{sign}(z)$ is the sign function:
 If data set $\mathcal{D}$ is linearly separable, the Perceptron will find a separating hyperplane in a finite number of passes 
 through $\mathcal{D}$. However, if the data set $\mathcal{D}$ is not linearly separable, the Perceptron will not converge.
 Pusedo code for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptron}.
-
 \begin{algorithm}[H]
     \caption{The Perceptron Algorithm}\label{alg:perceptron}
     \begin{algorithmic}[1]
