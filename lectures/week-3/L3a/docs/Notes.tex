@@ -114,7 +114,7 @@ The linear regression model predicts the output variable $y_{i}$ for feature vec
 \end{equation*}
 where we have augmented the feature vector $\mathbf{x}_{i}$ with a bias term, i.e., $\mathbf{x}_{i}^{T} = \left(x^{(i)}_{1},\dots,x^{(i)}_{n},1\right)$, $\beta = \left(w_{1},\dots,w_{n},b\right)$ is a column vector of (unknown) parameters $w_{j}\in\R$ corresponding to the importance (weight) of feature $j$ and a bias parameter $b\in\R$
 and $\epsilon_{i}\sim\mathcal{N}(0,\sigma^{2})$ is a noise term, typically assumed to be a Normal distribution with mean zero and variance $\sigma^{2}$.
-Depending upon the shape of the data and various other problem constraints, there are analytical solutions to the linear regression problem, e.g., the normal equations, or iterative solutions, e.g., gradient descent can be used to estimate the parameters $\beta$.
+Depending upon the shape of the data and various other problem constraints, there are analytical solutions to for linear regression parameter vecrtoe $\beta$, e.g., the normal equations, or iterative solutions, e.g., gradient descent can be used to estimate the parameters $\beta$ for other linear regression problems.
 
 \subsection{Overdetemined Linear Regression models}
 If the number of examples $m$ is greater than the number of features $n$, the linear regression model is said to be overdetermined.
@@ -193,6 +193,18 @@ Pusedo code for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptr
         % \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
+\section{Evaluation of the Binary Classifier}
+Once the Perceptron (or any binary classifier) has converged, we can evaluate the performance of the binary classifier using a variety of metrics.
+See Sidey-Gibbon et al \cite{SG2019} for a detailed discussion of these metrics in the context of medical classification problems.
+The central idea is to compare the predicted labels $\hat{y}_{i}$ to the true labels $y_{i}$ in the data set $\mathcal{D}$. 
+There are a variety of metrics that can be used to evaluate the performance of a binary classifier, but they all start with computing the confusion matrix.
+
+\subsection{Confusion Matrix}
+The confusion matrix is a table that is often used to describe the performance of a classification model on a set of data for which the true values are known.
+The confusion matrix is a $2\times{2}$ matrix that contains four entries: true positive (TP), false positive (FP), true negative (TN), and false negative (FN).
+The confusion matrix is used to calculate a variety of performance metrics, including accuracy, precision, recall, and F1 score.
+
 
 \section{Summary}
 In this lecture, we introduced the perceptron algorithm for binary classification problems.

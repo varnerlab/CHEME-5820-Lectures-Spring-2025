@@ -6,4 +6,10 @@ Rosenblatt F.
 \newblock Proceedings of the IRE. 1960;48(3):301--309.
 \newblock doi:{10.1109/JRPROC.1960.287598}.
 
+\bibitem{SG2019}
+Sidey-Gibbons JAM, Sidey-Gibbons CJ.
+\newblock Machine learning in medicine: a practical introduction.
+\newblock BMC Med Res Methodol. 2019;19(1):64.
+\newblock doi:{10.1186/s12874-019-0681-4}.
+
 \end{thebibliography}
