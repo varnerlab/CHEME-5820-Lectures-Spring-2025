@@ -146,6 +146,13 @@ The least-norm problem has an analytical estimate for the unknown parameter vect
 \end{equation*}
 where inverse $\left(\mathbf{X}\mathbf{X}^{T}\right)^{-1}$ must exist to obtain the estimated model parameter vectors $\hat{\mathbf{\beta}}$.
 
+\begin{figure}
+    \centering
+	\includegraphics[width=0.5\textwidth]{./figs/Fig-LinearSeperableData-Hyperplane.pdf}
+	\caption{Schematic of a binary classification tasks with linearly separable data.
+    Above the hyperplane are positive examples, while below the hyperplane are negative examples.}\label{fig:linearhyperplane}
+\end{figure}
+
 \section{The Perceptron and Binary Classification}
 The Perceptron \cite{Perceptron1960} is a simple yet powerful algorithm used in machine learning for binary classification tasks.
 \href{https://en.wikipedia.org/wiki/Perceptron}{The Perceptron (Rosenblatt, 1957)} takes the (scalar) output of a linear regression model $y_{i}\in\mathbb{R}$ and transforms it, using a transform function $\sigma(\star) = \text{sign}(\star)$, into a discrete value representing a category, e.g., $\sigma:\mathbb{R}\rightarrow\{-1,1\}$ in the binary classification case. 
@@ -157,7 +164,7 @@ The Perceptron computes the label $\hat{y}_{i}$ for feature vector $\mathbf{x}_{
 \begin{equation*}
     \hat{y}_{i} = \text{sign}\left(\mathbf{x}_{i}^{T}\cdot\beta\right)
 \end{equation*}
-where $\beta=\left(w_{1},\dots,w_{n}, b\right)$ is a column vector of (unknown) weight parameters $w_{j}\in\mathbb{R}$ corresponding to the importance of feature $j$ and a   bias parameter $b\in\mathbb{R}$, the features $\mathbf{x}^{T}_{i}=\left(x^{(i)}_{1},\dots,x^{(i)}_{n}, 1\right)$ is the $n+1$-dimensional feature (row) vector (features augmented with bias term), and $\text{sign}(z)$ is the $\texttt{sign}$ function:
+where $\beta=\left(w_{1},\dots,w_{n}, b\right)$ is a column vector of (unknown) weight parameters $w_{j}\in\mathbb{R}$ corresponding to the importance of feature $j$ and a bias parameter $b\in\mathbb{R}$, the features $\mathbf{x}^{T}_{i}=\left(x^{(i)}_{1},\dots,x^{(i)}_{n}, 1\right)$ is the $n+1$-dimensional feature (row) vector (features augmented with bias term), and $\text{sign}(z)$ is the $\texttt{sign}$ function:
 \begin{equation*}
     \text{sign}(z) = 
     \begin{cases}
@@ -193,6 +200,28 @@ Pusedo code for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptr
         % \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+What the algorithm does is to update the weight vector $\mathbf{\beta}$ for each example $(\mathbf{x}_{i},y_{i})$ in the data set $\mathcal{D}$.
+If the example is misclassified, i.e., $y_{i}\left(\mathbf{x}_{i}^{T}\cdot\mathbf{\beta}\right)\leq{0}$, the weight vector $\mathbf{\beta}$ is updated by adding the feature vector $\mathbf{x}_{i}$ multiplied by the label $y_{i}$.
+The algorithm continues to iterate through the data set $\mathcal{D}$ until all examples are correctly classified or until a stopping criterion is met, e.g., a maximum number of iterations or a tolerance on the number of classification errors.
+In the end, the alogrithm estimates a linear hyperplane $\mathcal{H} = \left\{\mathbf{x}~|~\mathbf{x}^{T}\cdot\mathbf{\beta} = 0\right\}$ that separates the two classes of data points in $\mathcal{D}$ (Fig. \ref{fig:linearhyperplane}).
+
+
+\subsection{Convergence of the Perceptron Algorithm}
+The perceptron algorithm is guaranteed to converge to a solution if the data set is linearly separable in a finite number of passes through the data set.
+Let's sketch out why this is the case.
+Suppose the data set $\mathcal{D}$ is linearly separable, i.e., there exists a weight vector $\mathbf{\beta}^{\star}$ such that the true labels $y_{i}$ are correctly classified, i.e., 
+$y_{i}\left(\mathbf{x}^{T}\cdot\mathbf{\beta}\right)>0$ for all examples $(\mathbf{x}_{i},y_{i})\in\mathcal{D}$.
+Next, suppose we rescale the weight vector $\mathbf{\beta}$ and the data set $\mathcal{D}$ such that $\norm{\mathbf{\beta}}=1$ and $\norm{\mathbf{x}_{i}}=1$ for all examples $(\mathbf{x}_{i},y_{i})\in\mathcal{D}$.
+Finally, we define the margin of the data set $\mathcal{D}$ as the minimum distance between the data points and the decision boundary defined by the weight vector $\mathbf{\beta}$:
+\begin{equation*}
+    \gamma = \min_{i}|\left(\mathbf{x}_{i}^{T}\cdot\mathbf{\beta}\right)|
+\end{equation*}
+\begin{theorem}\label{thm:perceptron}
+If all the condtions above are satisfied, the perceptron algorithm will make at most $1/\gamma^{2}$ mistakes.
+For a proof of this theorem, see \href{https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote03.html}{the CS4780 lecture notes from 2018}.
+\end{theorem}
+
+
 
 \section{Evaluation of the Binary Classifier}
 Once the Perceptron (or any binary classifier) has converged, we can evaluate the performance of the binary classifier using a variety of metrics.

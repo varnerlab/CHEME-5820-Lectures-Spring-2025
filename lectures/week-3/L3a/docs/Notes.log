@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  12 JAN 2025 12:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  13 JAN 2025 13:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -483,46 +483,59 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+<./figs/Fig-LinearSeperableData-Hyperplane.pdf, id=58, 540.0175pt x 407.5225pt>
+
+File: ./figs/Fig-LinearSeperableData-Hyperplane.pdf Graphic file (type pdf)
+<use ./figs/Fig-LinearSeperableData-Hyperplane.pdf>
+Package pdftex.def Info: ./figs/Fig-LinearSeperableData-Hyperplane.pdf  used on
+ input line 151.
+(pdftex.def)             Requested size: 234.8775pt x 177.24597pt.
+
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
 [2]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 172.
-<./figs/Fig-BinaryConfusionMatrix.pdf, id=66, 913.4125pt x 579.16376pt>
+put line 179.
+
+Overfull \vbox (6.94444pt too high) has occurred while \output is active []
+
+
+[3 <./figs/Fig-LinearSeperableData-Hyperplane.pdf>]
+<./figs/Fig-BinaryConfusionMatrix.pdf, id=137, 913.4125pt x 579.16376pt>
 File: ./figs/Fig-BinaryConfusionMatrix.pdf Graphic file (type pdf)
 <use ./figs/Fig-BinaryConfusionMatrix.pdf>
 Package pdftex.def Info: ./figs/Fig-BinaryConfusionMatrix.pdf  used on input li
-ne 205.
+ne 234.
 (pdftex.def)             Requested size: 352.31625pt x 223.38966pt.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[3]
+[4]
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[4 <./figs/Fig-BinaryConfusionMatrix.pdf>] (./Notes.bbl)
+[5 <./figs/Fig-BinaryConfusionMatrix.pdf>] (./Notes.bbl)
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[5] (./Notes.aux)
+[6] (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `Notes.out' has not changed.
-(rerunfilecheck)             Checksum: 4A67AD824D425FD1EC6E7E10C2CBCB1E;1497.
+(rerunfilecheck)             Checksum: B48C38EC44F61E39B076B80026713000;1761.
  ) 
 Here is how much of TeX's memory you used:
- 12066 strings out of 474116
- 183850 string characters out of 5743682
- 1943187 words of memory out of 5000000
- 34220 multiletter control sequences out of 15000+600000
+ 12091 strings out of 474116
+ 184749 string characters out of 5743682
+ 1942187 words of memory out of 5000000
+ 34241 multiletter control sequences out of 15000+600000
  564758 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,542b,447s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,542b,470s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -539,10 +552,10 @@ e/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive
 /2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
 2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texl
 ive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (5 pages, 227190 bytes).
+Output written on Notes.pdf (6 pages, 255585 bytes).
 PDF statistics:
- 180 PDF objects out of 1000 (max. 8388607)
- 133 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
- 70 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 252 PDF objects out of 1000 (max. 8388607)
+ 175 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
+ 83 words of extra memory for PDF output out of 10000 (max. 10000000)
 
