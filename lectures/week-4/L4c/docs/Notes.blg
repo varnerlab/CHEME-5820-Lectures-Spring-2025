@@ -2,13 +2,8 @@ This is BibTeX, Version 0.99d (TeX Live 2024)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Notes.aux
 The style file: plos2015.bst
-I couldn't open database file References-L3a.bib
----line 9 of file Notes.aux
- : \bibdata{References-L3a.bib
- :                            }
-I'm skipping whatever remains of this command
 I found no \citation commands---while reading file Notes.aux
-I found no database files---while reading file Notes.aux
+Database file #1: References-L4a.bib
 Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
 Reallocated global_strs (elt_size=200001) to 20 items from 10.
 Reallocated glb_str_end (elt_size=4) to 20 items from 10.
@@ -54,4 +49,4 @@ warning$ -- 0
 while$ -- 0
 width$ -- 0
 write$ -- 2
-(There were 3 error messages)
+(There was 1 error message)
