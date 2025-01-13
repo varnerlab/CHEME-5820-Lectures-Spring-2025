@@ -1,0 +1,100 @@
+\documentclass{article}[12pt]
+\usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
+%\usepackage{epstopdf}
+%\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage{amsthm, comment}
+\usepackage[round,comma,sort, numbers]{natbib}
+
+% \bibliographystyle{plain}
+\bibliographystyle{plos2015}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{defn}{Definition}
+\newtheorem{ex}{Example}
+\usepackage{float}
+
+\newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{algorithmicx}
+\usepackage{algorithm} %http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+\usepackage{enumitem}
+\usepackage{simplemargins}
+\usepackage{hyperref}
+
+\renewcommand{\bibnumfmt}[1]{#1.}
+\setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
+\setallmargins{1in}
+\linespread{1.1}
+
+
+\def\R{\mathbb{R}}
+\def\Eps{\mathcal{E}}
+\def\E{\mathbb{E}}
+\def\V{\mathbb{V}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\H{\mathcal{H}}
+\def\S{\mathcal{S}}
+\def\P{\mathbb{P}}
+\def\1{\mathbf{1}}
+\def\n{\nappa}
+\def\h{\mathbf{w}}
+\def\v{\mathbf{v}}
+\def\x{\mathbf{x}}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\eps{\epsilon}
+\def\y{\mathbf{y}}
+\def\e{\mathbf{e}}
+\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   % \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \setlength{\headsep}{10mm}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf CHEME 5820: Machine Learning for Engineers
+   \hfill Spring 2025} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+
+   \noindent{\bf Disclaimer}: {\it These notes have not been subjected to the
+   usual scrutiny reserved for formal publications. }
+   \vspace*{4mm}
+}
+
+
+\begin{document}
+\lecture{4a}{k-Nearest Neighbor (kNN) Classification}{Jeffrey Varner}{}
+
+\section{Introduction}
+In this lecture, we'll explore the k-Nearest Neighbor (kNN) Classification method.
+The k-Nearest Neighbor (kNN) Classification method is a simple, yet powerful, non-parametric method for classification. 
+
+
+
+
+\bibliography{References-L4a.bib}
+
+\end{document}
