@@ -23,6 +23,7 @@ using LinearAlgebra
 using Distances
 using JLD2
 using PrettyTables
+using Clustering
 
 # load my own packages
 include(joinpath(_PATH_TO_SRC, "Types.jl"));

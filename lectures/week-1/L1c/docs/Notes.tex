@@ -100,7 +100,6 @@ Unsupervised learning is particularly useful when dealing with large volumes of 
 Clustering algorithms aim to group data points that are more similar to each other than to those in other clusters.}
 \item{\textbf{K-means clustering} is a popular and straightforward clustering algorithm that partitions a dataset into $k$ clusters. 
 The algorithm iteratively assigns data points to the nearest cluster center and updates the cluster centers based on the mean of the assigned points.}
-\item{\textbf{Self-organizing maps (SOMs)} are another type of unsupervised learning algorithm that uses a neural network to map high-dimensional data onto a lower-dimensional grid.}
 \end{itemize}
 
 \section{K-means clustering}
@@ -140,41 +139,17 @@ Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
    \end{algorithmic}
 \end{algorithm}
 
+\section{Estimating the number of clusters}
+The k-means algorithm is simple and intuitive, but it has some limitations.
+One of the main drawbacks of k-means is that it requires the number of clusters $K$ to be specified in advance, which can be challenging when the number of clusters is unknown.
+There are several methods to estimate the number of clusters, including the \href{https://en.wikipedia.org/wiki/Elbow_method_(clustering)}{elbow method}, 
+the \href{https://en.wikipedia.org/wiki/Silhouette_(clustering)}{silhouette method}, or performance metrics 
+such as the \href{https://en.wikipedia.org/wiki/Davies%E2%80%93Bouldin_index}{Davies-Bouldin index}, the \href{https://en.wikipedia.org/wiki/Dunn_index}{Dunn index}
+or the \href{https://en.wikipedia.org/wiki/Calinski%E2%80%93Harabasz_index}{Calinski-Harabasz index}.
 
-\section{Self-organizing maps (SOMs)}
-Self-organizing maps (SOMs), originally developed by Kohonen \citep{Kohonen:1982aa}, are another type of unsupervised learning algorithm that uses a graph-like structure to map high-dimensional data onto a lower-dimensional grid.
-In the literature, you may also see these referred to as Kohonen maps or topographic maps, or described as a type of artificial neural network
-(although they are distinct, and much different in several important ways from traditional neural networks).
-SOMs can be used for clustering, visualization, and dimensionality reduction. 
-They differ from traditional neural networks in that they use a \texttt{competitive learning} approach 
-to map input data to a lower-dimensional grid.
-
-A self-organizing map consists of a rectangular (or potentially hexagonal) grid of nodes organized in a two-dimensional lattice. 
-Each node is associated with a weight vector $\mathbf{w}_{j}\in\mathbb{R}^{n}$ which has the same dimension as the input data $\mathbf{x}\in\mathbb{R}^{n}$.
-The training of SOMs, which determines the weight vector $\mathbf{w}$, involves two main phases: competition and cooperation.
-\begin{itemize}[leftmargin=16pt]
-   \item{\textbf{Phase I: Competition}: For each input vector, the node with the weight vector most similar to the input (usually determined by Euclidean distance $||\cdot||_{2}$) is identified as the Best Matching Unit (BMU). 
-   This process encourages nodes to compete for representing specific regions of the input space.}
-   \item{\textbf{Phase II: Cooperation}: Once the BMU is identified, the weights of the neighboring nodes are updated to become more like the input vector. 
-   This is done using a neighborhood function $h:\mathbb{R}\rightarrow\mathbb{R}$ that defines how much influence the BMU 
-   has on its neighbors based on their distance from it on the grid.}
-\end{itemize}
-The weights of the BMU and its neighbors are adjusted at iteration $t$ according to the following expression:
-\begin{equation}
-   w_{ij}(t+1) = w_{ij}(t) + \alpha(t)h_{ij}(t)(x_i - w_{ij}(t))
-\end{equation}
-where $w_{ij}(t)$ is the weight of the node at position $(i,j)$ at iteration $t$, 
-$\alpha(t)$ is the learning rate at iteration $t$, 
-$h_{ij}(t)$ is the neighborhood function at iteration $t$, and $\mathbf{x}_i$ is the input vector.
-The neighborhood function $h_{ij}(t)$ is typically a Gaussian function that decreases with the distance from the BMU, i.e., something like:
-\begin{equation}
-   h_{ij}(t) = \exp\left(-\frac{d_{ij}^2}{2\sigma^2(t)}\right)
-\end{equation}
-where $d_{ij}$ is the distance between the BMU and the node at position $(i,j)$, and $\sigma(t)$ is the neighborhood radius at iteration $t$.
-The learning rate $\alpha(t)$ and the neighborhood radius $\sigma(t)$ are typically annealed over time to allow the network to converge to a stable state.
-
-
-
+\subsection{Calinski-Harabasz index}
+The \href{https://en.wikipedia.org/wiki/Calinski%E2%80%93Harabasz_index}{Calinski–Harabasz index (CHI)}, also known as the Variance Ratio Criterion, 
+is a widely used metric for assessing the quality of clustering algorithms.
 
 
 
@@ -182,8 +157,7 @@ The learning rate $\alpha(t)$ and the neighborhood radius $\sigma(t)$ are typica
 In this lecture, we introduced the concept of unsupervised learning and discussed two common unsupervised learning algorithms: k-means clustering and self-organizing maps.
 Unsupervised learning is a type of machine learning that involves training algorithms on \textit{unlabeled data} to identify patterns and structures within data without explicit guidance.
 Clustering is a common unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points.
-We explored two clustering algorithms: k-means clustering, which partitions a dataset into $k$ clusters, and self-organizing maps, which use a neural (like) network to map high-dimensional data onto a lower-dimensional grid.
-These algorithms can be used to uncover hidden structures in data, visualize complex datasets, and identify patterns that may not be immediately apparent.
+We explored k-means clustering, which partitions a dataset into $k$ clusters and identify patterns that may not be immediately apparent.
 
 \bibliography{References-L1c.bib}
 
