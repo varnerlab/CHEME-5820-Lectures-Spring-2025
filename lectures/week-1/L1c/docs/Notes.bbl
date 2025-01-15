@@ -6,4 +6,10 @@ Lloyd S.
 \newblock IEEE Transactions on Information Theory. 1982;28(2):129--137.
 \newblock doi:{10.1109/TIT.1982.1056489}.
 
+\bibitem{Caliski01011974}
+{T  Cali{\'n}ski and J Harabasz}.
+\newblock {A dendrite method for cluster analysis}.
+\newblock {Communications in Statistics}. 1974;3(1):1--27.
+\newblock doi:{10.1080/03610927408827101}.
+
 \end{thebibliography}
