@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  15 JAN 2025 12:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  15 JAN 2025 17:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -602,7 +602,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 140.
+put line 143.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
@@ -624,8 +624,8 @@ Package rerunfilecheck Info: File `Notes.out' has not changed.
 (rerunfilecheck)             Checksum: 9C63BB94EC32D1E4AEDF597975458CC9;1093.
  ) 
 Here is how much of TeX's memory you used:
- 12971 strings out of 474116
- 202910 string characters out of 5743682
+ 12972 strings out of 474116
+ 202922 string characters out of 5743682
  1942187 words of memory out of 5000000
  35099 multiletter control sequences out of 15000+600000
  563761 words of font info for 60 fonts, out of 8000000 for 9000
@@ -648,10 +648,10 @@ ve/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive
 2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2
 024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texli
 ve/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (4 pages, 203284 bytes).
+Output written on Notes.pdf (4 pages, 206572 bytes).
 PDF statistics:
- 165 PDF objects out of 1000 (max. 8388607)
- 123 compressed objects within 2 object streams
- 22 named destinations out of 1000 (max. 500000)
+ 166 PDF objects out of 1000 (max. 8388607)
+ 124 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
  57 words of extra memory for PDF output out of 10000 (max. 10000000)
 

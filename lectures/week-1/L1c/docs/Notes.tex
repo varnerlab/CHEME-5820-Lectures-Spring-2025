@@ -91,10 +91,10 @@
 
 
 \begin{document}
-\lecture{1c}{Unsupervised learning and clustering}{Jeffrey Varner}{}
+\lecture{1c}{Unsupervised learning and K-means clustering}{Jeffrey Varner}{}
 
 \begin{mdframed}[backgroundcolor=lgray]
-   \subsection*{Lecture Summary}
+   \subsection*{Topics}
    \begin{itemize}[leftmargin=16pt]
       \item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. The goal of unsupervised learning is to identify patterns and structures in data without explicit guidance. 
          Unsupervised learning is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.}
@@ -131,10 +131,13 @@ Suppose we have a dataset $\mathcal{D} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \
 The goal of the k-means algorithm is to partition the dataset into $K$ clusters, $\mathcal{C} = \left\{c_{1},c_{2},\dots, c_{K}\right\}$, 
 where each cluster $c_{j}$ is represented by a centroid $\mu_j\in\mathbb{R}^{m}$. To enforce that $\mathcal{C}$ is a valid partition of $\mathcal{D}$, we require that each data point $\mathbf{x}_i$ is assigned to exactly one cluster $c_{j}$, i.e., $c_{i}\cap c_{j} = \emptyset$ for $i\neq j$ (no shared members).
 In addition, the union of all clusters covers the entire dataset, i.e., $\cup_{j=1}^{K}c_{j} = \mathcal{D}$.
-
-
-Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
-
+The problem of k-means clustering can be formulated as an optimization problem, where the objective is to minimize the sum of squared distances between each data point and its assigned cluster centroid:
+\begin{equation}
+\min_{\mathcal{C}} \sum_{j=1}^{K}\sum_{\mathbf{x}\in c_{j}}\norm{\mathbf{x} - \mu_{j}}_{2}^{2}
+\end{equation}
+where $\norm{\star}_{2}^{2}$ denotes the squared Euclidean distance between two vectors (in this case a feature vecrtor and the cluster centroid). 
+The K-means algorithm aims to find the optimal cluster assignments $\mathcal{C}$ and cluster centroids $\mu$ that minimize this objective function.
+Puesdo code for k-means (Lloyd's algorithm) is shown in Algorithm \ref{alg:kmeans}.
 \begin{algorithm}[H]
    \begin{algorithmic}
    \caption{Unsupervised naive k-means clustering (Lloyd's algorithm)}\label{alg:kmeans}
@@ -157,6 +160,8 @@ Puesdo code for the k-means algorithm is shown in Algorithm \ref{alg:kmeans}.
    \EndWhile
    \end{algorithmic}
 \end{algorithm}
+The time cost of Lloyd’s algorithm is $\mathcal{O}(nmk)$, where $n$ is the number of feature vectors, $m$ is the number of dimensions of each feature vector,
+and $k$ is the number of clusters.
 
 \section{Estimating the number of clusters}
 The K-means algorithm is simple and intuitive, but it has some limitations.
