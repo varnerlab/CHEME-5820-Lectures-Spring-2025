@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  16 JAN 2025 10:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  16 JAN 2025 14:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -530,24 +530,24 @@ Package zref Info: New property: mdf@pagevalue on input line 895.
 (./Notes.aux)
 \openout1 = `Notes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 93.
-LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
 
 (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -571,7 +571,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 93.
+Package hyperref Info: Link coloring OFF on input line 103.
 
 (./Notes.out) (./Notes.out)
 \@outlinefile=\write4
@@ -579,20 +579,20 @@ Package hyperref Info: Link coloring OFF on input line 93.
 
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 96.
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 12
+(mdframed)              on input line 106.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 13
 1.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 121
+LaTeX Font Info:    Trying to load font information for U+msa on input line 131
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 121
+LaTeX Font Info:    Trying to load font information for U+msb on input line 131
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -605,438 +605,15 @@ Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
 [2]
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 202.
-
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
 [3]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 252.
+(mdframed)              on input line 256.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 255.
-
-Overfull \vbox (79.49113pt too high) detected at line 272
- []
-
-Package mdframed Info: Box was splittet wrong
- starting loop to iterate the splitting point
-(mdframed)              on input line 272.
-
-Overfull \vbox (80.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (81.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (82.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (83.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (84.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (85.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (86.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (87.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (88.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (89.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (90.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (91.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (92.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (93.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (94.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (95.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (96.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (97.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (98.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (99.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (100.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (101.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (102.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (103.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (104.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (105.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (106.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (107.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (108.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (109.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (110.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (111.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (112.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (113.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (114.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (115.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (116.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (117.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (118.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (119.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (120.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (121.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (122.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (123.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (124.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (125.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (126.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (127.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (128.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (129.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (130.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (131.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (132.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (133.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (134.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (135.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (136.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (137.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (138.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (139.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (140.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (141.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (142.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (143.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (144.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (145.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (146.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (147.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (148.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (149.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (150.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (151.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (152.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (153.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (154.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (155.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (156.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (157.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (158.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (159.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (160.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (161.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (162.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (163.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (164.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (165.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (166.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (167.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (168.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (169.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (170.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (171.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (172.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (173.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (174.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (175.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (176.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (177.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (178.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (179.49113pt too high) detected at line 272
- []
-
-
-Overfull \vbox (180.49113pt too high) detected at line 272
- []
-
-
-Package mdframed Warning: correct box splittet fails
- It seems you are using a non splittable contents
-(mdframed)                 on input line 272.
-
-Package mdframed Info: You first box width is to small
- mdframed fixed it
-(mdframed)              on input line 272.
+put line 288.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
@@ -1046,14 +623,18 @@ Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
 [5]
+Overfull \vbox (6.94444pt too high) has occurred while \output is active []
+
+
+[6]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 328.
+(mdframed)              on input line 406.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[6] (./Notes.bbl
+[7] (./Notes.bbl
 Underfull \hbox (badness 1776) in paragraph at lines 11--15
 []\OT1/cmr/m/n/10 Francis JGF.  The QR Transformation---Part 2.  The Com-puter 
 Jour-nal. 1962;4(4):332--345.
@@ -1063,7 +644,7 @@ Jour-nal. 1962;4(4):332--345.
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[7] (./Notes.aux)
+[8] (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1072,33 +653,35 @@ Package rerunfilecheck Info: File `Notes.out' has not changed.
 (rerunfilecheck)             Checksum: 2B08BAF5DDFA79ABC1146C041829A510;1570.
  ) 
 Here is how much of TeX's memory you used:
- 12987 strings out of 474116
- 203156 string characters out of 5743682
- 1943187 words of memory out of 5000000
- 35099 multiletter control sequences out of 15000+600000
+ 13008 strings out of 474116
+ 203503 string characters out of 5743682
+ 1942187 words of memory out of 5000000
+ 35114 multiletter control sequences out of 15000+600000
  563724 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 79i,7n,93p,542b,584s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,14n,93p,542b,459s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
-r/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
-local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
-cal/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/tex
-live/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texl
-ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texliv
-e/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive
-/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/
-2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texl
-ive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (7 pages, 217351 bytes).
+usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></us
+r/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/
+local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
+cal/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loca
+l/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/t
+exlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
+ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
+/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texlive/
+2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2
+024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/202
+4/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2024
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/
+texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
+024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on Notes.pdf (8 pages, 240184 bytes).
 PDF statistics:
- 207 PDF objects out of 1000 (max. 8388607)
- 164 compressed objects within 2 object streams
- 38 named destinations out of 1000 (max. 500000)
+ 229 PDF objects out of 1000 (max. 8388607)
+ 181 compressed objects within 2 object streams
+ 44 named destinations out of 1000 (max. 500000)
  73 words of extra memory for PDF output out of 10000 (max. 10000000)
 

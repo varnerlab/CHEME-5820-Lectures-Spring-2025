@@ -38,6 +38,16 @@
 \setallmargins{1in}
 \linespread{1.1}
 
+\newcommand{\brows}[1]{%
+  \begin{bmatrix}
+  \begin{array}{@{\protect\rotvert\;}c@{\;\protect\rotvert}}
+  #1
+  \end{array}
+  \end{bmatrix}
+}
+\newcommand{\rotvert}{\rotatebox[origin=c]{90}{$\vert$}}
+\newcommand{\rowsvdots}{\multicolumn{1}{@{}c@{}}{\vdots}}
+
 
 \def\R{\mathbb{R}}
 \def\Eps{\mathcal{E}}
@@ -111,11 +121,11 @@ In this lecture, we will discuss the eigendecomposition of a matrix, and how it 
 in unsupervised machine learning. Eigendecomposition allows us to decompose a matrix into its constituent parts,
 the eigenvectors and eigenvalues, which can be used to understand the structure of the data or the system represented by the matrix.
 
-\begin{itemize}[leftmargin=16pt]
-   \item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
-   \item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
-   \item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
-\end{itemize}
+% \begin{itemize}[leftmargin=16pt]
+%    \item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
+%    \item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
+%    \item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
+% \end{itemize}
 
 \section{Eigendecomposition}
 Suppose we have a real square matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
@@ -171,6 +181,50 @@ i.e., factor the dataset $\D$ into its most important features. For example, if 
 we can use the eigendecomposition to reduce the dimensionality of the dataset $\D$ to $2$ or $3$ dimensions, which can be visualized.
 We can also use the eigendecomposition to find the most important features in the dataset, which can be used for clustering, classification, or other machine learning tasks.
 
+\subsubsection*{Data reduction}
+Data reduction is a common application of the eigendecomposition of a matrix. Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is a feature vector.
+We can use the eigendecomposition of the covariance matrix of the dataset to reduce the dimensionality of the dataset.
+Let $\mathbf{\Sigma}\in\mathbb{R}^{n\times{n}}$ be the covariance matrix of the dataset $\D$. 
+Then the equation $\mathbf{\Sigma}\cdot\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}$ gives us the eigenvectors and eigenvalues of the covariance matrix.
+Becuase the covariance matrix is symmetric, the eigenvectors are orthogonal, and the eigenvalues are real-valued.
+Further, we can normalize the eigenvectors to make them an orthonormal, 
+i.e., $\hat{\mathbf{v}}_{i} = \mathbf{v}_{i}/\norm{\mathbf{v}_{i}}_{2}$ where $\norm{\mathbf{v}_{i}}_{2}$ is the $l2$-norm (Euclidean length) of the eigenvector $\mathbf{v}_{i}$.
+
+Suppose we wanted to reduce the dimensionality of the feature vectors $\mathbf{x}\in\D$ from $m$ to $k$ dimensions, where $k<m$, 
+i.e., we want to transform $\mathbf{x}_{i}\rightarrow\mathbf{y}_{i}$ where $\mathbf{y}_{i}\in\mathbb{R}^{k}$. 
+We may want to do this for a variety of reasons, for example, to visualize the data in $2$ or $3$ dimensions, or to reduce the computational complexity of a machine learning algorithm.
+To make this possible, we suppose there exists a projection matrix $\mathbf{P}$ such that:
+\begin{equation}
+   \mathbf{y}_{i} = \mathbf{P}\mathbf{x}_{i}\quad{i=1,2,\dots,n}
+\end{equation}
+The projection matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transform vectors. The open question is 
+what are the best transform vectors to use? The answer is to use the eigenvectors of the covariance matrix $\mathbf{\Sigma}$.
+We are going to put off discussing why this is the case until we discuss the \emph{Principal Component Analysis} (PCA) algorithm.
+However, of we build our transformation matrix using the eigenvectors gives the reduced feature vector corresponding to $x\in\D$ is given by:
+\begin{equation}
+   \begin{pmatrix}
+      y_{1} \\
+      y_{2} \\
+      \vdots \\
+      y_{k}
+   \end{pmatrix} = \brows{\hat{\mathbf{v}}_1^T \\ \hat{\mathbf{v}}_2^T \\ \rowsvdots \\ \hat{\mathbf{v}}_k^T}
+   \cdot
+   \begin{pmatrix}
+      x_{1} \\
+      x_{2} \\
+      \vdots \\
+      x_{m}
+   \end{pmatrix}
+\end{equation}
+where $\hat{\mathbf{v}}_{\star}^{T}$ denotes the transpose of the scaled eigenvector $\hat{\mathbf{v}}_{\star}$ of the covariance matrix $\mathbf{\Sigma}$.
+Thus, each component of the reduced vector $\mathbf{y}$ corresponding to $\mathbf{x}\in\D$ is given by:
+\begin{equation}
+   y_{j} = \hat{\mathbf{v}}_{j}^{T}\cdot\mathbf{x}\quad{j=1,2,\dots,k}
+\end{equation}
+
+
+
+
 
 
 
@@ -199,6 +253,7 @@ is an iterative algorithm to compute the largest eigenvalue and its correspondin
 but this approach can also be used for matrices with complex entries. 
 
 \begin{mdframed}
+The power iteration method consists of two phases:
 \begin{itemize}[leftmargin=16pt]
 \item{\textbf{Phase 1: Eigenvector}: Suppose we have a real-valued square diagonalizable matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ whose eigenvalues have the property $|\lambda_{1}|\geq|\lambda_{2}|\dots\geq|\lambda_{m}|$. 
    Then, the eigenvector $\mathbf{v}_{1}\in\mathbb{C}^{m}$ which corresponds to the largest eigenvalue $\lambda_{1}\in\mathbb{C}$ can be (iteratively) estimated as:
@@ -222,7 +277,32 @@ where $\left<\star,\star\right>$ denotes \href{https://mathworld.wolfram.com/Inn
 While simple to implement, the \href{https://en.wikipedia.org/wiki/Power_iteration}{power iteration method} may exhibit slow convergence, mainly when the largest eigenvalue is close in magnitude to other eigenvalues, i.e., $|\lambda_{1}|/|\lambda_{2}| \sim 1$.
 \end{itemize}
 \end{mdframed}
+The power iteration method has several notable applications, particularly in the fields of machine learning and graph theory.
+Arguablbly the most famous application is the \href{https://en.wikipedia.org/wiki/PageRank}{Google PageRank algorithm}.
+Google's PageRank algorithm, which uses power iteration, utilizes the dominant eigenvalue and its corresponding eigenvector to assess the importance of web pages within a network.
+Specifically, the algorithm constructs a link matrix that represents the connections between pages, where the dominant eigenvector associated with the maximum eigenvalue 
+reflects the relative importance of each page, with its entries normalized to sum to 1, thus providing a ranking of pages based on their likelihood of being visited over time.
+Pusedo code for the power iteration method is shown in Algorithm \ref{alg:power_iteration}.
 
+\begin{algorithm}[H]
+   \caption{Power Iteration Method}\label{alg:power_iteration}
+   \begin{algorithmic}[1]
+   \State{\textbf{Input}: Matrix $A \in \mathbb{R}^{n \times n}$, initial vector $x_0 \in \mathbb{R}^n$, tolerance $\epsilon$, maximum iterations $N$}
+   % \ Approximation of the dominant eigenvalue $\lambda$ and eigenvector $v$
+   
+   \State Normalize the initial vector: $x_0 \leftarrow \frac{x_0}{\|x_0\|}$
+   \For{$k = 1, 2, \dots, N$}
+       \State Compute the matrix-vector product: $y_k \leftarrow A x_{k-1}$
+       \State Normalize the resulting vector: $x_k \leftarrow \frac{y_k}{\|y_k\|}$
+       \State Compute the Rayleigh quotient: $\lambda_k \leftarrow x_k^\top A x_k$
+       \If{$\|x_k - x_{k-1}\| < \epsilon$}
+           \State \textbf{break}
+       \EndIf
+   \EndFor
+   \State Set $v \leftarrow x_k$ and $\lambda \leftarrow \lambda_k$
+   \Return $\lambda$, $v$
+   \end{algorithmic}
+\end{algorithm}
 
 \subsection{QR decomposition}
 The QR algorithm relies on the QR decomposition of a matrix, which is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix.
@@ -249,7 +329,6 @@ of $\mathbf{R}$ is made simple by exploiting the orthogonality of $\mathbf{Q}$, 
 \mathbf{R}=\mathbf{Q}^{T}\mathbf{A}
 \end{equation}
 The computation of the QR decomposition using the Gram-Schmidt orthogonalization procedure is shown in Algorithm \ref{alg:gschmidt}.
-\begin{mdframed}[backgroundcolor=lsalmon]
 \begin{algorithm}[H]
    \begin{algorithmic}[1]
    \caption{QR decomposition using Classical Gram-Schmidt Orthogonalization}\label{alg:gschmidt}
@@ -269,7 +348,6 @@ The computation of the QR decomposition using the Gram-Schmidt orthogonalization
    \State{$\mathbf{R}\gets\mathbf{Q}^{T}\mathbf{A}$}
    \end{algorithmic}
 \end{algorithm}
-\end{mdframed}
 The cost of the Gram-Schmidt orthogonalization procedure is $\mathcal{O}(nm^{2})$ floating point operations (flops) for an $n\times{m}$ matrix $\mathbf{A}$ \cite{golub13}.
 However, in practice, the Gram-Schmidt orthogonalization procedure as shown \emph{will often fail to generate mutually orthogonal vectors} because of rounding errors; we will address
 this issue subsequently when we discuss the \emph{Modified Gram-Schmidt Orthogonalization} 
