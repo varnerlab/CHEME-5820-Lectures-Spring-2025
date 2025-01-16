@@ -92,9 +92,8 @@
 
 \begin{document}
 \lecture{1c}{Unsupervised learning and K-means clustering}{Jeffrey Varner}{}
-
 \begin{mdframed}[backgroundcolor=lgray]
-   \subsection*{Topics}
+   \section*{Topics}
    \begin{itemize}[leftmargin=16pt]
       \item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. The goal of unsupervised learning is to identify patterns and structures in data without explicit guidance. 
          Unsupervised learning is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.}
@@ -105,13 +104,16 @@
    \end{itemize}
 \end{mdframed}
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 This lecture introduces the first of several unsupervised learning approaches we will explore: K-means clustering. 
 Unsupervised learning is a branch of machine learning focused on the discovery of hidden patterns and insights from unlabeled data without explicit human guidance. 
 Unlike supervised learning, which relies on labeled datasets, unsupervised learning models are given raw, unstructured information and tasked with identifying inherent structures, 
 relationships, and similarities within the data. This approach is particularly valuable for exploratory data analysis, clustering similar data points, and uncovering previously unknown trends in datasets. 
 The K-means clustering algorithm can be used to identify hidden patterns and structures in data without explicit guidance, or labels.
 Thus, it is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.
+In Chemical and Biomolecular Engineering, K-means clustering can be used to group similar molecules based on their chemical properties \citep{Hadipour:2022aa},
+identify patterns in gene expression data \citep{Hruschka2007, Wu:2008aa}, or segment customers based on purchasing behavior \citep{Shaikh2024}.
+Thus, there are many applications of K-means clustering in chemical engineering, bioengineering, and related fields.
 
 \section{K-means clustering}
 The K-means algorithm, originally developed by Lloyd in the 1950s but not published until much later in 1982 \citep{Lloyd-1982}, is an example of \texttt{unsupervised learning}. 
