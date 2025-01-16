@@ -38,8 +38,6 @@
 \setallmargins{1in}
 \linespread{1.1}
 
-
-
 \def\R{\mathbb{R}}
 \def\Eps{\mathcal{E}}
 \def\E{\mathbb{E}}
@@ -89,10 +87,23 @@
    \vspace*{4mm}
 }
 
+% \mdfdefinestyle{MyFrameStyle}{%
+%     linecolor=black,
+%     outerlinewidth=2pt,
+%     roundcorner=20pt,
+%     innertopmargin=-1pt,
+%     innerbottommargin=4pt,
+%     innerrightmargin=4pt,
+%     innerleftmargin=4pt,
+%         leftmargin = 4pt,
+%         rightmargin = 4pt
+%     %backgroundcolor=gray!50!white}
+% }
+
 
 \begin{document}
 \lecture{1c}{Unsupervised learning and K-means clustering}{Jeffrey Varner}{}
-\begin{mdframed}[backgroundcolor=lgray]
+\begin{mdframed}[backgroundcolor=lgray, innertopmargin=0pt, outerlinewidth=0pt, roundcorner=20pt, innerbottommargin=4pt]
    \section*{Topics}
    \begin{itemize}[leftmargin=16pt]
       \item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. The goal of unsupervised learning is to identify patterns and structures in data without explicit guidance. 

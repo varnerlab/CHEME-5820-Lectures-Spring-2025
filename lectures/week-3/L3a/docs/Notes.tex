@@ -88,20 +88,25 @@
 \begin{document}
 \lecture{3a}{Linear Regression, Perceptron and Binary Classification}{Jeffrey Varner}{}
 
+\begin{mdframed}[backgroundcolor=lgray]
+    \section*{Topics}
+    \begin{itemize}[leftmargin=16pt]
+        \item{\textbf{Linear regression models}: A class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continuous or discrete input features. 
+        Linear regression models assume that the output variable is a linear combination of the input features.}
+        \item{\textbf{Binary classification}: The problem of classifying data points into one of two classes. Binary classification is a type of supervised machine learning task that involves categorizing data points into one of two distinct classes based on their features.
+        These features can be continuous or discrete, and the classes can be represented as binary labels, e.g., $\{-1,1\}$ or $\{0,1\}$.}
+        \item{\textbf{Perceptron}: The perceptron algorithm for binary classification problems is a linear classifier that separates two classes of data points. The perceptron algorithm is an iterative algorithm that incrementally updates the weights of the linear classifier to minimize the classification error.
+        The perceptron algorithm is guaranteed to converge to a solution with no mistakes in a finite number of iterations if the data set is linearly separable. However, if the data set is not linearly separable, the perceptron algorithm will not converge to a perfect solution, but rather to a solution with some classification errors.}
+    \end{itemize}
+ \end{mdframed}
+
 \section{Introduction}
 In this lecture, we will introduce the perceptron algorithm for binary classification problems. 
 The perceptron is a simple linear classifier that can be used to separate two classes of data points. 
 The perceptron algorithm is a simple iterative algorithm that incrementally updates the weights of the linear classifier to minimize the classification error. 
 We will first introduce the perceptron algorithm and then discuss its convergence properties, i.e., when the algorithm converges to a solution and when it does not.
 The key concepts covered in this lecture include:
-\begin{itemize}[leftmargin=16pt]
-    \item{\textbf{Linear regression models}: A class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continuous or discrete input features. 
-    Linear regression models assume that the output variable is a linear combination of the input features.}
-    \item{\textbf{Binary classification}: The problem of classifying data points into one of two classes. Binary classification is a type of supervised machine learning task that involves categorizing data points into one of two distinct classes based on their features.
-    These features can be continuous or discrete, and the classes can be represented as binary labels, e.g., $\{-1,1\}$ or $\{0,1\}$.}
-    \item{\textbf{Perceptron}: The perceptron algorithm for binary classification problems is a linear classifier that separates two classes of data points. The perceptron algorithm is an iterative algorithm that incrementally updates the weights of the linear classifier to minimize the classification error.
-    The perceptron algorithm is guaranteed to converge to a solution with no mistakes in a finite number of iterations if the data set is linearly separable. However, if the data set is not linearly separable, the perceptron algorithm will not converge to a perfect solution, but rather to a solution with some classification errors.}
-\end{itemize}
+
 
 \section{Linear Regression Models}
 Linear regression models are a class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continous or discrete input features.

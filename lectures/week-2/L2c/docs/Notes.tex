@@ -1,12 +1,14 @@
- \documentclass{article}[12pt]
+\documentclass{article}[11pt]
 \usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
 %\usepackage{epstopdf}
 %\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
 \usepackage{amssymb} %maths
 \usepackage{amsmath} %maths
 \usepackage{amsthm, comment}
+\usepackage[round,comma,sort,numbers]{natbib}
 
-\bibliographystyle{plain}
+% \bibliographystyle{plain}
+\bibliographystyle{plos2015}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{prop}{Proposition}
@@ -17,15 +19,24 @@
 \usepackage{float}
 
 \newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
-
-\usepackage{hyperref}
-\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{algorithmicx}
 \usepackage{algorithm} %http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+\usepackage{enumitem}
+\usepackage{simplemargins}
+\usepackage{hyperref}
+
+\usepackage{mdframed}
+\definecolor{lgray}{rgb}{0.92,0.92,0.92}
+\definecolor{lsalmon}{rgb}{1.0,0.63,0.48}
+
+\renewcommand{\bibnumfmt}[1]{#1.}
+\setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
+\setallmargins{1in}
+\linespread{1.1}
 
 
 \def\R{\mathbb{R}}
@@ -100,9 +111,7 @@ The outer product $\hat{\mathbf{A}}_{i} = \mathbf{u}_{i}\otimes\mathbf{v}_{i}$ i
 \hat{a}_{jk} = u_{j}v_{k}\qquad{j=1,2,\dots,n~\text{and}~k=1,2,\dots,m}
 \end{equation*}
 The vectors $\mathbf{u}_{i}$ and $\mathbf{v}_{i}$ are the left (right) singular vectors, 
-and $\sigma_{i}$ are the singular values (ordered). 
-
-Singular value decomposuition is a special sort of eigendecomposition, thus, we could use QR-itereation to compute the SVD.
+and $\sigma_{i}$ are the singular values (ordered). Singular value decomposuition is a special sort of eigendecomposition, thus, we could use QR-itereation to compute the SVD.
 The columns of $\mathbf{U}$ are eigenvectors of $\mathbf{A}\mathbf{A}^{T}$, 
 the columns of $\mathbf{V}$ are eigenvectors of $\mathbf{A}^{T}\mathbf{A}$ and
 the singular values $\sigma_{i}$ are the square roots of the eigenvalues of the matrix products $\mathbf{A}\mathbf{A}^{T}$ or $\mathbf{A}^{T}\mathbf{A}$. 

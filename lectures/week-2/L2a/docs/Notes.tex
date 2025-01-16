@@ -1,12 +1,14 @@
- \documentclass{article}[12pt]
+\documentclass{article}[11pt]
 \usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
 %\usepackage{epstopdf}
 %\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
 \usepackage{amssymb} %maths
 \usepackage{amsmath} %maths
 \usepackage{amsthm, comment}
+\usepackage[round,comma,sort,numbers]{natbib}
 
-\bibliographystyle{plain}
+% \bibliographystyle{plain}
+\bibliographystyle{plos2015}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{prop}{Proposition}
@@ -17,15 +19,24 @@
 \usepackage{float}
 
 \newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
-
-\usepackage{hyperref}
-\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{algorithmicx}
 \usepackage{algorithm} %http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+\usepackage{enumitem}
+\usepackage{simplemargins}
+\usepackage{hyperref}
+
+\usepackage{mdframed}
+\definecolor{lgray}{rgb}{0.92,0.92,0.92}
+\definecolor{lsalmon}{rgb}{1.0,0.63,0.48}
+
+\renewcommand{\bibnumfmt}[1]{#1.}
+\setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
+\setallmargins{1in}
+\linespread{1.1}
 
 
 \def\R{\mathbb{R}}
@@ -81,28 +92,77 @@
 \begin{document}
 \lecture{2a}{Eigendecomposition of Data and Systems}{Jeffrey Varner}{}
 
+\begin{mdframed}[backgroundcolor=lgray]
+   \section*{Topics}
+   \begin{itemize}[leftmargin=16pt]
+      \item{\textbf{Eigendecomposition} is a fundamental concept in linear algebra that decomposes a matrix into its constituent parts, the eigenvectors and eigenvalues. 
+         Eigendecomposition is widely used in many areas of mathematics, engineering, and physics to analyze data and systems.}
+      \item{\textbf{QR decomposition} is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix. 
+         The QR decomposition is useful for solving linear systems of equations, and for computing the eigenvalues and eigenvectors of a matrix (using the QR iteration algorithm), among other applications.}
+      \item{\textbf{Gram-Schmidt orthogonalization} is a procedure that generates a set of mutually orthogonal vectors starting from a set of linearly independent vectors. 
+         The Gram-Schmidt orthogonalization procedure is used to compute the QR decomposition of a matrix.}
+   \end{itemize}
+\end{mdframed}
+
 \section{Introduction}
 The eigendecomposition of a matrix is a fundamental concept in linear algebra. 
 In this lecture, we will discuss the eigendecomposition of a matrix, and how it can be used to analyze data and systems 
 in unsupervised machine learning. Eigendecomposition allows us to decompose a matrix into its constituent parts,
 the eigenvectors and eigenvalues, which can be used to understand the structure of the data or the system represented by the matrix.
 
-\subsection*{What is eigendecomposition?}
+\begin{itemize}[leftmargin=16pt]
+   \item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
+   \item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
+   \item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
+\end{itemize}
+
+\section{Eigendecomposition}
 Suppose we have a real square matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
-vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or a incedence array in a graph, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
+vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or an adjacency array in a graph with $m$ nodes, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
 \href{https://mathworld.wolfram.com/Eigenvalue.html}{eigenvalues} and a set of linearly independent vectors 
 $\left\{\mathbf{v}_{1},\dots,\mathbf{v}_{m}\right\}$ called \href{https://mathworld.wolfram.com/Eigenvector.html}{eigenvectors} such that:
 \begin{equation}
-\mathbf{A}\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
+\mathbf{A}\cdot\mathbf{v}_{j} = \lambda_{j}\cdot\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
 \end{equation}
-where $\mathbf{v}\in\mathbb{R}^{m}$ and $\lambda\in\mathbb{R}$ \footnote{We've shown $\mathbf{A}$ and the eigenvectors and eigenvalues as real-valued, but they could also be complex-valued.}.
-When transformed by a matrix, eigenvectors do not change their direction; a corresponding eigenvalue merely scales them. This means that for a given linear transformation represented by a matrix $\mathbf{A}$, eigenvectors are the only vectors that do not change direction during the transformation. Instead, they are only scaled by a factor $\lambda$ called the eigenvalue. Thus, eigenvectors are the building blocks of a matrix, and the eigenvalues represent the scaling factor of the eigenvectors.
-They represent the most critical directions in the data or the system, and the eigenvalues represent the importance of these directions. Eigenvalues and eigenvectors are widely used in many areas of mathematics, engineering, and physics:
-\begin{itemize}
-\item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
-\item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
-\item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
-\end{itemize}
+where $\mathbf{v}\in\mathbb{C}^{m}$ and $\lambda\in\mathbb{C}$. We can put the eigenvalues and eigenvectors together in matrix-vector form, which gives us an interesting matrix decomposition:
+\begin{equation}
+\mathbf{A} = \mathbf{V}\cdot\text{diag}(\lambda)\cdot\mathbf{V}^{-1}
+\end{equation}
+where $\mathbf{V}$ denotes the matrix of eigenvectors, where the eigenvectors form the columns of the matrix $\mathbf{V}$, $\text{diag}(\lambda)$ denotes a diagonal matrix with the eigenvalues along the main diagonal, 
+and $\mathbf{V}^{-1}$ denotes the inverse of the eigenvalue matrix.
+The eigendecomposition of a matrix is a powerful tool that can be used to analyze data and systems in many areas of mathematics, engineering, and physics.
+
+\subsection{Interpretation of Eigendecomposition}
+Eigenvectors represent fundamental directions of the matrix $\mathbf{A}$. For the linear transformation defined by a matrix $\mathbf{A}$, eigenvectors are the only vectors that do not change direction during the transformation. 
+Thus, if we think about the matrix $\mathbf{A}$ as a machine, we put the eigenvector $\mathbf{v}_{\star}$ into the machine, and we get back the same eigenvector $\mathbf{v}_{\star}$ multiplied by a scalar, the eigenvalue $\lambda_{\star}$.
+On the other hand, eigenvalues are scale factors for their eigenvector. An eigenvalue is a scalar that indicates how much a corresponding eigenvector is stretched or compressed during a linear transformation represented by the matrix $\mathbf{A}$.
+We can use the eigendecomposition to diagonalize the matrix $\mathbf{A}$, i.e., transform the matrix into a diagonal form where the eigenvalues lie along the main diagonal. To see this, solve the eigendecomposition for the $\text{diag}(\lambda) = \mathbf{V}^{-1}\cdot\mathbf{A}\cdot\mathbf{V}$. 
+We can also use the eigenvalues to classify a matrix $\mathbf{A}$ as positive (semi)definite or negative (semi)definite (which will be handy later). 
+Further, if the matrix $\mathbf{A}$ is symmetric, and all entries are positive, then all the eigenvalues will be real-valued, and the eigenvectors will be orthogonal (handy properties, as we shall soon see).
+Finally, another interpretation is that eigenvectors represent the most critical directions in the data or system, and eigenvalues (or functions of them) represent their importance. 
+
+\subsection{Symmetric Real Matrices}
+The eigendecomposition of a symmetric real matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ has some special properties.
+First, the eigenvalues of a symmetric real matrix are real-valued. Next, the eigenvectors of a symmetric real matrix are orthogonal, i.e., $<v_{i},v_{j}> = 0$. 
+This means that the eigenvectors of a real-symmetric matrix form an orthogonal basis for the space spanned by the matrix $\mathbf{A}$.
+Further, we can make that basis orthonormal by normalizing the eigenvectors, i.e., $\hat{v}_{i} = v_{i}/\norm{v_{i}}$ where $\norm{v_{i}}$ is the norm (length) of the eigenvector $v_{i}$.
+However, where would we encounter a real-value symmetric matrix $\mathbf{A}$? One example is the covariance matrix of a dataset.
+
+The covariance matrix of a dataset is an example of a symmetric real matrix that we will encounter in a variety of applications.
+The covariance matrix is a square matrix that summarizes the variance and covariance of the features in the dataset.
+
+
+% \subsection*{What is eigendecomposition?}
+% Suppose we have a real square matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
+% vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or a incedence array in a graph, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
+% \href{https://mathworld.wolfram.com/Eigenvalue.html}{eigenvalues} and a set of linearly independent vectors 
+% $\left\{\mathbf{v}_{1},\dots,\mathbf{v}_{m}\right\}$ called \href{https://mathworld.wolfram.com/Eigenvector.html}{eigenvectors} such that:
+% \begin{equation}
+% \mathbf{A}\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
+% \end{equation}
+% where $\mathbf{v}\in\mathbb{R}^{m}$ and $\lambda\in\mathbb{R}$ \footnote{We've shown $\mathbf{A}$ and the eigenvectors and eigenvalues as real-valued, but they could also be complex-valued.}.
+% When transformed by a matrix, eigenvectors do not change their direction; a corresponding eigenvalue merely scales them. This means that for a given linear transformation represented by a matrix $\mathbf{A}$, eigenvectors are the only vectors that do not change direction during the transformation. Instead, they are only scaled by a factor $\lambda$ called the eigenvalue. Thus, eigenvectors are the building blocks of a matrix, and the eigenvalues represent the scaling factor of the eigenvectors.
+% They represent the most critical directions in the data or the system, and the eigenvalues represent the importance of these directions. Eigenvalues and eigenvectors are widely used in many areas of mathematics, engineering, and physics:
 
 
 \section{Computing the Eigendecomposition of a Matrix}
@@ -200,7 +260,7 @@ To compute the eigendecomposition of a matrix using QR decomposition, we first f
 then we use the QR-iteration algorithm. The QR-iteration algorithm is an iterative method that computes the eigenvalues and eigenvectors of a matrix by repeatedly applying the QR decomposition to the matrix.
 The \href{https://en.wikipedia.org/wiki/QR_algorithm}{QR iteration algorithm} estimates the eigenvalues and eigenvectors of a square matrix.
 The algorithm consists of two phases:
-\begin{itemize}
+\begin{itemize}[leftmargin=16pt]
 \item{\textbf{Phase 1: Eigenvalues}. Let $\mathbf{A}\in\mathbb{R}^{n\times{n}}$. 
 Then, starting with $k = 0$, we compute the \href{https://en.wikipedia.org/wiki/QR_decomposition}{QR decomposition} of the matrix $\mathbf{A}_{k}$:
 \begin{equation*}

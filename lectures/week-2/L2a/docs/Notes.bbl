@@ -1,19 +1,23 @@
 \begin{thebibliography}{1}
 
 \bibitem{Francis-QR-1961}
-J.~G.~F. Francis.
+Francis JGF.
 \newblock {The QR Transformation A Unitary Analogue to the LR
   Transformation---Part 1}.
-\newblock {\em The Computer Journal}, 4(3):265--271, 01 1961.
+\newblock The Computer Journal. 1961;4(3):265--271.
+\newblock doi:{10.1093/comjnl/4.3.265}.
 
 \bibitem{Francis-QR-1962}
-J.~G.~F. Francis.
+Francis JGF.
 \newblock {The QR Transformation---Part 2}.
-\newblock {\em The Computer Journal}, 4(4):332--345, 01 1962.
+\newblock The Computer Journal. 1962;4(4):332--345.
+\newblock doi:{10.1093/comjnl/4.4.332}.
 
 \bibitem{golub13}
-Gene~H. Golub and Charles~F. van Loan.
-\newblock {\em Matrix Computations}.
-\newblock JHU Press, fourth edition, 2013.
+Golub GH, van Loan CF.
+\newblock Matrix Computations.
+\newblock 4th ed. JHU Press; 2013.
+\newblock Available from:
+  \url{http://www.cs.cornell.edu/cv/GVL4/golubandvanloan.htm}.
 
 \end{thebibliography}
