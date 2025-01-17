@@ -31,12 +31,22 @@
 
 \usepackage{mdframed}
 \definecolor{lgray}{rgb}{0.92,0.92,0.92}
-\definecolor{lsalmon}{rgb}{1.0,0.63,0.48}
+\definecolor{lsalmon}{rgb}{0.9921568627450981,0.9411764705882353, 0.9254901960784314}
 
 \renewcommand{\bibnumfmt}[1]{#1.}
 \setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
 \setallmargins{1in}
 \linespread{1.1}
+
+\newcommand{\brows}[1]{%
+  \begin{bmatrix}
+  \begin{array}{@{\protect\rotvert\;}c@{\;\protect\rotvert}}
+  #1
+  \end{array}
+  \end{bmatrix}
+}
+\newcommand{\rotvert}{\rotatebox[origin=c]{90}{$\vert$}}
+\newcommand{\rowsvdots}{\multicolumn{1}{@{}c@{}}{\vdots}}
 
 
 \def\R{\mathbb{R}}
@@ -47,6 +57,7 @@
 \def\G{\mathcal{G}}
 \def\H{\mathcal{H}}
 \def\S{\mathcal{S}}
+\def\D{\mathcal{D}}
 \def\P{\mathbb{P}}
 \def\1{\mathbf{1}}
 \def\n{\nappa}
@@ -87,7 +98,6 @@
    usual scrutiny reserved for formal publications. }
    \vspace*{4mm}
 }
-
 
 \begin{document}
 \lecture{2c}{Singular Value Decomposition (SVD of) Data and Systems}{Jeffrey Varner}{}
@@ -136,7 +146,58 @@ the singular values $\sigma_{i}$ are the square roots of the eigenvalues of the 
 \section{Principal Component Analysis (PCA)}
 Principal component analysis (PCA) is a method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace.
 The principal components are the eigenvectors of the covariance matrix of the data, and the principal component scores are the projections of the data onto the principal components.
-Let's return to the idea of dimensionality reduction that we introduced when exploring eigendecomposition.
+
+Let's return to the idea of dimensionality reduction of the covariance matrix that we introduced when exploring eigendecomposition.
+Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is an $m$-dimensional feature vector.
+The covariance of feature vectors $i$ and $j$, denoted as $\text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right)$, is an $\mathbf{\Sigma}\in\mathbb{R}^{n\times{n}}$ 
+real-valued symmetric matrix $\mathbf{\Sigma}\in\R^{n\times{n}}$ with elements: 
+\begin{equation}
+    \Sigma_{ij} = \text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right) = \sigma_{i}\,\sigma_{j}\,\rho_{ij}\qquad\text{for}\quad{i,j \in \mathcal{D}}
+\end{equation}
+where $\sigma_{i}$ denote the standard deviation of the feature vector $\mathbf{x}_{i}$, $\sigma_{j}$ denote the standard deviation of the 
+feature vector $\mathbf{x}_{j}$, and $\rho_{ij}$ denotes the correlation between features $i$ and $j$ in the dataset $\D$. The correlation is given by:
+\begin{equation}
+\rho_{ij} = \frac{\mathbb{E}(\mathbf{x}_{i}-\mu_{i})\cdot\mathbb{E}(\mathbf{x}_{j} - \mu_{j})}{\sigma_{i}\sigma_{j}}\qquad\text{for}\quad{i,j \in \mathcal{D}}
+\end{equation}
+The diagonal elements of the covariance matrix $\Sigma_{ii}\in\mathbf{\Sigma}$ are the variances of the individual feature vectors,
+while the off-diagonal elements $\Sigma_{ij}\in\mathbf{\Sigma}$ for $i\neq{j}$ measure the relationship between feature vectors $i$ and $j$
+in the dataset $\mathcal{D}$. 
+
+\subsection{Data reduction problem}
+Suppose we wanted to reduce the dimensionality of the feature vectors $\mathbf{x}\in\D$ from $m$ to $k$ dimensions, where $k<m$, 
+i.e., we want to transform $\mathbf{x}_{i}\in\R^{m}\rightarrow\mathbf{y}_{i}\in\R^{k}$. 
+We may want to do this for a variety of reasons, for example, to visualize the data in $2$ or $3$ dimensions, or to reduce the computational complexity of a machine learning algorithm.
+To make this possible, we construct (somehow) a projection matrix $\mathbf{P}$ such that:
+\begin{equation}
+   \mathbf{y}_{i} = \mathbf{P}\mathbf{x}_{i}\quad{i=1,2,\dots,n}
+\end{equation}
+The projection matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transform vectors. The open question is 
+what are the best transform vectors to use? The answer is to use the eigenvectors of the covariance matrix $\mathbf{\Sigma}$.
+However, we build our transformation matrix using the eigenvectors gives the reduced feature vector corresponding to $x\in\D$ is given by:
+\begin{equation}
+   \begin{pmatrix}
+      y_{1} \\
+      y_{2} \\
+      \vdots \\
+      y_{k}
+   \end{pmatrix} = \brows{\hat{\mathbf{v}}_1^T \\ \hat{\mathbf{v}}_2^T \\ \rowsvdots \\ \hat{\mathbf{v}}_k^T}
+   \cdot
+   \begin{pmatrix}
+      x_{1} \\
+      x_{2} \\
+      \vdots \\
+      x_{m}
+   \end{pmatrix}
+\end{equation}
+where $\hat{\mathbf{v}}_{\star}^{T}$ denotes the transpose of the scaled eigenvector $\hat{\mathbf{v}}_{\star}$ of the covariance matrix $\mathbf{\Sigma}$.
+Thus, each component of the reduced vector $\mathbf{y}$ corresponding to $\mathbf{x}\in\D$ is given by:
+\begin{equation}
+   y_{j} = \hat{\mathbf{v}}_{j}^{T}\cdot\mathbf{x}\quad{j=1,2,\dots,k}
+\end{equation}
+The open question is which $k$-vectors should we use to build the transformation matrix $\mathbf{P}$? 
+
+\subsection*{Minimize reconstruction error}
+Fill me in.
 
 \section{Summary and Conclusions}
 In this lecture we discussed the singular value decomposition (SVD) of data and systems, and a method for reducing the dimensionality of data called principal component analysis (PCA).
