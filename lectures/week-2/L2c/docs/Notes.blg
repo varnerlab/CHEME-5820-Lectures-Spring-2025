@@ -1,48 +1,50 @@
 This is BibTeX, Version 0.99d (TeX Live 2024)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Notes.aux
-The style file: plain.bst
-I found no \citation commands---while reading file Notes.aux
+The style file: plos2015.bst
 Database file #1: References-L2c.bib
-You've used 0 entries,
-            2118 wiz_defined-function locations,
-            497 strings with 4001 characters,
-and the built_in function-call counts, 18 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 7
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+You've used 8 entries,
+            3058 wiz_defined-function locations,
+            707 strings with 6652 characters,
+and the built_in function-call counts, 10273 in all, are:
+= -- 1322
+> -- 72
+< -- 2
++ -- 43
+- -- 18
+* -- 797
+:= -- 1162
+add.period$ -- 36
+call.type$ -- 8
+change.case$ -- 4
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+cite$ -- 8
+duplicate$ -- 931
+empty$ -- 955
+format.name$ -- 23
+if$ -- 2413
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 3
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 8
+missing$ -- 64
+newline$ -- 49
+num.names$ -- 8
+pop$ -- 99
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 1
+skip$ -- 130
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 1751
+swap$ -- 190
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 error message)
+while$ -- 66
+width$ -- 9
+write$ -- 102

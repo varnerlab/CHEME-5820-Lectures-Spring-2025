@@ -1,3 +1,57 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{Alter:2000aa}
+Alter O, Brown PO, Botstein D.
+\newblock Singular value decomposition for genome-wide expression data
+  processing and modeling.
+\newblock Proc Natl Acad Sci U S A. 2000;97(18):10101--10106.
+\newblock doi:{10.1073/pnas.97.18.10101}.
+
+\bibitem{Alter:2006}
+Alter O, Golub GH.
+\newblock Singular value decomposition of genome-scale mRNA lengths
+  distribution reveals asymmetry in RNA gel electrophoresis band broadening.
+\newblock Proceedings of the National Academy of Sciences.
+  2006;103(32):11828--11833.
+\newblock doi:{10.1073/pnas.0604756103}.
+
+\bibitem{Famili:2003aa}
+Famili I, Palsson BO.
+\newblock Systemic metabolic reactions are obtained by singular value
+  decomposition of genome-scale stoichiometric matrices.
+\newblock J Theor Biol. 2003;224(1):87--96.
+\newblock doi:{10.1016/s0022-5193(03)00146-2}.
+
+\bibitem{MooreSVD1986}
+Moore C.
+\newblock Application of Singular Value Decomposition to the Design, Analysis,
+  and Control of Industrial Processes.
+\newblock In: 1986 American Control Conference; 1986. p. 643--650.
+
+\bibitem{SASTRY20075275}
+Sastry CS, Rawat S, Pujari AK, Gulati VP.
+\newblock Network traffic analysis using singular value decomposition and
+  multiscale transforms.
+\newblock Information Sciences. 2007;177(23):5275--5291.
+\newblock doi:{https://doi.org/10.1016/j.ins.2006.07.007}.
+
+\bibitem{7993780}
+Palacios P, Castro A, Azurdia-Meza C, Estevez C.
+\newblock SVD detection analysis in cognitive mobile radio networks.
+\newblock In: 2017 Ninth International Conference on Ubiquitous and Future
+  Networks (ICUFN); 2017. p. 222--224.
+
+\bibitem{GIULIANI20171069}
+Giuliani A.
+\newblock The application of principal component analysis to drug discovery and
+  biomedical data.
+\newblock Drug Discovery Today. 2017;22(7):1069--1076.
+\newblock doi:{https://doi.org/10.1016/j.drudis.2017.01.005}.
+
+\bibitem{Stewart:1993}
+Stewart GW.
+\newblock On the Early History of the Singular Value Decomposition.
+\newblock SIAM Review. 1993;35(4):551--566.
+\newblock doi:{10.1137/1035134}.
 
 \end{thebibliography}

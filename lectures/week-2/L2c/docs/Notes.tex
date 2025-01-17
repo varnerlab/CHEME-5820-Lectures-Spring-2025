@@ -92,13 +92,30 @@
 \begin{document}
 \lecture{2c}{Singular Value Decomposition (SVD of) Data and Systems}{Jeffrey Varner}{}
 
-\section{Introduction}
-In this lecture, we will discuss the singular value decomposition (SVD) of data and systems. 
-The SVD is a fundamental matrix decomposition that is used in many areas of science and engineering. 
-The SVD is a generalization of the eigenvalue decomposition and is used to analyze the structure of a matrix. 
-The SVD is used in many applications, including data compression, image processing, and control theory. 
+\begin{mdframed}[backgroundcolor=lgray]
+   \subsection*{Topics}
+   \begin{itemize}[leftmargin=16pt]
+      \item{\textbf{Singular Value Decomposition (SVD)} is a factorization of a matrix into the product of three matrices: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, 
+      where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices, and $\mathbf{\Sigma}$ is a diagonal matrix containing the singular values of $\mathbf{A}$. The SVD is used to analyze the structure of a matrix, 
+      and is used in many applications, including data compression, image processing, and control theory.}
+      \item{\textbf{Principle Component Analysis (PCA)} is a method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace.
+      The principal components are the eigenvectors of the covariance matrix of the data, and the principal component scores are the projections of the data onto the principal components.
+      We can compute the principal components using the SVD of the covariance matrix.}
+   \end{itemize}
+\end{mdframed}
 
-\subsection*{What is the SVD?}
+\section{Introduction}
+In this lecture, we will discuss the singular value decomposition (SVD) of data and systems, and a 
+method for reducing the dimensionality of data called principal component analysis (PCA), which is similar to singular value decomposition.
+The SVD is a fundamental matrix decomposition that is used in many areas of science and engineering. 
+The SVD is a generalization of the eigenvalue decomposition and is used to analyze the structure of a matrix, for non-square matrices.
+The SVD is used in a huge variety of unsupervised learning type applications, e.g., understanding gene expression data \citep{Alter:2000aa, Alter:2006}, 
+the structure of chemical reaction networks \citep{Famili:2003aa}, in process control applications \citep{MooreSVD1986},
+and analyis of various type of networks \citep{SASTRY20075275, 7993780}.
+Similarly, PCA is a widely used method across many fields and applicatrions, e.g., drug discovery \citep{GIULIANI20171069}.
+
+\section{Singular Value Decomposition (SVD)}
+Singular value decomposition (SVD), originally developed in 1870s \citep{Stewart:1993} is a matrix factorization technique that is based on the eigendecomposition of a matrix.
 Suppose we have a matrix $A \in \R^{m \times n}$. The SVD of $\mathbf{A}$ is a factorization of the form: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, where
 $\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{T} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ is a diagonal matrix containing 
 the singular values $\sigma_{i}=\Sigma_{ii}$. The matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$ can be decomposed as:
@@ -115,6 +132,24 @@ and $\sigma_{i}$ are the singular values (ordered). Singular value decomposuitio
 The columns of $\mathbf{U}$ are eigenvectors of $\mathbf{A}\mathbf{A}^{T}$, 
 the columns of $\mathbf{V}$ are eigenvectors of $\mathbf{A}^{T}\mathbf{A}$ and
 the singular values $\sigma_{i}$ are the square roots of the eigenvalues of the matrix products $\mathbf{A}\mathbf{A}^{T}$ or $\mathbf{A}^{T}\mathbf{A}$. 
+
+\section{Principal Component Analysis (PCA)}
+Principal component analysis (PCA) is a method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace.
+The principal components are the eigenvectors of the covariance matrix of the data, and the principal component scores are the projections of the data onto the principal components.
+Let's return to the idea of dimensionality reduction that we introduced when exploring eigendecomposition.
+
+\section{Summary and Conclusions}
+In this lecture we discussed the singular value decomposition (SVD) of data and systems, and a method for reducing the dimensionality of data called principal component analysis (PCA).
+Singular Value Decomposition (SVD) and Principal Component Analysis (PCA) are powerful techniques in linear algebra and data analysis. 
+SVD is a matrix factorization method that decomposes a matrix $\mathbf{A}$ into the product $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, where
+$\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{T} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ 
+is a diagonal matrix containing the singular values $\sigma_{i}=\Sigma_{ii}$.
+This decomposition has important applications in dimensionality reduction and data compression. 
+On the other hand, principle component analysis (PCA), closely related to SVD, 
+is a method for reducing the dimensionality of multivariate data while preserving as much variance as possible (or alternatively minimize the reconstruction error). 
+It works by identifying principal components, which are orthogonal directions in the data space that capture the most variation (or minimize the construction error). 
+Both SVD and PCA are widely used in various fields, including machine learning, image processing, and gene expression analysis, 
+for tasks such as feature extraction, noise reduction, and data visualization.
 
 \bibliography{References-L2c.bib}
 
