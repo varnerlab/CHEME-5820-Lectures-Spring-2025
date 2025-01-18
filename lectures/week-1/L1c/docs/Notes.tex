@@ -108,7 +108,7 @@
    \begin{itemize}[leftmargin=16pt]
       \item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. Unsupervised learning aims to identify patterns and structures in data without explicit guidance. 
          Unsupervised learning is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.}
-      \item{\textbf{Clustering} is a common unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points. 
+      \item{\textbf{Clustering} is a typical unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points. 
          Clustering algorithms aim to group data points that are more similar to each other than to those in other clusters.}
       \item{\textbf{K-means clustering} is a popular and straightforward clustering algorithm that partitions a dataset into $k$ clusters. 
          The algorithm iteratively assigns data points to the nearest cluster center and updates the cluster centers based on the mean of the assigned points.}
@@ -177,23 +177,23 @@ The time cost of Lloyd’s algorithm is $\mathcal{O}(nmk)$, where $n$ is the num
 and $k$ is the number of clusters.
 
 \section{Issues with K-means clustering}
-The K-means algorithm is simple and intuitive, but it has some limitations \citep{Raykov:2016aa}.
-One of the main drawbacks of K-means is that it requires the number of clusters $K$ to be specified in advance, which can be challenging when this choice is not obvious.
+The K-means algorithm is simple and intuitive but has some limitations \citep{Raykov:2016aa}.
+One of the main drawbacks of K-means is that it requires the number of clusters $K$ to be specified in advance, which can be challenging when this choice is not apparent.
 Furthermore, the algorithm is sensitive to the initial choice of cluster centroids, which can lead to suboptimal solutions.
-Verification of the global optimality of the computed solution is in general challenging, and the the subject of ongoing research, see \citep{Peng:2007, Iguchi:2016, Clum:2022}.
-Finally, K-means is not suitable for clustering datasets with non-convex shapes or varying cluster sizes, as it assumes that clusters are spherical and have similar sizes.
+Verification of the computed solution's global optimality is generally challenging, and the subject of ongoing research, see \citep{Peng:2007, Iguchi:2016, Clum:2022}.
+Finally, K-means is unsuitable for clustering datasets with non-convex shapes or varying cluster sizes, as it assumes that clusters are spherical and have similar sizes.
 See Example \ref{ex:kmeans-failure} for an illustration of K-means failure.
 
 \begin{ex}[K-means failure]\label{ex:kmeans-failure}
-Consider two circles, each of radius 1, their centers are a distance $d$ apart.
-As long as $d > 2.08$, K-means yields correct answer. But if $d\leq{2.08}$, K-means fails.
-This is the failure of K-means and not of Lloyds algorithm.
+Consider two circles, each of radius 1, and their centers are a distance $d$ apart.
+As long as $d > 2.08$, K-means yields the correct answer. But if $d\leq{2.08}$, K-means fails.
+This is the failure of K-means and not of Lloyd's algorithm.
 \end{ex}
 
-Despite these limitations, K-means is a powerful and widely used clustering algorithm that can be effective in many scenarios.
+Despite these limitations, K-means is a widely used clustering algorithm that can be effective in many scenarios.
 
 \subsection{Estimating the number of clusters}
-Of the shortcomings of K-means, the need to specify the number of clusters $K$ in advance can be addressed with a number of heuristic methods. 
+Of K-means' shortcomings, the need to specify the number of clusters $K$ in advance can be addressed with several heuristic methods. 
 There are several methods to estimate the number of clusters, including the \href{https://en.wikipedia.org/wiki/Elbow_method_(clustering)}{elbow method}, 
 the \href{https://en.wikipedia.org/wiki/Silhouette_(clustering)}{silhouette method}, or performance metrics 
 such as the \href{https://en.wikipedia.org/wiki/Davies%E2%80%93Bouldin_index}{Davies-Bouldin index}, the \href{https://en.wikipedia.org/wiki/Dunn_index}{Dunn index}
@@ -201,7 +201,7 @@ or the \href{https://en.wikipedia.org/wiki/Calinski%E2%80%93Harabasz_index}{Cali
 
 \subsubsection*{Silhouette method}
 The silhouette method is a technique to evaluate the consistency of data within clusters.
-The silhouette score ranges from -1 to 1, where a high score indicates that the data point is well-matched to its cluster and poorly matched to neighboring clusters.
+The silhouette score ranges from -1 to 1. A high score indicates that the data point is well-matched to its cluster and poorly matched to neighboring clusters.
 If most objects have a high silhouette score, then the clustering configuration, i.e., the number of clusters $k$, is appropriate. 
 However, if many points have a low or negative value, the clustering configuration may have too many or too few clusters.
 Assume that we have clustered the data using K-means into $K$ clusters $\mathcal{C} = \{c_1, c_2, \ldots, c_K\}$.
@@ -227,7 +227,7 @@ If $|c_i|=1$, then $s(i)=0$. This gives a silhouette score for each data point a
       b(i)/a(i) - 1 & \text{if } a(i) > b(i)
    \end{cases}
 \end{equation}
-This definition shows that $-1\leq s(i)\leq 1$. 
+This definition shows $-1\leq s(i)\leq 1$. 
 The mean $s(i)$ of all data points in a cluster measures how tightly grouped the points in the cluster are.
 Thus, the mean of $s(i)$ over all data in the entire dataset measures how appropriately the data have been clustered.
 If there are too many or too few clusters, as may occur when a poor choice of $K$ is made, some clusters will typically display much narrower silhouettes than the rest. 
@@ -246,12 +246,10 @@ The numerator measures how well the clusters are separated from each other (the 
 
 \section{Summary and Conclusion}
 In this lecture, we introduced the concept of unsupervised learning and discussed a common unsupervised learning algorithm: K-means clustering.
-The objective of unsupervised learning is to identify patterns and structures in data without explicit guidance or labeled examples.
+Unsupervised learning aims to identify patterns and structures in data without explicit guidance or labeled examples.
 The K-means algorithm is a popular clustering technique that partitions a dataset into $K$ clusters based on the similarity of data points within each cluster.
-We introduce Lloyd's algorithm for K-means clustering, which iteratively assigns data points to the nearest cluster centroid and updates the centroids based on the mean of the assigned points.
-While K-means clustering is a simple and intuitive algorithm, it has some limitations, such as the need to specify the number of clusters in advance.
-Toward this challenge, we discussed the challenges of estimating the number of clusters in K-means clustering and introduced two methods for determining the optimal number of clusters: 
-the silhouette method and the Calinski-Harabasz index.
+We introduce Lloyd's algorithm for K-means clustering, which iteratively assigns data points to the nearest cluster centroid and updates the centroids based on the mean of the assigned points. While K-means clustering is a simple and intuitive algorithm, it has some limitations, such as specifying the number of clusters in advance.
+Toward this challenge, we discussed the difficulties of estimating the number of clusters in K-means clustering and introduced two methods for determining the number of clusters: the silhouette method and the Calinski-Harabasz index.
 
 
 
