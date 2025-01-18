@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Hadipour:2022aa}
 Hadipour H, Liu C, Davis R, Cardona ST, Hu P.
@@ -34,6 +34,30 @@ Lloyd S.
 \newblock Least squares quantization in PCM.
 \newblock IEEE Transactions on Information Theory. 1982;28(2):129--137.
 \newblock doi:{10.1109/TIT.1982.1056489}.
+
+\bibitem{Raykov:2016aa}
+Raykov YP, Boukouvalas A, Baig F, Little MA.
+\newblock What to Do When K-Means Clustering Fails: A Simple yet Principled
+  Alternative Algorithm.
+\newblock PLoS One. 2016;11(9):e0162259.
+\newblock doi:{10.1371/journal.pone.0162259}.
+
+\bibitem{Peng:2007}
+Peng J, Wei Y.
+\newblock Approximating K‐means‐type Clustering via Semidefinite
+  Programming.
+\newblock SIAM Journal on Optimization. 2007;18(1):186--205.
+\newblock doi:{10.1137/050641983}.
+
+\bibitem{Iguchi:2016}
+Iguchi T, Mixon DG, Peterson J, Villar S. Probably certifiably correct k-means
+  clustering; 2016.
+\newblock Available from: \url{https://arxiv.org/abs/1509.07983}.
+
+\bibitem{Clum:2022}
+Clum C, Mixon DG, Villar S, Xie K. Sketch-and-solve approaches to k-means
+  clustering by semidefinite programming; 2022.
+\newblock Available from: \url{https://arxiv.org/abs/2211.15744}.
 
 \bibitem{Caliski01011974}
 {T  Cali{\'n}ski and J Harabasz}.

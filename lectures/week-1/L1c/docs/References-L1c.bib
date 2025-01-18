@@ -1,12 +1,89 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% https://bibdesk.sourceforge.io/
 
-%% Created for Jeffrey Varner at 2025-01-17 06:16:50 -0500 
+%% Created for Jeffrey Varner at 2025-01-18 16:54:32 -0500 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
+
+@article{Raykov:2016aa,
+	abstract = {The K-means algorithm is one of the most popular clustering algorithms in current use as it is relatively fast yet simple to understand and deploy in practice. Nevertheless, its use entails certain restrictive assumptions about the data, the negative consequences of which are not always immediately apparent, as we demonstrate. While more flexible algorithms have been developed, their widespread use has been hindered by their computational and technical complexity. Motivated by these considerations, we present a flexible alternative to K-means that relaxes most of the assumptions, whilst remaining almost as fast and simple. This novel algorithm which we call MAP-DP (maximum a-posteriori Dirichlet process mixtures), is statistically rigorous as it is based on nonparametric Bayesian Dirichlet process mixture modeling. This approach allows us to overcome most of the limitations imposed by K-means. The number of clusters K is estimated from the data instead of being fixed a-priori as in K-means. In addition, while K-means is restricted to continuous data, the MAP-DP framework can be applied to many kinds of data, for example, binary, count or ordinal data. Also, it can efficiently separate outliers from the data. This additional flexibility does not incur a significant computational overhead compared to K-means with MAP-DP convergence typically achieved in the order of seconds for many practical problems. Finally, in contrast to K-means, since the algorithm is based on an underlying statistical model, the MAP-DP framework can deal with missing data and enables model testing such as cross validation in a principled way. We demonstrate the simplicity and effectiveness of this algorithm on the health informatics problem of clinical sub-typing in a cluster of diseases known as parkinsonism.},
+	address = {School of Mathematics, Aston University, Birmingham, United Kingdom.; Molecular Sciences, University of Manchester, Manchester, United Kingdom.; Nuffield Department of Clinical Neurosciences, Oxford University, Oxford, United Kingdom.; School of Mathematics, Aston University, Birmingham, United Kingdom.; Media Lab, Massachusetts Institute of Technology, Cambridge, Massachusetts, United States of America.},
+	author = {Raykov, Yordan P and Boukouvalas, Alexis and Baig, Fahd and Little, Max A},
+	cois = {The authors have declared that no competing interests exist.},
+	crdt = {2016/09/27 06:00},
+	date = {2016},
+	date-added = {2025-01-18 16:54:25 -0500},
+	date-modified = {2025-01-18 16:54:25 -0500},
+	dep = {20160926},
+	doi = {10.1371/journal.pone.0162259},
+	edat = {2016/09/27 06:00},
+	issn = {1932-6203 (Electronic); 1932-6203 (Linking)},
+	jid = {101285081},
+	journal = {PLoS One},
+	jt = {PloS one},
+	language = {eng},
+	lid = {10.1371/journal.pone.0162259 {$[$}doi{$]$}; e0162259},
+	lr = {20240327},
+	mhda = {2016/09/27 06:01},
+	number = {9},
+	own = {NLM},
+	pages = {e0162259},
+	phst = {2016/01/21 00:00 {$[$}received{$]$}; 2016/08/21 00:00 {$[$}accepted{$]$}; 2016/09/27 06:00 {$[$}entrez{$]$}; 2016/09/27 06:00 {$[$}pubmed{$]$}; 2016/09/27 06:01 {$[$}medline{$]$}; 2016/09/26 00:00 {$[$}pmc-release{$]$}},
+	pii = {PONE-D-16-02793},
+	pl = {United States},
+	pmc = {PMC5036949},
+	pmcr = {2016/09/26},
+	pmid = {27669525},
+	pst = {epublish},
+	pt = {Journal Article},
+	status = {PubMed-not-MEDLINE},
+	title = {What to Do When K-Means Clustering Fails: A Simple yet Principled Alternative Algorithm.},
+	volume = {11},
+	year = {2016},
+	bdsk-url-1 = {https://doi.org/10.1371/journal.pone.0162259}}
+
+@misc{Clum:2022,
+	archiveprefix = {arXiv},
+	author = {Charles Clum and Dustin G. Mixon and Soledad Villar and Kaiying Xie},
+	date-added = {2025-01-18 16:49:17 -0500},
+	date-modified = {2025-01-18 16:49:29 -0500},
+	eprint = {2211.15744},
+	primaryclass = {cs.LG},
+	title = {Sketch-and-solve approaches to k-means clustering by semidefinite programming},
+	url = {https://arxiv.org/abs/2211.15744},
+	year = {2022},
+	bdsk-url-1 = {https://arxiv.org/abs/2211.15744}}
+
+@article{Peng:2007,
+	abstract = { One of the fundamental clustering problems is to assign n points into k clusters based on minimal sum‐of‐squared distances (MSSC), which is known to be NP‐hard. In this paper, by using matrix arguments, we first model MSSC as a so‐called 0‐1 semidefinite programming (SDP) problem. We show that our 0‐1 SDP model provides a unified framework for several clustering approaches such as normalized k‐cut and spectral clustering. Moreover, the 0‐1 SDP model allows us to solve the underlying problem approximately via the linear programming and SDP relaxations. Second, we consider the issue of how to extract a feasible solution of the original 0‐1 SDP model from the optimal solution of the relaxed SDP problem. By using principal component analysis, we develop a rounding procedure to construct a feasible partitioning from a solution of the relaxed problem. In our rounding procedure, we need to solve a K‐means clustering problem in \$\Re^{k-1}\$, which can be done in \$O(n^{k^2-2k+2})\$ time. In case of biclustering, the running time of our rounding procedure can be reduced to \$O(n\log n)\$. We show that our algorithm provides a 2--approximate solution to the original problem. Promising numerical results for biclustering based on our new method are reported. },
+	author = {Peng, Jiming and Wei, Yu},
+	date-added = {2025-01-18 16:47:05 -0500},
+	date-modified = {2025-01-18 16:47:18 -0500},
+	doi = {10.1137/050641983},
+	eprint = {https://doi.org/10.1137/050641983},
+	journal = {SIAM Journal on Optimization},
+	number = {1},
+	pages = {186-205},
+	title = {Approximating K‐means‐type Clustering via Semidefinite Programming},
+	url = {https://doi.org/10.1137/050641983},
+	volume = {18},
+	year = {2007},
+	bdsk-url-1 = {https://doi.org/10.1137/050641983}}
+
+@misc{Iguchi:2016,
+	archiveprefix = {arXiv},
+	author = {Takayuki Iguchi and Dustin G. Mixon and Jesse Peterson and Soledad Villar},
+	date-added = {2025-01-18 16:44:12 -0500},
+	date-modified = {2025-01-18 16:44:40 -0500},
+	eprint = {1509.07983},
+	primaryclass = {cs.IT},
+	title = {Probably certifiably correct k-means clustering},
+	url = {https://arxiv.org/abs/1509.07983},
+	year = {2016},
+	bdsk-url-1 = {https://arxiv.org/abs/1509.07983}}
 
 @article{Alter2006,
 	abstract = {We describe the singular value decomposition (SVD) of yeast genome-scale mRNA lengths distribution data measured by DNA microarrays. SVD uncovers in the mRNA abundance levels data matrix of genes × arrays, i.e., electrophoretic gel migration lengths or mRNA lengths, mathematically unique decorrelated and decoupled ``eigengenes.'' The eigengenes are the eigenvectors of the arrays × arrays correlation matrix, with the corresponding series of eigenvalues proportional to the series of the ``fractions of eigen abundance.'' Each fraction of eigen abundance indicates the significance of the corresponding eigengene relative to all others. We show that the eigengenes fit ``asymmetric Hermite functions,'' a generalization of the eigenfunctions of the quantum harmonic oscillator and the integral transform which kernel is a generalized coherent state. The fractions of eigen abundance fit a geometric series as do the eigenvalues of the integral transform which kernel is a generalized coherent state. The ``asymmetric generalized coherent state'' models the measured data, where the profiles of mRNA abundance levels of most genes as well as the distribution of the peaks of these profiles fit asymmetric Gaussians. We hypothesize that the asymmetry in the distribution of the peaks of the profiles is due to two competing evolutionary forces. We show that the asymmetry in the profiles of the genes might be due to a previously unknown asymmetry in the gel electrophoresis thermal broadening of a moving, rather than a stationary, band of RNA molecules.},

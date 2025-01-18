@@ -5,7 +5,7 @@
 \usepackage{amssymb} %maths
 \usepackage{amsmath} %maths
 \usepackage{amsthm, comment}
-\usepackage[round,comma,sort,numbers]{natbib}
+\usepackage[round,comma,sort,numbers, compress]{natbib}
 
 % \bibliographystyle{plain}
 \bibliographystyle{plos2015}
@@ -106,7 +106,7 @@
 \begin{mdframed}[backgroundcolor=lgray, innertopmargin=0pt, outerlinewidth=0pt, roundcorner=20pt, innerbottommargin=4pt]
    \section*{Topics}
    \begin{itemize}[leftmargin=16pt]
-      \item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. The goal of unsupervised learning is to identify patterns and structures in data without explicit guidance. 
+      \item{\textbf{Unsupervised learning} is a type of machine learning that involves training algorithms on unlabeled data. Unsupervised learning aims to identify patterns and structures in data without explicit guidance. 
          Unsupervised learning is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.}
       \item{\textbf{Clustering} is a common unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points. 
          Clustering algorithms aim to group data points that are more similar to each other than to those in other clusters.}
@@ -117,14 +117,14 @@
 
 \section{Introduction}\label{sec:intro}
 This lecture introduces the first of several unsupervised learning approaches we will explore: K-means clustering. 
-Unsupervised learning is a branch of machine learning focused on the discovery of hidden patterns and insights from unlabeled data without explicit human guidance. 
+Unsupervised learning is a branch of machine learning focused on discovering hidden patterns and insights from unlabeled data without explicit human guidance. 
 Unlike supervised learning, which relies on labeled datasets, unsupervised learning models are given raw, unstructured information and tasked with identifying inherent structures, 
 relationships, and similarities within the data. This approach is particularly valuable for exploratory data analysis, clustering similar data points, and uncovering previously unknown trends in datasets. 
-The K-means clustering algorithm can be used to identify hidden patterns and structures in data without explicit guidance, or labels.
-Thus, it is particularly useful when dealing with large volumes of unstructured data or when the desired outcomes are unknown.
+The K-means clustering algorithm can identify hidden patterns and structures in data without explicit guidance or labels.
+Thus, it is beneficial when dealing with large volumes of unstructured data or when the desired outcomes are unknown.
 In Chemical and Biomolecular Engineering, K-means clustering can be used to group similar molecules based on their chemical properties \citep{Hadipour:2022aa},
 identify patterns in gene expression data \citep{Hruschka2007, Wu:2008aa}, or segment customers based on purchasing behavior \citep{Shaikh2024}.
-Thus, there are many applications of K-means clustering in chemical engineering, bioengineering, and related fields.
+Thus, K-means clustering has many applications in chemical engineering, bioengineering, and related fields.
 
 \section{K-means clustering}
 The K-means algorithm, originally developed by Lloyd in the 1950s but not published until much later in 1982 \citep{Lloyd-1982}, is an example of \texttt{unsupervised learning}. 
@@ -133,27 +133,27 @@ Thus, unlike supervised learning (which we will explore in future lectures), whe
 raw, unlabeled data to identify inherent groupings, anomalies, or relationships. This approach is particularly valuable when dealing with large volumes of unstructured data or when the desired outcomes may be unknown. 
 Typical applications of unsupervised learning include clustering (which we are discussing today), dimensionality reduction, and anomaly detection. 
 
-K-means is a popular unsupervised machine learning algorithm used for clustering data points into $K$ distinct groups based on their similarity.
+K-means is a popular unsupervised machine learning algorithm for clustering data points into $K$ distinct groups based on similarity.
 In this approach, the algorithm partitions the dataset into $K$ (specified by you) clusters, 
-with each cluster represented by a centroid (the mean of the data points in the cluster). 
-Then the algorithm iteratively assigns data points to the nearest cluster centroid and updates the centroids 
+each representing a centroid (the mean of the data points in the cluster). 
+Then, the algorithm iteratively assigns data points to the nearest cluster centroid and updates the centroids 
 based on the mean of the assigned points.
 
 \subsection{Problem formulation}
 Suppose we have a dataset $\mathcal{D} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\in\mathbb{R}^{m}\}$, where each data point $\mathbf{x}_i$ is a $m$-dimensional vector.
-The goal of the k-means algorithm is to partition the dataset into $K$ clusters, $\mathcal{C} = \left\{c_{1},c_{2},\dots, c_{K}\right\}$, 
+The goal of the K-means algorithm is to partition the dataset into $K$ clusters, $\mathcal{C} = \left\{c_{1},c_{2},\dots, c_{K}\right\}$, 
 where each cluster $c_{j}$ is represented by a centroid $\mu_j\in\mathbb{R}^{m}$. To enforce that $\mathcal{C}$ is a valid partition of $\mathcal{D}$, we require that each data point $\mathbf{x}_i$ is assigned to exactly one cluster $c_{j}$, i.e., $c_{i}\cap c_{j} = \emptyset$ for $i\neq j$ (no shared members).
 In addition, the union of all clusters covers the entire dataset, i.e., $\cup_{j=1}^{K}c_{j} = \mathcal{D}$.
-The problem of k-means clustering can be formulated as an optimization problem, where the objective is to minimize the sum of squared distances between each data point and its assigned cluster centroid:
+The problem of K-means clustering can be formulated as an optimization problem, where the objective is to minimize the sum of squared distances between each data point and its assigned cluster centroid:
 \begin{equation}
 \min_{\mathcal{C}} \sum_{j=1}^{K}\sum_{\mathbf{x}\in c_{j}}\norm{\mathbf{x} - \mu_{j}}_{2}^{2}
 \end{equation}
-where $\norm{\star}_{2}^{2}$ denotes the squared Euclidean distance between two vectors (in this case a feature vecrtor and the cluster centroid). 
+where $\norm{\star}_{2}^{2}$ denotes the squared Euclidean distance between two vectors (in this case, a feature vector and the cluster centroid). 
 The K-means algorithm aims to find the optimal cluster assignments $\mathcal{C}$ and cluster centroids $\mu$ that minimize this objective function.
-Puesdo code for k-means (Lloyd's algorithm) is shown in Algorithm \ref{alg:kmeans}.
+Puesdo code for K-means (Lloyd's algorithm) is shown in Algorithm \ref{alg:kmeans}.
 \begin{algorithm}[H]
    \begin{algorithmic}
-   \caption{Unsupervised naive k-means clustering (Lloyd's algorithm)}\label{alg:kmeans}
+   \caption{Unsupervised naive K-means clustering (Lloyd's algorithm)}\label{alg:kmeans}
    \State \textbf{Input:} $\mathcal{D} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\in\mathbb{R}^{m}\}$, number of clusters $K$ and initial centroids $\{\mu_1, \mu_2, \ldots, \mu_K\in\mathbb{R}^{m}\}$
    \State \textbf{Output:} Cluster assignments $\mathcal{C} = \{c_1, c_2, \ldots, c_K\}$ and updated cluster centroids $\{\mu_1, \mu_2, \ldots, \mu_K\}$
    \State{$\text{flag} \gets \texttt{false}$}\Comment{flag to indicate convergence: \texttt{true} for convergence and \texttt{false} otherwise}
@@ -176,20 +176,35 @@ Puesdo code for k-means (Lloyd's algorithm) is shown in Algorithm \ref{alg:kmean
 The time cost of Lloyd’s algorithm is $\mathcal{O}(nmk)$, where $n$ is the number of feature vectors, $m$ is the number of dimensions of each feature vector,
 and $k$ is the number of clusters.
 
-\section{Estimating the number of clusters}
-The K-means algorithm is simple and intuitive, but it has some limitations.
-One of the main drawbacks of k-means is that it requires the number of clusters $K$ to be specified in advance, which can be challenging when the number of clusters is unknown.
+\section{Issues with K-means clustering}
+The K-means algorithm is simple and intuitive, but it has some limitations \citep{Raykov:2016aa}.
+One of the main drawbacks of K-means is that it requires the number of clusters $K$ to be specified in advance, which can be challenging when this choice is not obvious.
+Furthermore, the algorithm is sensitive to the initial choice of cluster centroids, which can lead to suboptimal solutions.
+Verification of the global optimality of the computed solution is in general challenging, and the the subject of ongoing research, see \citep{Peng:2007, Iguchi:2016, Clum:2022}.
+Finally, K-means is not suitable for clustering datasets with non-convex shapes or varying cluster sizes, as it assumes that clusters are spherical and have similar sizes.
+See Example \ref{ex:kmeans-failure} for an illustration of K-means failure.
+
+\begin{ex}[K-means failure]\label{ex:kmeans-failure}
+Consider two circles, each of radius 1, their centers are a distance $d$ apart.
+As long as $d > 2.08$, K-means yields correct answer. But if $d\leq{2.08}$, K-means fails.
+This is the failure of K-means and not of Lloyds algorithm.
+\end{ex}
+
+Despite these limitations, K-means is a powerful and widely used clustering algorithm that can be effective in many scenarios.
+
+\subsection{Estimating the number of clusters}
+Of the shortcomings of K-means, the need to specify the number of clusters $K$ in advance can be addressed with a number of heuristic methods. 
 There are several methods to estimate the number of clusters, including the \href{https://en.wikipedia.org/wiki/Elbow_method_(clustering)}{elbow method}, 
 the \href{https://en.wikipedia.org/wiki/Silhouette_(clustering)}{silhouette method}, or performance metrics 
 such as the \href{https://en.wikipedia.org/wiki/Davies%E2%80%93Bouldin_index}{Davies-Bouldin index}, the \href{https://en.wikipedia.org/wiki/Dunn_index}{Dunn index}
 or the \href{https://en.wikipedia.org/wiki/Calinski%E2%80%93Harabasz_index}{Calinski-Harabasz index}.
 
-\subsection{Silhouette method}
+\subsubsection*{Silhouette method}
 The silhouette method is a technique to evaluate the consistency of data within clusters.
-The silhouette score ranges from -1 to 1, where a high score indicates that the data point is well matched to its own cluster and poorly matched to neighboring clusters.
-If most objects have a high silhouette score, then the clustering configuration, i.e., the number of clusters $k$ is appropriate. 
-However, if many points have a low or negative value, then the clustering configuration may have too many or too few clusters.
-Assume that we have clustered the data using k-means into $K$ clusters $\mathcal{C} = \{c_1, c_2, \ldots, c_K\}$.
+The silhouette score ranges from -1 to 1, where a high score indicates that the data point is well-matched to its cluster and poorly matched to neighboring clusters.
+If most objects have a high silhouette score, then the clustering configuration, i.e., the number of clusters $k$, is appropriate. 
+However, if many points have a low or negative value, the clustering configuration may have too many or too few clusters.
+Assume that we have clustered the data using K-means into $K$ clusters $\mathcal{C} = \{c_1, c_2, \ldots, c_K\}$.
 Then, for a data point $\mathbf{x}_i\in c_i$, let $a(i)$ denote the average distance between $\mathbf{x}_i$ and all other points in the same cluster $c_i$:
 \begin{equation}
 a(i) = \frac{1}{|c_i| - 1}\sum_{j\in c_i, j\neq i}d(i,j)
@@ -212,14 +227,13 @@ If $|c_i|=1$, then $s(i)=0$. This gives a silhouette score for each data point a
       b(i)/a(i) - 1 & \text{if } a(i) > b(i)
    \end{cases}
 \end{equation}
-From this definition we see that $-1\leq s(i)\leq 1$. 
-The mean $s(i)$ over all data points in a cluster is a measure of how tightly grouped all the points in the cluster are.
-Thus the mean of $s(i)$ over all data in the entire dataset is a measure of how appropriately the data have been clustered.
-If there are too many or too few clusters, as may occur when a poor choice of $K$ is made, then 
-some of the clusters will typically display much narrower silhouettes than the rest. 
-Thus silhouette plots and means may be used to visualize the natural number of clusters within a dataset.
+This definition shows that $-1\leq s(i)\leq 1$. 
+The mean $s(i)$ of all data points in a cluster measures how tightly grouped the points in the cluster are.
+Thus, the mean of $s(i)$ over all data in the entire dataset measures how appropriately the data have been clustered.
+If there are too many or too few clusters, as may occur when a poor choice of $K$ is made, some clusters will typically display much narrower silhouettes than the rest. 
+Thus, silhouette plots and means may be used to visualize a dataset's natural number of clusters.
 
-\subsection{Calinski-Harabasz index}
+\subsubsection*{Calinski-Harabasz index}
 The \href{https://en.wikipedia.org/wiki/Calinski%E2%80%93Harabasz_index}{Calinski–Harabasz index (CHI)}, also known as the Variance Ratio Criterion, 
 is a widely used metric for assessing the quality of clustering algorithms \citep{Caliski01011974}. To compute the CHI, we first need to perform clustering for different values of k. 
 Then, we compute the CH index for each clustering result. Finally, the value of k that yields the maximum CH index is chosen as the optimal number of clusters. The CH index is defined as:
@@ -227,14 +241,19 @@ Then, we compute the CH index for each clustering result. Finally, the value of 
 \text{CHI} = \left(\frac{n-k}{k-1}\right)\cdot\left(\frac{\sum_{i=1}^{k}n_{i}\lVert{\mathbf{c}_{i}-\mathbf{c}}\rVert^{2}}{\sum_{k=1}^{k}\sum_{\mathbf{x}\in{C_{i}}}\lVert{\mathbf{x}-\mathbf{c}_{i}}\rVert^{2}}\right)
 \end{equation}
 where $n$ denotes the number of feature vectors $\mathbf{x}_{i}$ that we are clustering, $k$ denotes the number of clusters, $n_{i}$ denotes the number of points in cluster $i$, $\mathbf{c}_{i}$ denotes the centroid for cluster $i$ and $\mathbf{c}$ denotes the overall centroid of the data. 
-The numerator measures how well the clusters are separated from each other (the higher, the better), while the denominator measures the compactness or cohesiveness of the clusters (the smaller, the better).
+The numerator measures how well the clusters are separated from each other (the higher, the better). In contrast, the denominator measures the compactness or cohesiveness of the clusters (the smaller, the better).
 
 
 \section{Summary and Conclusion}
-In this lecture, we introduced the concept of unsupervised learning and discussed two common unsupervised learning algorithms: k-means clustering and self-organizing maps.
-Unsupervised learning is a type of machine learning that involves training algorithms on \textit{unlabeled data} to identify patterns and structures within data without explicit guidance.
-Clustering is a common unsupervised learning technique that involves dividing a dataset into distinct groups, or clusters, based on the similarity of data points.
-We explored k-means clustering, which partitions a dataset into $k$ clusters and identify patterns that may not be immediately apparent.
+In this lecture, we introduced the concept of unsupervised learning and discussed a common unsupervised learning algorithm: K-means clustering.
+The objective of unsupervised learning is to identify patterns and structures in data without explicit guidance or labeled examples.
+The K-means algorithm is a popular clustering technique that partitions a dataset into $K$ clusters based on the similarity of data points within each cluster.
+We introduce Lloyd's algorithm for K-means clustering, which iteratively assigns data points to the nearest cluster centroid and updates the centroids based on the mean of the assigned points.
+While K-means clustering is a simple and intuitive algorithm, it has some limitations, such as the need to specify the number of clusters in advance.
+Toward this challenge, we discussed the challenges of estimating the number of clusters in K-means clustering and introduced two methods for determining the optimal number of clusters: 
+the silhouette method and the Calinski-Harabasz index.
+
+
 
 \bibliography{References-L1c.bib}
 
