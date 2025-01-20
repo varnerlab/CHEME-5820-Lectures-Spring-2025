@@ -1,5 +1,5 @@
 function _projection(v::Array{Float64,1}, u::Array{Float64,1})::Array{Float64,1}
-    return (dot(v, u) / dot(u, u)) * u;
+    return dot(v, u) * u;
 end
 
 function _orthogonalize(A::Array{<:Number,2}, algorithm::ClassicalGramSchmidtAlgorithm)::Array{Float64,2}
@@ -12,17 +12,32 @@ function _orthogonalize(A::Array{<:Number,2}, algorithm::ClassicalGramSchmidtAlg
     # we are going to find the orthogonal basis for the columns of A
     for i = 1:number_of_cols
         v = A[:, i]; # get the i-th column
-        for j = 1:i-1
-            u = Q[:, j]; # get the j-th column
-            v = v - _projection(v, u); # subtract the projection
+        for j = 1:i-1 # all
+            q = Q[:, j]; # get the j-th column
+            v = v - _projection(v, q); # subtract the projection
         end
-        Q[:, i] = v / norm(v); # normalize the vector
+        Q[:, i] = v / norm(v); # normalize the vector, q₁ = v₁ / ||v₁||
     end
     return Q;
 end
 
 function _orthogonalize(A::Array{<:Number,2}, algorithm::ModifiedGramSchmidtAlgorithm)::Array{Float64,2}
-    throw(ArgumentError("Modified Gram-Schmidt not implemented yet!"));
+
+    # initialize
+    number_of_rows = size(A, 1); # how many rows do we have?
+    number_of_cols = size(A, 2); # how many columns do we have?
+    
+    # copy the matrix A -
+    V = copy(A);
+
+    for j ∈ 1:number_of_cols
+        q = V[:, j]/norm(V[:,j]) # get the j-th column
+        for i ∈ j+1:number_of_cols
+            V[:, i] = V[:, i] - dot(V[:, i], q) * q
+        end
+        Q[:, j] = q; # capture the orthogonal vector
+    end
+    return Q;
 end
 
 """
