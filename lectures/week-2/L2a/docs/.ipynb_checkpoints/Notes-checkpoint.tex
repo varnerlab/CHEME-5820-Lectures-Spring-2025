@@ -1,12 +1,14 @@
- \documentclass{article}[12pt]
+\documentclass{article}[11pt]
 \usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
 %\usepackage{epstopdf}
 %\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
 \usepackage{amssymb} %maths
 \usepackage{amsmath} %maths
 \usepackage{amsthm, comment}
+\usepackage[round,comma,sort,numbers]{natbib}
 
-\bibliographystyle{plain}
+% \bibliographystyle{plain}
+\bibliographystyle{plos2015}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{prop}{Proposition}
@@ -17,15 +19,34 @@
 \usepackage{float}
 
 \newcommand*{\underuparrow}[1]{\underset{\uparrow}{#1}}
-
-\usepackage{hyperref}
-\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{algorithmicx}
 \usepackage{algorithm} %http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode} %http://ctan.org/pkg/algorithmicx
+\usepackage{enumitem}
+\usepackage{simplemargins}
+\usepackage{hyperref}
+
+\usepackage{mdframed}
+\definecolor{lgray}{rgb}{0.92,0.92,0.92}
+\definecolor{lsalmon}{rgb}{0.9921568627450981,0.9411764705882353, 0.9254901960784314}
+
+\renewcommand{\bibnumfmt}[1]{#1.}
+\setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
+\setallmargins{1in}
+\linespread{1.1}
+
+\newcommand{\brows}[1]{%
+  \begin{bmatrix}
+  \begin{array}{@{\protect\rotvert\;}c@{\;\protect\rotvert}}
+  #1
+  \end{array}
+  \end{bmatrix}
+}
+\newcommand{\rotvert}{\rotatebox[origin=c]{90}{$\vert$}}
+\newcommand{\rowsvdots}{\multicolumn{1}{@{}c@{}}{\vdots}}
 
 
 \def\R{\mathbb{R}}
@@ -36,6 +57,7 @@
 \def\G{\mathcal{G}}
 \def\H{\mathcal{H}}
 \def\S{\mathcal{S}}
+\def\D{\mathcal{D}}
 \def\P{\mathbb{P}}
 \def\1{\mathbf{1}}
 \def\n{\nappa}
@@ -81,31 +103,153 @@
 \begin{document}
 \lecture{2a}{Eigendecomposition of Data and Systems}{Jeffrey Varner}{}
 
+\begin{mdframed}[backgroundcolor=lgray]
+   \section*{Topics}
+   \begin{itemize}[leftmargin=16pt]
+      \item{\textbf{Eigendecomposition} is a fundamental concept in linear algebra that decomposes a matrix into its constituent parts, the eigenvectors and eigenvalues. 
+         Eigendecomposition is widely used in mathematics, engineering, and physics to analyze data and systems.}
+      \item{\textbf{QR decomposition} is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix. 
+         The QR decomposition is useful for solving linear systems of equations and for computing the eigenvalues and eigenvectors of a matrix (using the QR iteration algorithm), among other applications.}
+      \item{\textbf{Gram-Schmidt orthogonalization} is a procedure that generates a set of mutually orthogonal vectors starting from a set of linearly independent vectors. 
+         The Gram-Schmidt orthogonalization procedure is used to compute the QR decomposition of a matrix.}
+   \end{itemize}
+\end{mdframed}
+
 \section{Introduction}
 The eigendecomposition of a matrix is a fundamental concept in linear algebra. 
-In this lecture, we will discuss the eigendecomposition of a matrix, and how it can be used to analyze data and systems 
+In this lecture, we will discuss the eigendecomposition of a matrix and how it can be used to analyze data and systems 
 in unsupervised machine learning. Eigendecomposition allows us to decompose a matrix into its constituent parts,
-the eigenvectors and eigenvalues, which can be used to understand the structure of the data or the system represented by the matrix.
+the eigenvectors and eigenvalues can be used to understand the structure of the data or the system represented by the matrix.
 
-\subsection*{What is eigendecomposition?}
+% \begin{itemize}[leftmargin=16pt]
+%    \item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
+%    \item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
+%    \item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
+% \end{itemize}
+
+\section{Eigendecomposition}
 Suppose we have a real square matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
-vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or a incedence array in a graph, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
+vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or an adjacency array in a graph with $m$ nodes, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
 \href{https://mathworld.wolfram.com/Eigenvalue.html}{eigenvalues} and a set of linearly independent vectors 
 $\left\{\mathbf{v}_{1},\dots,\mathbf{v}_{m}\right\}$ called \href{https://mathworld.wolfram.com/Eigenvector.html}{eigenvectors} such that:
 \begin{equation}
-\mathbf{A}\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
+\mathbf{A}\cdot\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
 \end{equation}
-where $\mathbf{v}\in\mathbb{R}^{m}$ and $\lambda\in\mathbb{R}$ \footnote{We've shown $\mathbf{A}$ and the eigenvectors and eigenvalues as real-valued, but they could also be complex-valued.}.
-Eigenvectors are special vectors that, when transformed by a matrix, do not change their direction; a corresponding eigenvalue merely scales them. 
-This means that for a given linear transformation represented by a matrix $\mathbf{A}$, eigenvectors are the only vectors that do not change direction during the transformation.
-Instead there are only scaled by a factor $\lambda$ called the eigenvalue. Thus, eigenvectors are the building blocks of a matrix, and the eigenvalues represent the scaling factor of the eigenvectors.
-They represent the most important directions in the data or the system, and the eigenvalues represent the importance of these directions.
-Eigenvalues and eigenvectors are widely used in many areas of mathematics, engineering, and physics:
-\begin{itemize}
-\item{\textbf{Solution of Linear Differential Equations}: Eigenvectors form a set of linearly independent solutions, while eigenvalues determine the stability of these solutions.}
-\item{\textbf{Structural Analysis}: Eigenvalues and eigenvectors describe the structural properties of a matrix or a graph. For example, a structure's natural frequencies and vibration modes, e.g., of a building or a bridge.}
-\item{\textbf{Singular Value Decomposition (SVD)}: SVD is commonly used in data analysis, computer vision, image processing, etc, to find the most important features of the dataset.}
-\end{itemize}
+where $\mathbf{v}\in\mathbb{C}^{m}$ and $\lambda\in\mathbb{C}$. We can put the eigenvalues and eigenvectors together in matrix-vector form, which gives us an interesting matrix decomposition:
+\begin{equation}
+\mathbf{A} = \mathbf{V}\cdot\text{diag}(\lambda)\cdot\mathbf{V}^{-1}
+\end{equation}
+where $\mathbf{V}$ denotes the matrix of eigenvectors, where the eigenvectors form the columns of the matrix $\mathbf{V}$, $\text{diag}(\lambda)$ denotes a diagonal matrix with the eigenvalues along the main diagonal, 
+and $\mathbf{V}^{-1}$ denotes the inverse of the eigenvalue matrix.
+The eigendecomposition of a matrix is a powerful tool that can be used to analyze data and systems in many areas of mathematics, engineering, and physics.
+Let's discuss some of the interpretations of eigendecomposition and data reduction, which is an interesting application of eigendecomposition, and then discuss how we compute the eigendecomposition of a matrix.
+
+\subsection{Interpretation of Eigendecomposition}
+Eigenvectors represent fundamental directions of the matrix $\mathbf{A}$. For the linear transformation defined by a matrix $\mathbf{A}$, eigenvectors are the only vectors that do not change direction during the transformation. 
+Thus, if we think about the matrix $\mathbf{A}$ as a machine, we put the eigenvector $\mathbf{v}_{\star}$ into the machine, and we get back the same eigenvector $\mathbf{v}_{\star}$ multiplied by a scalar, the eigenvalue $\lambda_{\star}$.
+On the other hand, eigenvalues are scale factors for their eigenvector. An eigenvalue is a scalar that indicates how much a corresponding eigenvector is stretched or compressed during a linear transformation represented by the matrix $\mathbf{A}$.
+We can use the eigendecomposition to diagonalize the matrix $\mathbf{A}$, i.e., transform the matrix into a diagonal form where the eigenvalues lie along the main diagonal. To see this, solve the eigendecomposition for the $\text{diag}(\lambda) = \mathbf{V}^{-1}\cdot\mathbf{A}\cdot\mathbf{V}$. 
+We can also use the eigenvalues to classify a matrix $\mathbf{A}$ as positive (semi)definite or negative (semi)definite (which will be handy later). 
+Further, suppose the matrix $\mathbf{A}$ is symmetric, and all entries are positive. In that case, all the eigenvalues will be real-valued, and the eigenvectors will be orthogonal (super handy properties, as we shall soon see).
+Finally, eigenvectors represent the most critical directions in the data or system, and eigenvalues (or functions of them) represent their importance. 
+However, the eigendecomposition is not always possible, e.g., for non-square matrices or matrices that are not diagonalizable (which may be the case with repeated eigenvalues).
+Finally, it may seem rare to encounter a square symmetric real-valued matrix in practice, e.g., stoichiometric
+matrices are (often) not square or symmetric, but this is not the case when dealing with engineering systems and data.
+Let's dig into the properties of symmetric real-valued matrices and introduce the covariance matrix, a common example of a symmetric real-valued matrix we will encounter in many applications.
+
+
+\subsection{Symmetric Real Matrices}
+The eigendecomposition of a symmetric real matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ has some special properties. 
+First, all the eigenvalues $\left\{\lambda_{1},\lambda_{2},\dots,\lambda_{m}\right\}$ of the matrix $\mathbf{A}$ are real-valued.
+Next, the eigenvectors $\left\{\mathbf{v}_{1},\mathbf{v}_{2},\dots,\mathbf{v}_{m}\right\}$ of the matrix $\mathbf{A}$ are orthogonal, i.e., $\left<\mathbf{v}_{i},\mathbf{v}_{j}\right> = 0$ for $i\neq{j}$.
+Finally, the (normalized) eigenvectors $\mathbf{v}_{j}/\norm{\mathbf{v}_{j}}$ of a symmetric real-valued matrix 
+form an orthonormal basis for the space spanned by the matrix $\mathbf{A}$ such that:
+\begin{equation}
+\left<\hat{\mathbf{v}}_{i},\hat{\mathbf{v}}_{j}\right> = \delta_{ij}\qquad\text{for}\quad{i,j\in\mathbf{A}}
+\end{equation}
+where $\delta_{ij}$ is the Kronecker delta function. The eigendecomposition of a symmetric real-valued matrix is a powerful tool that can be used to analyze data and systems in many areas of mathematics, engineering, and physics.
+For example, eigenvectors of a real-symmetric matrix form an orthogonal (orthonormal) basis for the space spanned by the matrix $\mathbf{A}$.
+Thus, any vector $\mathbf{x}\in\mathbb{R}^{m}$  in that space, i.e., a solution vector can be expressed as a linear combination of the eigenvectors of the matrix $\mathbf{A}$
+i.e., $\mathbf{x} = \sum_{i=1}^{m}c_{i}\mathbf{v}_{i}$, where $c_{i}$ are the coefficients of the linear combination.
+Further, the eigenvectors of a symmetric real-valued matrix can be used to reduce the dimensionality of a dataset (which we will discuss later).
+
+\subsubsection*{Covariance Matrix}
+The covariance matrix of a dataset is an example of a symmetric real matrix that we will encounter in various applications.
+The covariance matrix is a square matrix that summarizes the variance and covariance of the features in the dataset.
+Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is a feature vector.
+The covariance of feature vectors $i$ and $j$, denoted as $\text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right)$, is an $\mathbf{\Sigma}\in\mathbb{R}^{n\times{n}}$ 
+real-valued symmetric matrix $\mathbf{\Sigma}\in\R^{n\times{n}}$ with elements: 
+\begin{equation}
+    \Sigma_{ij} = \text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right) = \sigma_{i}\,\sigma_{j}\,\rho_{ij}\qquad\text{for}\quad{i,j \in \mathcal{D}}
+\end{equation}
+where $\sigma_{i}$ denote the standard deviation of the feature vector $\mathbf{x}_{i}$, $\sigma_{j}$ denote the standard deviation of the 
+feature vector $\mathbf{x}_{j}$, and $\rho_{ij}$ denotes the correlation between features $i$ and $j$ in the dataset $\D$. The correlation is given by:
+\begin{equation}
+\rho_{ij} = \frac{\mathbb{E}(\mathbf{x}_{i}-\mu_{i})\cdot\mathbb{E}(\mathbf{x}_{j} - \mu_{j})}{\sigma_{i}\sigma_{j}}\qquad\text{for}\quad{i,j \in \mathcal{D}}
+\end{equation}
+where $\mathbb{E}(\cdot)$ denotes the expected value, and $\mu_{i}$ denotes the mean of the feature vector $\mathbf{x}_{i}$.
+The diagonal elements of the covariance matrix $\Sigma_{ii}\in\mathbf{\Sigma}$ are the variances of features $i$,
+while the off-diagonal elements $\Sigma_{ij}\in\mathbf{\Sigma}$ for $i\neq{j}$ measure the relationship between features 
+$i$ and $j$ in the dataset $\mathcal{D}$. Interestingly, we can use the eigendecomposition of the covariance matrix for data reduction, 
+i.e., factor the dataset $\D$ into a set of weighted (increasingly important) features. For example, if $n\gg{2}$, 
+we can use the eigendecomposition of the covariance to reduce the dimensionality of the dataset $\D$ to $2$ or $3$ dimensions, which can be visualized.
+We can also use the eigendecomposition of the covariance to find the most important features in the dataset, which can be used for clustering, classification, or other machine-learning tasks.
+
+\subsection*{Data reduction}
+Data reduction is a common application of the eigendecomposition of a matrix. Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is a feature vector.
+We can use the eigendecomposition of the covariance matrix of the dataset to reduce the dimensionality of the dataset.
+Let $\mathbf{\Sigma}\in\mathbb{R}^{n\times{n}}$ be the covariance matrix of the dataset $\D$. 
+Then the equation $\mathbf{\Sigma}\cdot\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}$ gives us the eigenvectors and eigenvalues of the covariance matrix.
+Because the covariance matrix is symmetric, the eigenvectors are orthogonal, and the eigenvalues are real-valued.
+Further, we can normalize the eigenvectors to make them an orthonormal, 
+i.e., $\hat{\mathbf{v}}_{i} = \mathbf{v}_{i}/\norm{\mathbf{v}_{i}}_{2}$ where $\norm{\mathbf{v}_{i}}_{2}$ is the $l2$-norm (Euclidean length) of the eigenvector $\mathbf{v}_{i}$.
+
+Suppose we wanted to reduce the dimensionality of the feature vectors $\mathbf{x}\in\D$ from $m$ to $k$ dimensions, where $k<m$, 
+i.e., we want to transform $\mathbf{x}_{i}\rightarrow\mathbf{y}_{i}$ where $\mathbf{y}_{i}\in\mathbb{R}^{k}$. 
+We can do this for various reasons, such as visualizing the data in $2 $ or $3 $ dimensions or reducing the computational complexity of a machine learning algorithm.
+To make this possible, we suppose there exists a projection matrix $\mathbf{P}$ such that:
+\begin{equation}
+   \mathbf{y}_{i} = \mathbf{P}\mathbf{x}_{i}\quad{i=1,2,\dots,n}
+\end{equation}
+The projection matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transform vectors. The open question is, what are the best transform vectors to use? The answer is to use the eigenvectors of the covariance matrix $\mathbf{\Sigma}$.
+We will discuss why this is the case until we discuss the \emph{Principal Component Analysis} (PCA) algorithm.
+However, if we build our transformation matrix using the eigenvectors, the reduced feature vector corresponding to $x\in\D$ is given by:
+\begin{equation}
+   \begin{pmatrix}
+      y_{1} \\
+      y_{2} \\
+      \vdots \\
+      y_{k}
+   \end{pmatrix} = \brows{\hat{\mathbf{v}}_1^\top \\ \hat{\mathbf{v}}_2^\top \\ \rowsvdots \\ \hat{\mathbf{v}}_k^\top}
+   \cdot
+   \begin{pmatrix}
+      x_{1} \\
+      x_{2} \\
+      \vdots \\
+      x_{m}
+   \end{pmatrix}
+\end{equation}
+where $\hat{\mathbf{v}}_{\star}^{\top}$ denotes the transpose of the scaled eigenvector $\hat{\mathbf{v}}_{\star}$ of the covariance matrix $\mathbf{\Sigma}$.
+Thus, each component of the reduced vector $\mathbf{y}$ corresponding to $\mathbf{x}\in\D$ is given by:
+\begin{equation}
+   y_{j} = \hat{\mathbf{v}}_{j}^{\top}\cdot\mathbf{x}\quad{j=1,2,\dots,k}
+\end{equation}
+
+
+
+
+
+% \subsection*{What is eigendecomposition?}
+% Suppose we have a real square matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
+% vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or a incedence array in a graph, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
+% \href{https://mathworld.wolfram.com/Eigenvalue.html}{eigenvalues} and a set of linearly independent vectors 
+% $\left\{\mathbf{v}_{1},\dots,\mathbf{v}_{m}\right\}$ called \href{https://mathworld.wolfram.com/Eigenvector.html}{eigenvectors} such that:
+% \begin{equation}
+% \mathbf{A}\mathbf{v}_{j} = \lambda_{j}\mathbf{v}_{j}\qquad{j=1,2,\dots,m}
+% \end{equation}
+% where $\mathbf{v}\in\mathbb{R}^{m}$ and $\lambda\in\mathbb{R}$ \footnote{We've shown $\mathbf{A}$ and the eigenvectors and eigenvalues as real-valued, but they could also be complex-valued.}.
+% When transformed by a matrix, eigenvectors do not change their direction; a corresponding eigenvalue merely scales them. This means that for a given linear transformation represented by a matrix $\mathbf{A}$, eigenvectors are the only vectors that do not change direction during the transformation. Instead, they are only scaled by a factor $\lambda$ called the eigenvalue. Thus, eigenvectors are the building blocks of a matrix, and the eigenvalues represent the scaling factor of the eigenvectors.
+% They represent the most critical directions in the data or the system, and the eigenvalues represent the importance of these directions. Eigenvalues and eigenvectors are widely used in many areas of mathematics, engineering, and physics:
 
 
 \section{Computing the Eigendecomposition of a Matrix}
@@ -114,30 +258,132 @@ The most common method is power iteration, an iterative algorithm that finds the
 The power iteration method is simple and easy to implement. Still, it may not converge to the desired eigenvector if the matrix is ill-conditioned or has multiple eigenvalues of the same magnitude.
 Alternatively, we can use the QR algorithm, a more robust method to find all a matrix's eigenvalues and eigenvectors.
 
+\subsection{Power Iteration}
+The \href{https://en.wikipedia.org/wiki/Power_iteration}{power iteration method} 
+is an iterative algorithm to compute the largest eigenvalue and its corresponding eigenvector of a square (real) matrix; we'll consider only real-valued matrices here, 
+but this approach can also be used for matrices with complex entries. 
+
+\begin{mdframed}
+The power iteration method consists of two phases:
+\begin{itemize}[leftmargin=16pt]
+\item{\textbf{Phase 1: Eigenvector}: Suppose we have a real-valued square diagonalizable matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ whose eigenvalues have the property $|\lambda_{1}|\geq|\lambda_{2}|\dots\geq|\lambda_{m}|$. 
+   Then, the eigenvector $\mathbf{v}_{1}\in\mathbb{C}^{m}$ which corresponds to the largest eigenvalue $\lambda_{1}\in\mathbb{C}$ can be (iteratively) estimated as:
+   \begin{equation}
+      \mathbf{v}_{1}^{(k+1)} = \frac{\mathbf{A}\mathbf{v}_{1}^{(k)}}{\Vert \mathbf{A}\mathbf{v}_{1}^{(k)} \Vert}\quad{k=0,1,2\dots}
+   \end{equation}
+   where $\lVert \star \rVert$ denotes the \href{https://mathworld.wolfram.com/L2-Norm.html}{L2 (Euclidean) vector norm}. 
+   The \href{https://en.wikipedia.org/wiki/Power_iteration}{power iteration method} converges to a value for the eigenvector as $k\rightarrow\infty$ 
+   when a few properties are true, namely, $|\lambda_{1}|/|\lambda_{2}| < 1$ (which is unknown beforehand), and we pick an appropriate initial guess for $\mathbf{v}_{1}$ (in our case, a random vector will work)
+}
+\item{\textbf{Phase 2: Eigenvalue}: Once we have an estimate for the eigenvector $\hat{\mathbf{v}}_{1}$, we can estimate the corresponding eigenvalue $\hat{\lambda}_{1}$ using \href{https://en.wikipedia.org/wiki/Rayleigh_quotient}{the Rayleigh quotient}. 
+   This argument proceeds from the definition of the eigenvalues and eigenvectors. We know, from the definition of eigenvalue-eigenvector pairs, that:
+   \begin{equation}
+      \mathbf{A}\hat{\mathbf{v}}_{1} - \hat{\lambda}_{1}\hat{\mathbf{v}}_{1}\simeq{0}
+   \end{equation}
+where we use the $\simeq$ symbol because we don't have the true eigenvector $\mathbf{v}_{1}$, only an estimate of it. To solve this expression for the (estimated) eigenvalue $\hat{\lambda}_{1}$, we multiply through by the transpose of the eigenvector and solve for the eigenvalue:
+   \begin{equation}
+      \hat{\lambda}_{1} \simeq \frac{\hat{\mathbf{v}}_{1}^{\top}\mathbf{A}\hat{\mathbf{v}}_{1}}{\hat{\mathbf{v}}_{1}^{\top}\hat{\mathbf{v}}_{1}} = \frac{\left<\mathbf{A}\hat{\mathbf{v}}_{1},\hat{\mathbf{v}}_{1}\right>}{\left<\hat{\mathbf{v}}_{1},\hat{\mathbf{v}}_{1}\right>}
+   \end{equation}
+where $\left<\star,\star\right>$ denotes \href{https://mathworld.wolfram.com/InnerProduct.html}{an inner product}}
+While simple to implement, the \href{https://en.wikipedia.org/wiki/Power_iteration}{power iteration method} may exhibit slow convergence, mainly when the largest eigenvalue is close in magnitude to other eigenvalues, i.e., $|\lambda_{1}|/|\lambda_{2}| \sim 1$.
+\end{itemize}
+\end{mdframed}
+The power iteration method has several notable applications.
+The most famous application is the \href{https://en.wikipedia.org/wiki/PageRank}{Google PageRank algorithm}.
+Google's PageRank algorithm, which uses power iteration, utilizes the dominant eigenvalue and its corresponding eigenvector to assess the importance of web pages within a network.
+Specifically, the algorithm constructs a link matrix that represents the connections between pages, where the dominant eigenvector associated with the maximum eigenvalue 
+reflects the relative importance of each page, with its entries normalized to sum to 1, thus providing a ranking of pages based on their likelihood of being visited over time.
+Puedo code for the power iteration method is shown in Algorithm \ref{alg:power_iteration}.
+
+\begin{algorithm}[H]
+   \caption{Power Iteration Method}\label{alg:power_iteration}
+\begin{algorithmic}[1]
+   \State{\textbf{Input}: Matrix $A \in \mathbb{R}^{n \times n}$, initial vector $x_0 \in \mathbb{R}^n$, tolerance $\epsilon$, maximum iterations $N$}
+   % \ Approximation of the dominant eigenvalue $\lambda$ and eigenvector $v$
+   
+   \State Normalize the initial vector: $x_0 \leftarrow \frac{x_0}{\|x_0\|}$
+   \For{$k = 1, 2, \dots, N$}
+       \State Compute the matrix-vector product: $y_k \leftarrow A x_{k-1}$
+       \State Normalize the resulting vector: $x_k \leftarrow \frac{y_k}{\|y_k\|}$
+       \State Compute the Rayleigh quotient: $\lambda_k \leftarrow x_k^\top A x_k$/($x_k^\top x_k$)
+       \If{$\|x_k - x_{k-1}\| < \epsilon$}
+           \State \textbf{break}
+       \EndIf
+   \EndFor
+   \State{Set $v \leftarrow x_k$ and $\lambda \leftarrow \lambda_k$}\\
+   \Return $\lambda$, $v$
+   \end{algorithmic}
+\end{algorithm}
+
 \subsection{QR decomposition}
-The QR algorithm relies on the QR decomposition of a matrix, which is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix.
+The QR iteration algorithm relies on the QR decomposition of a matrix, which is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix.
 \href{https://en.wikipedia.org/wiki/QR_decomposition}{QR decomposition}, originally developed by Francis in the early 1960s \cite{Francis-QR-1961, Francis-QR-1962}, factors a matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$ 
 into the product of an orthogonal matrix $\mathbf{Q}\in\mathbb{R}^{n\times{n}}$ and 
 an upper triangular matrix $\mathbf{R}\in\mathbb{R}^{n\times{m}}$:
 \begin{equation}
 \mathbf{A} = \mathbf{Q}\mathbf{R}
 \end{equation}
-where $\mathbf{Q}^{T} = \mathbf{Q}^{-1}$. 
-The QR decomposition is useful for solving linear systems of equations, computing the eigenvalues and eigenvectors of a matrix, and for finding the least squares solution of an overdetermined system of equations.
+where $\mathbf{Q}^{\top} = \mathbf{Q}^{-1}$ (property of an orthogonal matrix). 
+The QR decomposition is helpful in computing the eigenvalues and eigenvectors of a matrix and finding the solution to a system of linear algebraic equations.
+However, how do we compute the QR decomposition of a matrix, and how is this related to the eigendecomposition of a matrix?
 
 \subsubsection*{Gram-Schmidt Orthogonalization}
-To compute the QR decomposition of a matrix, we can use the Gram-Schmidt process.
+Eigendecomposition gives a set of linearly independent eigenvectors, which are not typically orthogonal except for symmetric matrices, i.e., $\left<\mathbf{v}_{i},\mathbf{v}_{j}\right>\neq{0}$ for $i\neq{j}$.
+Orthogonal (and better yet, orthonormal) vectors are desirable because they simplify many matrix operations, 
+and they have operational properties that are useful in many applications. 
+However, how do we start with a set of linearly independent vectors and generate a set of mutually orthogonal vectors?
+The answer is to use the \href{https://en.wikipedia.org/wiki/Gram-Schmidt_process}{Gram-Schmidt orthogonalization} procedure. 
+
 In principle, Gram-Schmidt orthogonalization generates a set of mutually orthogonal vectors $\mathbf{q}_{1},\mathbf{q}_{2},\hdots,
-\mathbf{q}_{n}$ starting from a set of linearly independent vectors $\mathbf{x}_{1},\mathbf{x}_{2},\hdots,\mathbf{x}_{n}$ using the procedure:
+\mathbf{q}_{n}$ starting from a set of linearly independent vectors $\mathbf{x}_{1},\mathbf{x}_{2},\hdots,\mathbf{x}_{n}$ 
+by subtracting the projection of each vector onto the previous vectors, i.e.,
 \begin{equation}\label{eq-gschmidt}
-\mathbf{q}_{k}=\mathbf{x}_{k}-\sum_{i=1}^{k-1}\frac{\left<\mathbf{q}_{i},\mathbf{x}_{k}\right>}{\left<\mathbf{q}_{i},\mathbf{q}_{i}\right>}\mathbf{q}_{i},
+\mathbf{q}_{k}=\mathbf{x}_{k}-\sum_{i=1}^{k-1}c_{k,i}\cdot\mathbf{q}_{i},
 \qquad{k=1,\hdots,n}
-\end{equation}where $\left<\cdot,\cdot\right>$ denotes an inner product. To compute the columns of $\mathbf{Q}$ we set 
-$\mathbf{x}_{1},\mathbf{x}_{2},\hdots,\mathbf{x}_{n}$ equal the columns of $\mathbf{A}$ and follow the Gram-Schmidt procedure. The computation
-of $\mathbf{R}$ is made simple by exploiting the orthogonality of $\mathbf{Q}$, i.e., $\mathbf{Q}^{-1}=\mathbf{Q}^{T}$ which yields:
+\end{equation}where the coefficients $c_{k,1},c_{k,2},\hdots,c_{k,k-1}$ are chosen to make the vectors $\mathbf{q}_{1},\mathbf{q}_{2},\hdots,\mathbf{q}_{k}$ orthogonal.
+The $c_{\star}$ coefficients represent the component of the vector $\mathbf{x}_{k}$ that lies in the direction of the vectors $\mathbf{q}_{1},\mathbf{q}_{2},\hdots,\mathbf{q}_{k-1}$.
+The Gram-Schmidt orthogonalization procedure is used to compute the $\mathbf{Q}$ matrix of QR decomposition.
+Once we have the $\mathbf{Q}$ matrix (whose columns consist of the mutually orthogonal vectors $\mathbf{q}_{1},\mathbf{q}_{2},\dots$) the computation
+of $\mathbf{R}$ is made simple by exploiting the orthogonality of $\mathbf{Q}$, i.e., $\mathbf{Q}^{-1}=\mathbf{Q}^{\top}$ which yields:
 \begin{equation}
-\mathbf{R}=\mathbf{Q}^{T}\mathbf{A}
+\mathbf{R}=\mathbf{Q}^{\top}\mathbf{A}
 \end{equation}
+However, how do we compute the coefficients $c_{k,1},c_{k,2},\hdots,c_{k,k-1}$ in Equation \ref{eq-gschmidt}?
+Let's sketch out the idea behind the Gram-Schmidt orthogonalization procedure and the computation of the unknown coefficients.
+
+\begin{mdframed}
+Suppose we have linearly independent vectors $\mathbf{x}_{1}, \mathbf{x}_{2}, \cdots, \mathbf{x}_{n}\in\mathbb{R}^{n}$, i.e., the eigenvectors of a matrix $\mathbf{A}$.
+The Gram-Schmidt orthogonalization procedure generates orthogonal (orthonormal) vectors $\mathbf{q}_{i}$ starting from $\mathbf{x}_{j}$.
+\begin{itemize}[leftmargin=16pt]
+   \item{\textbf{Step 1}: Compute the first orthogonal vector $\mathbf{q}_{1}$ by normalizing $\mathbf{x}_{1}$ by its L2-norm:  $\mathbf{q}_{1} =  \mathbf{x}_{1}/\norm{\mathbf{x}_{1}}_{2}$.}
+   \item{\textbf{Step 2}: Compute $\mathbf{q}_{2}$ by subtracting $\mathbf{q}_{1}$ from $\mathbf{x}_{2}$: $\mathbf{q}_{2} = \mathbf{x}_{2} - c\cdot\mathbf{q}_{1}$
+      where $c$ is an unknown constant. Use $\left<\mathbf{q}_{1},\mathbf{q}_{2}\right> = 0$ to solve for the constant $c$:
+      \begin{equation*}
+         \left<\mathbf{q}_{2},\mathbf{q}_{1}\right> = \left<\mathbf{x}_{2},\mathbf{q}_{1}\right> - c_{2,1}\left<\mathbf{q}_{1},\mathbf{q}_{1}\right> = 0
+      \end{equation*}
+      \begin{equation*}
+         c_{2,1} = \frac{\left<\mathbf{x}_{2},\mathbf{q}_{1}\right>}{\norm{\mathbf{q}_{1}}_{2}^{2}}
+      \end{equation*}
+      where $\left<\mathbf{q}_{1},\mathbf{q}_{1}\right> = \norm{\mathbf{q}_{1}}_{2}^{2}$.}
+   \item{\textbf{Step 3}: Compute the third orthogonal vector $\mathbf{q}_{3}$ by subtracting $\mathbf{q}_{1}$ and $\mathbf{q}_{2}$ from $\mathbf{x}_{3}$: $\mathbf{q}_{3} = \mathbf{x}_{3} - c_{3,1}\cdot\mathbf{q}_{1} - c_{3,2}\cdot\mathbf{q}_{2}$
+      where $c_{\star}$ are unkown constants. The conditions $\left<\mathbf{q}_{3},\mathbf{q}_{1}\right> = 0$
+      and $\left<\mathbf{q}_{3},\mathbf{q}_{2}\right> = 0$ are used to solve for the constants:
+      \begin{eqnarray*}
+         c_{3,1} & = & \frac{\left<\mathbf{x}_{3},\mathbf{q}_{1}\right>}{\norm{\mathbf{q}_{1}}_{2}^{2}} \\
+         c_{3,2} & = &  \frac{\left<\mathbf{x}_{3},\mathbf{q}_{2}\right>}{\norm{\mathbf{q}_{2}}_{2}^{2}}
+      \end{eqnarray*}}
+   \item{\textbf{Step $n$}: Repeat for the remaining vectors $\mathbf{x}_{4},\mathbf{x}_{5},\cdots$ to generate the orthogonal vectors $\mathbf{q}_{4},\mathbf{q}_{5},\cdots$.
+   where the $i$th orthogonal vector $\mathbf{q}_{i}$ is computed by subtracting the orthogonal vectors $\mathbf{q}_{1},\mathbf{q}_{2},\cdots,\mathbf{q}_{i-1}$:
+   \begin{equation*}
+      \mathbf{q}_{i} = \mathbf{x}_{i} - \sum_{j=1}^{i-1}c_{i,j}\cdot\mathbf{q}_{j}
+   \end{equation*}
+   where the constants $c_{i,j}$ are computed by taking the inner product of $\mathbf{q}_{i}$ with $\mathbf{q}_{j}$:
+   \begin{equation*}
+      c_{i,j} = \frac{\left<\mathbf{x}_{i},\mathbf{q}_{j}\right>}{\norm{\mathbf{q}_{j}}_{2}^{2}}
+   \end{equation*}}
+\end{itemize}
+\end{mdframed}
+The cost of the Gram-Schmidt orthogonalization procedure is $\mathcal{O}(nm^{2})$ floating point operations (flops) for an $n\times{m}$ matrix $\mathbf{A}$ \cite{golub13}.
 The computation of the QR decomposition using the Gram-Schmidt orthogonalization procedure is shown in Algorithm \ref{alg:gschmidt}.
 \begin{algorithm}[H]
    \begin{algorithmic}[1]
@@ -146,46 +392,54 @@ The computation of the QR decomposition using the Gram-Schmidt orthogonalization
    \State{\textbf{Output}: Orthogonal matrix $\mathbf{Q}\in\mathbb{R}^{n\times{n}}$ and upper triangular matrix $\mathbf{R}\in\mathbb{R}^{n\times{m}}$}
    \State{$n,m\gets$ dimensions of $\mathbf{A}$}
    \State{$\mathbf{Q}\gets$ zeros matrix of size $n\times{m}$}
-   \State{$\mathbf{Q}(:,1)\gets\mathbf{A}(:,1)/\norm{\mathbf{A}(:,1)}$}
-   \Statex
-   \For{$k=2$ to $m$}
-      \State{$\mathbf{Q}(:,k)\gets\mathbf{A}(:,k)$}
-      \For{$j=1$ to $k-1$}
-         \State{$\mathbf{Q}(:,k)\gets\mathbf{Q}(:,k)-\left<\mathbf{Q}(:,j),\mathbf{A}(:,k)\right>\mathbf{Q}(:,j)$}
+   \For{$j=1$ to $m$}\Comment{Loop over the columns of $\mathbf{A}$}
+      \State{$\mathbf{v}_{j}\gets\mathbf{A}_{j}$}\Comment{Get the $j$th column of $\mathbf{A}$}
+      \For{$k=1$ to $j-1$}
+         \State{$\mathbf{q}_{k}\gets\mathbf{Q}_{k}$}\Comment{Get the $k$th column of $\mathbf{Q}$}
+         \State{$\mathbf{v}_{j}\gets\mathbf{v}_{j} - (\mathbf{q}_k^\top\mathbf{A}_{j})\mathbf{q}_{k}$}\Comment{Orthogonalize the $j$th column of $\mathbf{A}$}
       \EndFor
-      \State{$\mathbf{Q}(:,k)\gets\mathbf{Q}(:,k)/\norm{\mathbf{Q}(:,k)}$}
+      \State{$\mathbf{Q}_{j}\gets\mathbf{v}_{j}/\norm{\mathbf{v}_{j}}_{2}$}\Comment{Normalize the $j$th column of $\mathbf{Q}$}
    \EndFor
-   \State{$\mathbf{R}\gets\mathbf{Q}^{T}\mathbf{A}$}
-
+   \State{$\mathbf{R}\gets\mathbf{Q}^{\top}\mathbf{A}$}\Comment{Compute the upper triangular matrix $\mathbf{R}$}\\
+   \Return $\mathbf{Q}$, $\mathbf{R}$
    \end{algorithmic}
 \end{algorithm}
-The cost of the Gram-Schmidt orthogonalization procedure is $\mathcal{O}(nm^{2})$ floating point operations (flops) for an $n\times{m}$ matrix $\mathbf{A}$ \cite{golub13}.
-However, in practice, the Gram-Schmidt orthogonalization procedure as shown \emph{will often fail to generate mutually orthogonal vectors} because of rounding errors; we will address
+In practice, the Gram-Schmidt orthogonalization procedure, as shown \emph{will often fail to generate mutually orthogonal vectors} because of rounding errors; we will address
 this issue subsequently when we discuss the \emph{Modified Gram-Schmidt Orthogonalization} 
 procedure which is shown in Algorithm \ref{alg:modgschmidt}.
-
 \begin{algorithm}[H]
    \begin{algorithmic}[1]
    \caption{QR decomposition using Modified Gram-Schmidt Orthogonalization}\label{alg:modgschmidt}
    \State{\textbf{Input}: Matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$}
    \State{\textbf{Output}: Orthogonal matrix $\mathbf{Q}\in\mathbb{R}^{n\times{n}}$ and upper triangular matrix $\mathbf{R}\in\mathbb{R}^{n\times{m}}$}
-   \State{$n,m\gets$ dimensions of $\mathbf{A}$}
-   \State{$\mathbf{Q}\gets$ zeros matrix of size $n\times{m}$}
+   \State{$n,m\gets$ dimensions of $\mathbf{A}$}   
+   \For{$j=1$ to $m$}\Comment{Loop over the columns of $\mathbf{A}$}
+      \State{$\mathbf{v}_{j}\gets\mathbf{A}_{j}$}\Comment{Initialize $v_{j}$ to the $j$th column of $\mathbf{A}$}
+   \EndFor
+
+   \For{$j=1$ to $m$}\Comment{Loop over the columns of $\mathbf{A}$}
+      \State{$\mathbf{q}_{j}\gets\mathbf{v}_{j}/\norm{\mathbf{v}_{j}}$}\Comment{Set the $j$th column of $\mathbf{Q}$ to the normalized $j$th column of $\mathbf{A}$}
+      \For{$k=j+1$ to $m$}
+         \State{$\mathbf{v}_{k}\gets\mathbf{v}_{k} - (\mathbf{q}_j^\top\mathbf{v}_{k})\mathbf{q}_{k}$}\Comment{Orthogonalize the $k$th column of $\mathbf{A}$}
+      \EndFor
+   \EndFor
+   \State{$\mathbf{R}\gets\mathbf{Q}^{\top}\mathbf{A}$}\Comment{Compute the upper triangular matrix $\mathbf{R}$}\\
+   \Return $\mathbf{Q}$, $\mathbf{R}$
    \end{algorithmic}
 \end{algorithm}
 
-\subsubsection*{Aside: Solution of Linear Systems of Equations}
-In addition to computing the eigendecomposition of a matrix, another handy applications of QR decomposition is to solve the linear systems of equations $\mathbf{A}\cdot\mathbf{x} = \mathbf{b}$.
+\subsubsection*{Solution of Linear Systems using QR Decomposition}
+In addition to computing the eigendecomposition of a matrix, another handy application of QR decomposition is to solve the linear systems of equations $\mathbf{A}\cdot\mathbf{x} = \mathbf{b}$.
 Once $\mathbf{A}$ has been factored into the prodict of $\mathbf{Q}$ and $\mathbf{R}$:
 \begin{equation}
 \mathbf{Q}\mathbf{R}\cdot\mathbf{x} = \mathbf{b}
 \end{equation}
-we multiply both sides by $\mathbf{Q}^{T}$:
+we multiply both sides by $\mathbf{Q}^{\top}$:
 \begin{equation}
-\mathbf{R}\cdot\mathbf{x} = \mathbf{Q}^{T}\cdot\mathbf{b}
+\mathbf{R}\cdot\mathbf{x} = \mathbf{Q}^{\top}\cdot\mathbf{b}
 \end{equation}
-where $\mathbf{Q}^{T}\cdot\mathbf{Q} = \mathbf{I}$. Because $\mathbf{R}$ is an upper triangular matrix, 
-we can solve the linear system of equations using back substitution. Back substitution is an algorithm for solving a system of linear equations whose matrix is upper triangular.
+where $\mathbf{Q}^{\top}\cdot\mathbf{Q} = \mathbf{I}$. Because $\mathbf{R}$ is an upper triangular matrix, 
+We can solve the linear system of equations using back substitution, an algorithm for solving a system of linear equations whose matrix is upper triangular.
 Suppose we have an $n\times{n}$ system ($n\geq{2}$) of equations which is upper triangular and non-singular of the form:
 \begin{equation*}
 \mathbf{U}\mathbf{x} = \mathbf{b}
@@ -202,14 +456,15 @@ where $u_{ii}\neq{0}$. Back substitution requires $\mathcal{O}(n^{2})$ floating 
 To compute the eigendecomposition of a matrix using QR decomposition, we first factorize the matrix $\mathbf{A}$ into the product of $\mathbf{Q}$ and $\mathbf{R}$, 
 then we use the QR-iteration algorithm. The QR-iteration algorithm is an iterative method that computes the eigenvalues and eigenvectors of a matrix by repeatedly applying the QR decomposition to the matrix.
 The \href{https://en.wikipedia.org/wiki/QR_algorithm}{QR iteration algorithm} estimates the eigenvalues and eigenvectors of a square matrix.
-The algorithm consists of two phases:
-\begin{itemize}
+\begin{mdframed}
+The QR-iteration algorithm consists of two phases:
+\begin{itemize}[leftmargin=16pt]
 \item{\textbf{Phase 1: Eigenvalues}. Let $\mathbf{A}\in\mathbb{R}^{n\times{n}}$. 
 Then, starting with $k = 0$, we compute the \href{https://en.wikipedia.org/wiki/QR_decomposition}{QR decomposition} of the matrix $\mathbf{A}_{k}$:
 \begin{equation*}
-\mathbf{A}_{k+1}\leftarrow\mathbf{R}_{k}\mathbf{Q}_{k} = \mathbf{Q}_{k}^{T}\mathbf{A}_{k}\mathbf{Q}_{k}\qquad{k=0,1,\dots} 
+\mathbf{A}_{k+1}\leftarrow\mathbf{R}_{k}\mathbf{Q}_{k} = \mathbf{Q}_{k}^{\top}\mathbf{A}_{k}\mathbf{Q}_{k}\qquad{k=0,1,\dots} 
 \end{equation*}
-where $\mathbf{Q}_{k}$ is an orthogonal matrix, i.e., $\mathbf{Q}^{T}_{k} = \mathbf{Q}^{-1}_{k}$ and $\mathbf{R}_{k}$ is an upper triangular matrix. 
+where $\mathbf{Q}_{k}$ is an orthogonal matrix, i.e., $\mathbf{Q}^{\top}_{k} = \mathbf{Q}^{-1}_{k}$ and $\mathbf{R}_{k}$ is an upper triangular matrix. 
 As $k\rightarrow\infty$, the matrix $\mathbf{A}_{k}$ converges to a triangular matrix with the eigenvalues listed along the diagonal.}
 \item{\textbf{Phase 2: Eigenvectors}. We compute the eigenvectors associated with each eigenvalue by solving the homogenous system of equations:
 \begin{equation*}
@@ -217,17 +472,10 @@ As $k\rightarrow\infty$, the matrix $\mathbf{A}_{k}$ converges to a triangular m
 \end{equation*}
 where $\mathbf{I}$ is the identity matrix.}
 \end{itemize}
+\end{mdframed}
 
 \section{Summary and Conclusions}
-In this lecture, we discussed the eigendecomposition of a matrix and how it can be used to analyze data and systems in the context of unsupervised machine learning.
-Eigendecomposition gives us a way to decompose a matrix into its constituent parts, the eigenvectors and eigenvalues, which can be used to understand the structure of the data or the system represented by the matrix.
-We introduced the QR decomposition, which is a factorization of a matrix into an orthogonal matrix and an upper triangular matrix.
-We introduced the Gram-Schmidt orthogonalization procedure, which is used to compute the QR decomposition of a matrix.
-Gram-Schmidt orthogonalization generates a set of mutually orthogonal vectors starting from a set of linearly independent vectors.
-However, the Gram-Schmidt orthogonalization procedure may fail to generate mutually orthogonal vectors because of rounding errors.
-To fix this issue, we introduced the Modified Gram-Schmidt orthogonalization procedure, which is a more stable version of the Gram-Schmidt orthogonalization procedure.
-Finally, we introduced the QR iteration algorithm, which is an iterative method that computes the eigenvalues and eigenvectors of a matrix.
-The QR iteration algorithm estimates the eigenvalues and eigenvectors of a square matrix by repeatedly applying the QR decomposition to the matrix.
+In this lecture, we discussed the eigendecomposition of a matrix and its application in analyzing data and systems within unsupervised machine learning. Eigendecomposition allows us to break down a matrix into its constituent parts, the eigenvectors and eigenvalues, helping us understand the structure of the data or system represented by the matrix. We introduced the QR decomposition, which factors a matrix into an orthogonal matrix and an upper triangular matrix. We also covered the Gram-Schmidt orthogonalization procedure, used to compute the QR decomposition of a matrix. This procedure generates a set of mutually orthogonal vectors from a set of linearly independent vectors. However, the Gram-Schmidt orthogonalization may fail to produce mutually orthogonal vectors due to rounding errors. To address this issue, we introduced the Modified Gram-Schmidt orthogonalization procedure, a more stable alternative to the Gram-Schmidt method. Finally, we introduced the QR iteration algorithm, an iterative method for calculating the eigenvalues and eigenvectors of a matrix. The QR iteration algorithm estimates the eigenvalues and eigenvectors of a square matrix by repeatedly applying the QR decomposition to it.
 
 \bibliography{References-L2a.bib}
 
