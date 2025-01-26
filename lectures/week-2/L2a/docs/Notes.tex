@@ -104,7 +104,6 @@
 \lecture{2a}{Eigendecomposition of Data and Systems}{Jeffrey Varner}{}
 
 \begin{mdframed}[backgroundcolor=lgray]
-   \section*{Topics}
    \begin{itemize}[leftmargin=16pt]
       \item{\textbf{Eigendecomposition} is a fundamental concept in linear algebra that decomposes a matrix into its constituent parts, the eigenvectors and eigenvalues. 
          Eigendecomposition is widely used in mathematics, engineering, and physics to analyze data and systems.}
@@ -116,6 +115,9 @@
 \end{mdframed}
 
 \section{Introduction}
+Previously, we looked at \href{https://en.wikipedia.org/wiki/K-means_clustering}{K-means clustering} to group data based on the (distance) similarity of the features. 
+Thus, we imposed an ordering on the data with the presumption that similar things will be close together. 
+Today, we take a different perspective: let's let the data tell us which should be grouped and what combinations of features are most (or least) important using eigendecomposition.
 The eigendecomposition of a matrix is a fundamental concept in linear algebra. 
 In this lecture, we will discuss the eigendecomposition of a matrix and how it can be used to analyze data and systems 
 in unsupervised machine learning. Eigendecomposition allows us to decompose a matrix into its constituent parts,
@@ -128,7 +130,7 @@ the eigenvectors and eigenvalues can be used to understand the structure of the 
 % \end{itemize}
 
 \section{Eigendecomposition}
-Suppose we have a real square matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
+Suppose we have a \texttt{square} matrix $\mathbf{A}\in\mathbb{R}^{m\times{m}}$ which could be a measurement dataset, e.g., the columns of $\mathbf{A}$ represent feature 
 vectors $\mathbf{x}_{1},\dots,\mathbf{x}_{m}$ or an adjacency array in a graph with $m$ nodes, etc. Eigenvalue-eigenvector problems involve finding a set of scalar values $\left\{\lambda_{1},\dots,\lambda_{m}\right\}$ called 
 \href{https://mathworld.wolfram.com/Eigenvalue.html}{eigenvalues} and a set of linearly independent vectors 
 $\left\{\mathbf{v}_{1},\dots,\mathbf{v}_{m}\right\}$ called \href{https://mathworld.wolfram.com/Eigenvector.html}{eigenvectors} such that:
@@ -167,7 +169,7 @@ form an orthonormal basis for the space spanned by the matrix $\mathbf{A}$ such 
 \begin{equation}
 \left<\hat{\mathbf{v}}_{i},\hat{\mathbf{v}}_{j}\right> = \delta_{ij}\qquad\text{for}\quad{i,j\in\mathbf{A}}
 \end{equation}
-where $\delta_{ij}$ is the Kronecker delta function. The eigendecomposition of a symmetric real-valued matrix is a powerful tool that can be used to analyze data and systems in many areas of mathematics, engineering, and physics.
+where $\delta_{ij}$ is the \href{https://en.wikipedia.org/wiki/Kronecker_delta}{Kronecker delta function}. The eigendecomposition of a symmetric real-valued matrix is a powerful tool that can be used to analyze data and systems in many areas of mathematics, engineering, and physics.
 For example, eigenvectors of a real-symmetric matrix form an orthogonal (orthonormal) basis for the space spanned by the matrix $\mathbf{A}$.
 Thus, any vector $\mathbf{x}\in\mathbb{R}^{m}$  in that space, i.e., a solution vector can be expressed as a linear combination of the eigenvectors of the matrix $\mathbf{A}$
 i.e., $\mathbf{x} = \sum_{i=1}^{m}c_{i}\mathbf{v}_{i}$, where $c_{i}$ are the coefficients of the linear combination.
@@ -256,7 +258,7 @@ Thus, each component of the reduced vector $\mathbf{y}$ corresponding to $\mathb
 There are several techniques to compute the eigendecomposition of a matrix. 
 The most common method is power iteration, an iterative algorithm that finds the eigenvector corresponding to the largest eigenvalue of a matrix.
 The power iteration method is simple and easy to implement. Still, it may not converge to the desired eigenvector if the matrix is ill-conditioned or has multiple eigenvalues of the same magnitude.
-Alternatively, we can use the QR algorithm, a more robust method to find all a matrix's eigenvalues and eigenvectors.
+Alternatively, we can use the QR iteration algorithm to find all the eigenvalues and eigenvectors.
 
 \subsection{Power Iteration}
 The \href{https://en.wikipedia.org/wiki/Power_iteration}{power iteration method} 
@@ -288,13 +290,9 @@ where $\left<\star,\star\right>$ denotes \href{https://mathworld.wolfram.com/Inn
 While simple to implement, the \href{https://en.wikipedia.org/wiki/Power_iteration}{power iteration method} may exhibit slow convergence, mainly when the largest eigenvalue is close in magnitude to other eigenvalues, i.e., $|\lambda_{1}|/|\lambda_{2}| \sim 1$.
 \end{itemize}
 \end{mdframed}
-The power iteration method has several notable applications.
-The most famous application is the \href{https://en.wikipedia.org/wiki/PageRank}{Google PageRank algorithm}.
+The power iteration method has several notable applications. For example, likely the most famous application is the \href{https://en.wikipedia.org/wiki/PageRank}{Google PageRank algorithm}.
 Google's PageRank algorithm, which uses power iteration, utilizes the dominant eigenvalue and its corresponding eigenvector to assess the importance of web pages within a network.
-Specifically, the algorithm constructs a link matrix that represents the connections between pages, where the dominant eigenvector associated with the maximum eigenvalue 
-reflects the relative importance of each page, with its entries normalized to sum to 1, thus providing a ranking of pages based on their likelihood of being visited over time.
-Puedo code for the power iteration method is shown in Algorithm \ref{alg:power_iteration}.
-
+For a deeper discussion of the PageRank algorithm, see Brezinski and Redivo-Zaglia \citep{Brezinski:2006}. Psuedo code for the power iteration method is shown in Algorithm \ref{alg:power_iteration}.
 \begin{algorithm}[H]
    \caption{Power Iteration Method}\label{alg:power_iteration}
 \begin{algorithmic}[1]

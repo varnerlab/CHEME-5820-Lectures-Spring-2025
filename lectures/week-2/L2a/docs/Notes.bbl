@@ -1,5 +1,13 @@
 \begin{thebibliography}{1}
 
+\bibitem{Brezinski:2006}
+Brezinski C, Redivo-Zaglia M.
+\newblock The PageRank Vector: Properties, Computation, Approximation, and
+  Acceleration.
+\newblock SIAM Journal on Matrix Analysis and Applications.
+  2006;28(2):551--575.
+\newblock doi:{10.1137/050626612}.
+
 \bibitem{Francis-QR-1961}
 Francis JGF.
 \newblock {The QR Transformation A Unitary Analogue to the LR
