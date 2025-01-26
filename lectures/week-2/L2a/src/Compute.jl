@@ -100,3 +100,15 @@ This function computes the orthogonal basis of a matrix using the specified algo
 function orthogonalize(A::Array{<:Number,2}, algorithm::T)::Array{Float64,2} where {T<:AbstractGramSchmidtAlgorithm}
     return _orthogonalize(A, algorithm);
 end
+
+function softmax(x::Array{Float64,1})::Array{Float64,1}
+    
+    # compute the exponential of the vector
+    y = exp.(x);
+    
+    # compute the sum of the exponential
+    s = sum(y);
+    
+    # compute the softmax
+    return y / s;
+end
