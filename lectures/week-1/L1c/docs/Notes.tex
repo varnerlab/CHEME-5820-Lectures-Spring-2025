@@ -144,7 +144,8 @@ Suppose we have a dataset $\mathcal{D} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \
 The goal of the K-means algorithm is to partition the dataset into $K$ clusters, $\mathcal{C} = \left\{c_{1},c_{2},\dots, c_{K}\right\}$, 
 where each cluster $c_{j}$ is represented by a centroid $\mu_j\in\mathbb{R}^{m}$. To enforce that $\mathcal{C}$ is a valid partition of $\mathcal{D}$, we require that each data point $\mathbf{x}_i$ is assigned to exactly one cluster $c_{j}$, i.e., $c_{i}\cap c_{j} = \emptyset$ for $i\neq j$ (no shared members).
 In addition, the union of all clusters covers the entire dataset, i.e., $\cup_{j=1}^{K}c_{j} = \mathcal{D}$.
-The problem of K-means clustering can be formulated as an optimization problem, where the objective is to minimize the sum of squared distances between each data point and its assigned cluster centroid:
+The problem of K-means clustering can be formulated as an optimization problem, 
+where the objective is to minimize the sum of squared distances between each data point and its assigned cluster centroid:
 \begin{equation}
 \min_{\mathcal{C}} \sum_{j=1}^{K}\sum_{\mathbf{x}\in c_{j}}\norm{\mathbf{x} - \mu_{j}}_{2}^{2}
 \end{equation}
