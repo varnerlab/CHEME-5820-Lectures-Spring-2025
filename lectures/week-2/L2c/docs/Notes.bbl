@@ -54,4 +54,8 @@ Stewart GW.
 \newblock SIAM Review. 1993;35(4):551--566.
 \newblock doi:{10.1137/1035134}.
 
+\bibitem{Shlens:2014}
+Shlens J. A Tutorial on Principal Component Analysis; 2014.
+\newblock Available from: \url{https://arxiv.org/abs/1404.1100}.
+
 \end{thebibliography}

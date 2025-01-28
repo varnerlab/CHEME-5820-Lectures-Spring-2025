@@ -105,7 +105,7 @@
 \begin{mdframed}[backgroundcolor=lgray]
    \subsection*{Topics}
    \begin{itemize}[leftmargin=16pt]
-      \item{\textbf{Singular Value Decomposition (SVD)} is a factorization of a matrix into the product of three matrices: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, 
+      \item{\textbf{Singular Value Decomposition (SVD)} is a factorization of a matrix into the product of three matrices: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{\top}$, 
       where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices, and $\mathbf{\Sigma}$ is a diagonal matrix containing the singular values of $\mathbf{A}$. The SVD is used to analyze the structure of a matrix, 
       and is used in many applications, including data compression, image processing, and control theory.}
       \item{\textbf{Principle Component Analysis (PCA)} is a method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace.
@@ -126,61 +126,72 @@ Similarly, PCA is a widely used method across many fields and applicatrions, e.g
 
 \section{Singular Value Decomposition (SVD)}
 Singular value decomposition (SVD), originally developed in 1870s \citep{Stewart:1993} is a matrix factorization technique that is based on the eigendecomposition of a matrix.
-Suppose we have a matrix $A \in \R^{m \times n}$. The SVD of $\mathbf{A}$ is a factorization of the form: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, where
-$\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{T} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ is a diagonal matrix containing 
+Suppose we have a matrix $\mathbf{A} \in \R^{m \times n}$. The SVD of $\mathbf{A}$ is a factorization of the form: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{\top}$, where
+$\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{\top} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ is a diagonal matrix containing 
 the singular values $\sigma_{i}=\Sigma_{ii}$. The matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$ can be decomposed as:
 \begin{equation*}
 \mathbf{A} = \sum_{i=1}^{r_{\mathbf{A}}}\sigma_{i}\cdot\left(\mathbf{u}_{i}\otimes\mathbf{v}_{i}\right)
 \end{equation*}
-where $r_{\mathbf{A}}$ is the rank of matrix $\mathbf{A}$ and $\otimes$ denotes the outer product. 
-The outer product $\hat{\mathbf{A}}_{i} = \mathbf{u}_{i}\otimes\mathbf{v}_{i}$ is a rank-1 matrix with elements: 
+where $r_{\mathbf{A}}$ is the rank of matrix $\mathbf{A}$, and $\sigma_{i}$ are the singular values (ordered from largest to smallest) of the matrix $\mathbf{A}$,
+and $\otimes$ denotes the outer product. 
+The outer product $\hat{\mathbf{A}}_{i} = \mathbf{u}_{i}\otimes\mathbf{v}_{i}$ is a rank-1 matrix, i.e., a mode of the original matrix $\mathbf{A}$,  with elements: 
 \begin{equation*}
 \hat{a}_{jk} = u_{j}v_{k}\qquad{j=1,2,\dots,n~\text{and}~k=1,2,\dots,m}
 \end{equation*}
-The vectors $\mathbf{u}_{i}$ and $\mathbf{v}_{i}$ are the left (right) singular vectors, 
-and $\sigma_{i}$ are the singular values (ordered). Singular value decomposuition is a special sort of eigendecomposition, thus, we could use QR-itereation to compute the SVD.
-The columns of $\mathbf{U}$ are eigenvectors of $\mathbf{A}\mathbf{A}^{T}$, 
-the columns of $\mathbf{V}$ are eigenvectors of $\mathbf{A}^{T}\mathbf{A}$ and
-the singular values $\sigma_{i}$ are the square roots of the eigenvalues of the matrix products $\mathbf{A}\mathbf{A}^{T}$ or $\mathbf{A}^{T}\mathbf{A}$. 
+where the vectors $\mathbf{u}_{i}$ and $\mathbf{v}_{i}$ denote the left (right) singular vectors, respectively, of the matrix $\mathbf{A}$.
+
+Singular value decomposuition is a special sort of eigendecomposition, thus, we could (theorectially) use QR-itereation to compute the SVD. However, what matrix do we use?
+The columns of $\mathbf{U}$ (left-singular vectors) are eigenvectors of $\mathbf{A}\mathbf{A}^{\top}$, 
+while the columns of $\mathbf{V}$ are eigenvectors of $\mathbf{A}^{\top}\mathbf{A}$.
+Finally, the singular values $\sigma_{i}$ are the square roots of the eigenvalues $\lambda_{i}$, i.e., $\sigma_{i} = \sqrt{\lambda_{i}}$ of the matrix product(s) $\mathbf{A}\mathbf{A}^{\top}$ or $\mathbf{A}^{\top}\mathbf{A}$. 
+Thus, there is a direct relationship between the eigenvalue decomposition of a matrix $\mathbf{A}$ and its singular value decomposition.
 
 \section{Principal Component Analysis (PCA)}
-Principal component analysis (PCA) is a method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace.
+Principal component analysis (PCA) is a widely used method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace, see the PCA tutorial by Shlens \citep{Shlens:2014}.
 The principal components are the eigenvectors of the covariance matrix of the data, and the principal component scores are the projections of the data onto the principal components.
+However, this is the end of the story. Let's start at the beginning, and see how we get there.
 
-Let's return to the idea of dimensionality reduction of the covariance matrix that we introduced when exploring eigendecomposition.
-Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is an $m$-dimensional feature vector.
-The covariance of feature vectors $i$ and $j$, denoted as $\text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right)$, is an $\mathbf{\Sigma}\in\mathbb{R}^{n\times{n}}$ 
-real-valued symmetric matrix $\mathbf{\Sigma}\in\R^{n\times{n}}$ with elements: 
-\begin{equation}
-    \Sigma_{ij} = \text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right) = \sigma_{i}\,\sigma_{j}\,\rho_{ij}\qquad\text{for}\quad{i,j \in \mathcal{D}}
-\end{equation}
-where $\sigma_{i}$ denote the standard deviation of the feature vector $\mathbf{x}_{i}$, $\sigma_{j}$ denote the standard deviation of the 
-feature vector $\mathbf{x}_{j}$, and $\rho_{ij}$ denotes the correlation between features $i$ and $j$ in the dataset $\D$. The correlation is given by:
-\begin{equation}
-\rho_{ij} = \frac{\mathbb{E}(\mathbf{x}_{i}-\mu_{i})\cdot\mathbb{E}(\mathbf{x}_{j} - \mu_{j})}{\sigma_{i}\sigma_{j}}\qquad\text{for}\quad{i,j \in \mathcal{D}}
-\end{equation}
-The diagonal elements of the covariance matrix $\Sigma_{ii}\in\mathbf{\Sigma}$ are the variances of the individual feature vectors,
-while the off-diagonal elements $\Sigma_{ij}\in\mathbf{\Sigma}$ for $i\neq{j}$ measure the relationship between feature vectors $i$ and $j$
-in the dataset $\mathcal{D}$. 
+% Let's return to the idea of dimensionality reduction of the covariance matrix that we introduced when exploring eigendecomposition.
+% Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is an $m$-dimensional feature vector.
+% The covariance of feature vectors $i$ and $j$, denoted as $\text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right)$, is an $\mathbf{\Sigma}\in\mathbb{R}^{n\times{n}}$ 
+% real-valued symmetric matrix $\mathbf{\Sigma}\in\R^{n\times{n}}$ with elements: 
+% \begin{equation}
+%     \Sigma_{ij} = \text{cov}\left(\mathbf{x}_{i},\mathbf{x}_{j}\right) = \sigma_{i}\,\sigma_{j}\,\rho_{ij}\qquad\text{for}\quad{i,j \in \mathcal{D}}
+% \end{equation}
+% where $\sigma_{i}$ denote the standard deviation of the feature vector $\mathbf{x}_{i}$, $\sigma_{j}$ denote the standard deviation of the 
+% feature vector $\mathbf{x}_{j}$, and $\rho_{ij}$ denotes the correlation between features $i$ and $j$ in the dataset $\D$. The correlation is given by:
+% \begin{equation}
+% \rho_{ij} = \frac{\mathbb{E}(\mathbf{x}_{i}-\mu_{i})\cdot\mathbb{E}(\mathbf{x}_{j} - \mu_{j})}{\sigma_{i}\sigma_{j}}\qquad\text{for}\quad{i,j \in \mathcal{D}}
+% \end{equation}
+% The diagonal elements of the covariance matrix $\Sigma_{ii}\in\mathbf{\Sigma}$ are the variances of the individual feature vectors,
+% while the off-diagonal elements $\Sigma_{ij}\in\mathbf{\Sigma}$ for $i\neq{j}$ measure the relationship between feature vectors $i$ and $j$
+% in the dataset $\mathcal{D}$. 
+% where each component of the reduced composite feature vector $\mathbf{y}$ corresponding to $\mathbf{x}\in\D$ is given by:
+% \begin{equation}
+%    y_{j} = \hat{\mathbf{\phi}}_{j}^{\top}\cdot\mathbf{x}\quad{j=1,2,\dots,k}
+% \end{equation}
+% Thus, the first property of the transform vectors is that they 
+
 
 \subsection{Data reduction problem}
-Suppose we wanted to reduce the dimensionality of the feature vectors $\mathbf{x}\in\D$ from $m$ to $k$ dimensions, where $k<m$, 
-i.e., we want to transform $\mathbf{x}_{i}\in\R^{m}\rightarrow\mathbf{y}_{i}\in\R^{k}$. 
+Suppose we have a dataset $\D = \left\{\mathbf{x}_{1},\mathbf{x}_{2},\dots,\mathbf{x}_{n}\right\}$ where each $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is an $m$-dimensional feature vector.
+Further, suppose we wanted to reduce the dimensionality of the feature vectors $\mathbf{x}\in\D$ from $m$ to $k$ dimensions, where $k\ll{m}$, 
+i.e., we wanted to transform $\mathbf{x}_{i}\in\R^{m}\rightarrow\mathbf{y}_{i}\in\R^{k}$. 
+The reduced-order transformed feature vector $\mathbf{y}_{i}$ is called a composite feature, as it is a linear combination of the original features.
 We may want to do this for a variety of reasons, for example, to visualize the data in $2$ or $3$ dimensions, or to reduce the computational complexity of a machine learning algorithm.
 To make this possible, we construct (somehow) a projection matrix $\mathbf{P}$ such that:
 \begin{equation}
    \mathbf{y}_{i} = \mathbf{P}\mathbf{x}_{i}\quad{i=1,2,\dots,n}
 \end{equation}
-The projection matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transform vectors. The open question is 
-what are the best transform vectors to use? The answer is to use the eigenvectors of the covariance matrix $\mathbf{\Sigma}$.
-However, we build our transformation matrix using the eigenvectors gives the reduced feature vector corresponding to $x\in\D$ is given by:
+The projection matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transform vectors $\mathbf{\phi}$, that have special properties.
+First, the $k$ transformation vectors ${\mathbf{\phi}}_{1},{\mathbf{\phi}}_{2},\dots,{\mathbf{\phi}}_{k}\in\R^{m}$, i.e.,
 \begin{equation}
    \begin{pmatrix}
       y_{1} \\
       y_{2} \\
       \vdots \\
       y_{k}
-   \end{pmatrix} = \brows{\hat{\mathbf{v}}_1^T \\ \hat{\mathbf{v}}_2^T \\ \rowsvdots \\ \hat{\mathbf{v}}_k^T}
+   \end{pmatrix} = \brows{{\mathbf{\phi}}_1^\top \\ {\mathbf{\phi}}_2^\top \\ \rowsvdots \\ {\mathbf{\phi}}_k^\top}
    \cdot
    \begin{pmatrix}
       x_{1} \\
@@ -189,21 +200,28 @@ However, we build our transformation matrix using the eigenvectors gives the red
       x_{m}
    \end{pmatrix}
 \end{equation}
-where $\hat{\mathbf{v}}_{\star}^{T}$ denotes the transpose of the scaled eigenvector $\hat{\mathbf{v}}_{\star}$ of the covariance matrix $\mathbf{\Sigma}$.
-Thus, each component of the reduced vector $\mathbf{y}$ corresponding to $\mathbf{x}\in\D$ is given by:
-\begin{equation}
-   y_{j} = \hat{\mathbf{v}}_{j}^{T}\cdot\mathbf{x}\quad{j=1,2,\dots,k}
-\end{equation}
-The open question is which $k$-vectors should we use to build the transformation matrix $\mathbf{P}$? 
+must be orthonormal, i.e., $\left<{\mathbf{\phi}}_{i},{\mathbf{\phi}}_{j}\right> = \delta_{ij}$, 
+where $\delta_{ij}$ is the Kronecker delta function, i.e., $\delta_{ij} = 1$ if $i=j$ and $0$ otherwise, and
+$\left<\star,\star\right>$ is the inner product of two vectors.
+Next, by convention, the transformation vectors are scaled such that $\|{\mathbf{\phi}}_{j}\|=1$.
+However, we know that $\norm{\mathbf{\phi}_{j}} = \sqrt{\left<\mathbf{\phi}_{j},\mathbf{\phi}_{j}\right>} = 1$, 
+by default, if we choose an orthonormal set of transformation vectors. 
+
+The open question is what are the best transformation vectors to use? 
+There are two ways to think about this question. The first is to select the $k$-vectors of that capture the most variance in the data. 
+The second (which I find more intuitive) is to select the $k$-vectors that minimize the reconstruction error, 
+i.e., we want the reduced composite features to be the best possible approximation of the original data set.
+These two approaches are equivalent, thus, let's explore the second approach.
 
 \subsection*{Minimize reconstruction error}
-Fill me in.
+When talking about PCA and the reconstruction problem we typically assume z-score centering, i.e., every feature vector $\mathbf{x}_{i}\in\D$ has been centered by subtracting the mean of each feature vector, 
+and dividing by the standard deviation of each feature vector. This is done to make sure all features are on the same scale.
 
 \section{Summary and Conclusions}
 In this lecture we discussed the singular value decomposition (SVD) of data and systems, and a method for reducing the dimensionality of data called principal component analysis (PCA).
 Singular Value Decomposition (SVD) and Principal Component Analysis (PCA) are powerful techniques in linear algebra and data analysis. 
-SVD is a matrix factorization method that decomposes a matrix $\mathbf{A}$ into the product $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{T}$, where
-$\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{T} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ 
+SVD is a matrix factorization method that decomposes a matrix $\mathbf{A}$ into the product $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{\top}$, where
+$\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{\top} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ 
 is a diagonal matrix containing the singular values $\sigma_{i}=\Sigma_{ii}$.
 This decomposition has important applications in dimensionality reduction and data compression. 
 On the other hand, principle component analysis (PCA), closely related to SVD, 
