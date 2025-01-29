@@ -7,44 +7,47 @@ Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
 Reallocated global_strs (elt_size=200001) to 20 items from 10.
 Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-You've used 9 entries,
+Warning--empty booktitle in Cline2006ComputationOT
+Warning--empty pages in Cline2006ComputationOT
+You've used 10 entries,
             3058 wiz_defined-function locations,
-            714 strings with 6775 characters,
-and the built_in function-call counts, 10740 in all, are:
-= -- 1377
-> -- 76
+            719 strings with 6951 characters,
+and the built_in function-call counts, 11597 in all, are:
+= -- 1478
+> -- 84
 < -- 2
-+ -- 45
-- -- 19
-* -- 827
-:= -- 1223
-add.period$ -- 38
-call.type$ -- 9
++ -- 52
+- -- 21
+* -- 897
+:= -- 1323
+add.period$ -- 40
+call.type$ -- 10
 change.case$ -- 4
 chr.to.int$ -- 0
-cite$ -- 9
-duplicate$ -- 965
-empty$ -- 1002
-format.name$ -- 24
-if$ -- 2522
+cite$ -- 12
+duplicate$ -- 1030
+empty$ -- 1087
+format.name$ -- 27
+if$ -- 2719
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 69
-newline$ -- 53
-num.names$ -- 9
-pop$ -- 111
+int.to.str$ -- 10
+missing$ -- 75
+newline$ -- 57
+num.names$ -- 10
+pop$ -- 129
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 140
+skip$ -- 153
 stack$ -- 0
-substring$ -- 1813
-swap$ -- 200
+substring$ -- 1952
+swap$ -- 213
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 70
-width$ -- 10
-write$ -- 111
+warning$ -- 2
+while$ -- 75
+width$ -- 12
+write$ -- 120
+(There were 2 warnings)

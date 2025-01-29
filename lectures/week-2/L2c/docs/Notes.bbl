@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Alter:2000aa}
 Alter O, Brown PO, Botstein D.
@@ -53,6 +53,11 @@ Stewart GW.
 \newblock On the Early History of the Singular Value Decomposition.
 \newblock SIAM Review. 1993;35(4):551--566.
 \newblock doi:{10.1137/1035134}.
+
+\bibitem{Cline2006ComputationOT}
+Cline AK, Dhillon IS.
+\newblock Computation of the Singular Value Decomposition; 2006.Available from:
+  \url{https://api.semanticscholar.org/CorpusID:124233634}.
 
 \bibitem{Shlens:2014}
 Shlens J. A Tutorial on Principal Component Analysis; 2014.

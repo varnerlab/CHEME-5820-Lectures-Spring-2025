@@ -110,7 +110,7 @@
       and is used in many applications, including data compression, image processing, and control theory.}
       \item{\textbf{Principle Component Analysis (PCA)} is a method for reducing the dimensionality of data by projecting it onto a lower-dimensional subspace.
       The principal components are the eigenvectors of the covariance matrix of the data, and the principal component scores are the projections of the data onto the principal components.
-      We can compute the principal components using the SVD of the covariance matrix.}
+      We can compute the principal components using the singular value decomposition.}
    \end{itemize}
 \end{mdframed}
 
@@ -122,27 +122,32 @@ The SVD is a generalization of the eigenvalue decomposition and is used to analy
 The SVD is used in a huge variety of unsupervised learning type applications, e.g., understanding gene expression data \citep{Alter:2000aa, Alter:2006}, 
 the structure of chemical reaction networks \citep{Famili:2003aa}, in process control applications \citep{MooreSVD1986},
 and analyis of various type of networks \citep{SASTRY20075275, 7993780}.
-Similarly, PCA is a widely used method across many fields and applicatrions, e.g., drug discovery \citep{GIULIANI20171069}.
+Similarly, PCA is a widely used method across many fields and applicattions, e.g., drug discovery \citep{GIULIANI20171069}.
 
 \section{Singular Value Decomposition (SVD)}
 Singular value decomposition (SVD), originally developed in 1870s \citep{Stewart:1993} is a matrix factorization technique that is based on the eigendecomposition of a matrix.
 Suppose we have a matrix $\mathbf{A} \in \R^{m \times n}$. The SVD of $\mathbf{A}$ is a factorization of the form: $\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^{\top}$, where
 $\mathbf{U}\in\mathbb{R}^{n\times{n}}$ and $\mathbf{V}\in\mathbb{R}^{m\times{m}}$ are orthogonal matrices, i.e., $\mathbf{U}\cdot\mathbf{U}^{\top} = \mathbf{I}$ and $\mathbf{\Sigma}\in\mathbb{R}^{n\times{m}}$ is a diagonal matrix containing 
 the singular values $\sigma_{i}=\Sigma_{ii}$. The matrix $\mathbf{A}\in\mathbb{R}^{n\times{m}}$ can be decomposed as:
-\begin{equation*}
+\begin{equation}
 \mathbf{A} = \sum_{i=1}^{r_{\mathbf{A}}}\sigma_{i}\cdot\left(\mathbf{u}_{i}\otimes\mathbf{v}_{i}\right)
-\end{equation*}
+\end{equation}
 where $r_{\mathbf{A}}$ is the rank of matrix $\mathbf{A}$, and $\sigma_{i}$ are the singular values (ordered from largest to smallest) of the matrix $\mathbf{A}$,
 and $\otimes$ denotes the outer product. 
 The outer product $\hat{\mathbf{A}}_{i} = \mathbf{u}_{i}\otimes\mathbf{v}_{i}$ is a rank-1 matrix, i.e., a mode of the original matrix $\mathbf{A}$,  with elements: 
-\begin{equation*}
+\begin{equation}
 \hat{a}_{jk} = u_{j}v_{k}\qquad{j=1,2,\dots,n~\text{and}~k=1,2,\dots,m}
-\end{equation*}
+\end{equation}
 where the vectors $\mathbf{u}_{i}$ and $\mathbf{v}_{i}$ denote the left (right) singular vectors, respectively, of the matrix $\mathbf{A}$.
+Singular value decomposition is a powerful tool for analyzing the structure of a matrix, e.g., for computing the properties such as the rank of a mtrix, and is used in many applications, 
+including data compression, image processing, and control theory. It is also used for solving linear systems of equations,
+such as those that arise in linear regression tasks.
 
-Singular value decomposuition is a special sort of eigendecomposition, thus, we could (theorectially) use QR-itereation to compute the SVD. However, what matrix do we use?
-The columns of $\mathbf{U}$ (left-singular vectors) are eigenvectors of $\mathbf{A}\mathbf{A}^{\top}$, 
-while the columns of $\mathbf{V}$ are eigenvectors of $\mathbf{A}^{\top}\mathbf{A}$.
+\subsection{Computing the SVD}
+Singular value decomposuition is a special sort of eigendecomposition, i.e., decpomposition of the matrix products $\mathbf{A}\mathbf{A}^{\top}$ and $\mathbf{A}^{\top}\mathbf{A}$.
+Thus, we could (theorectially) use QR-itereation to compute the SVD, see \citep{Cline2006ComputationOT} for a discussion of various (better) approaches to computing the SVD.
+The columns of $\mathbf{U}$ (left-singular vectors) are the eigenvectors of $\mathbf{A}\mathbf{A}^{\top}$, 
+while the columns of $\mathbf{V}$ are the eigenvectors of $\mathbf{A}^{\top}\mathbf{A}$.
 Finally, the singular values $\sigma_{i}$ are the square roots of the eigenvalues $\lambda_{i}$, i.e., $\sigma_{i} = \sqrt{\lambda_{i}}$ of the matrix product(s) $\mathbf{A}\mathbf{A}^{\top}$ or $\mathbf{A}^{\top}\mathbf{A}$. 
 Thus, there is a direct relationship between the eigenvalue decomposition of a matrix $\mathbf{A}$ and its singular value decomposition.
 
@@ -179,12 +184,16 @@ Further, suppose we wanted to reduce the dimensionality of the feature vectors $
 i.e., we wanted to transform $\mathbf{x}_{i}\in\R^{m}\rightarrow\mathbf{y}_{i}\in\R^{k}$. 
 The reduced-order transformed feature vector $\mathbf{y}_{i}$ is called a composite feature, as it is a linear combination of the original features.
 We may want to do this for a variety of reasons, for example, to visualize the data in $2$ or $3$ dimensions, or to reduce the computational complexity of a machine learning algorithm.
-To make this possible, we construct (somehow) a projection matrix $\mathbf{P}$ such that:
+To make this possible, we construct (somehow) a projection (transformation) matrix $\mathbf{P}$ such that:
 \begin{equation}
    \mathbf{y}_{i} = \mathbf{P}\mathbf{x}_{i}\quad{i=1,2,\dots,n}
 \end{equation}
-The projection matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transform vectors $\mathbf{\phi}$, that have special properties.
-First, the $k$ transformation vectors ${\mathbf{\phi}}_{1},{\mathbf{\phi}}_{2},\dots,{\mathbf{\phi}}_{k}\in\R^{m}$, i.e.,
+where $\mathbf{y}_{i}\in\R^{k}$ is the $i$th reduced \texttt{composite feature vector}. 
+We call the $\mathbf{y}$ a composite feature because its component are the composite (weighted sum) of the original feature vectors $\mathbf{x}$, i.e., 
+\begin{equation}
+y_{j} = {\mathbf{\phi}}_{j}^{\top}\cdot\mathbf{x}\quad{j=1,2,\dots,k}
+\end{equation}
+The projection (transformation) matrix $\mathbf{P}$ will be a $k\times{m}$ matrix composed of some transformation vectors $\mathbf{\phi}$:
 \begin{equation}
    \begin{pmatrix}
       y_{1} \\
@@ -200,22 +209,40 @@ First, the $k$ transformation vectors ${\mathbf{\phi}}_{1},{\mathbf{\phi}}_{2},\
       x_{m}
    \end{pmatrix}
 \end{equation}
+that have special properties. First, the $k$ transformation vectors ${\mathbf{\phi}}_{1},{\mathbf{\phi}}_{2},\dots,{\mathbf{\phi}}_{k}\in\R^{m}$
 must be orthonormal, i.e., $\left<{\mathbf{\phi}}_{i},{\mathbf{\phi}}_{j}\right> = \delta_{ij}$, 
-where $\delta_{ij}$ is the Kronecker delta function, i.e., $\delta_{ij} = 1$ if $i=j$ and $0$ otherwise, and
+where $\delta_{ij}$ is the \href{https://en.wikipedia.org/wiki/Kronecker_delta}{Kronecker delta function}, i.e., $\delta_{ij} = 1$ if $i=j$ and $0$ otherwise, and
 $\left<\star,\star\right>$ is the inner product of two vectors.
 Next, by convention, the transformation vectors are scaled such that $\|{\mathbf{\phi}}_{j}\|=1$.
 However, we know that $\norm{\mathbf{\phi}_{j}} = \sqrt{\left<\mathbf{\phi}_{j},\mathbf{\phi}_{j}\right>} = 1$, 
-by default, if we choose an orthonormal set of transformation vectors. 
+by default, if we choose an orthonormal set of transformation vectors. Finally, these two properties give us a nice feature of the projection (transformation) matrix $\mathbf{P}$, 
+namely the projection (transformation) matrix $\mathbf{P}$ is an orthogonal matrix, i.e., $\mathbf{P}\cdot\mathbf{P}^{\top} = \mathbf{I}$. 
 
 The open question is what are the best transformation vectors to use? 
-There are two ways to think about this question. The first is to select the $k$-vectors of that capture the most variance in the data. 
-The second (which I find more intuitive) is to select the $k$-vectors that minimize the reconstruction error, 
-i.e., we want the reduced composite features to be the best possible approximation of the original data set.
+There are two ways to think about this question (both of which ultimately give the same answer). The first is to select the $k$-vectors that capture the most variance in the data, i.e., we want to capture the natural spread of the data.
+Alternatively, the second (which I find more intuitive) is to select the $k$-vectors that minimize the reconstruction error, 
+i.e., we want our reduced composite features to be the best possible approximation of the original data set.
 These two approaches are equivalent, thus, let's explore the second approach.
 
 \subsection*{Minimize reconstruction error}
-When talking about PCA and the reconstruction problem we typically assume z-score centering, i.e., every feature vector $\mathbf{x}_{i}\in\D$ has been centered by subtracting the mean of each feature vector, 
-and dividing by the standard deviation of each feature vector. This is done to make sure all features are on the same scale.
+When talking about PCA and the reconstruction problem we typically the data is centered in some way, i.e., the mean of each new scaled feature vector is zero.
+For example, we can do this by z-score centering the data (which will be our convention in this course), i.e., we subtract the mean of each feature vector from each element of the feature vector, and divide by the standard deviation of each feature vector, 
+that is:
+\begin{equation}
+   \hat{\mathbf{x}}_{i} = \frac{\mathbf{x}_{i}-\mu_{i}}{\sigma_{i}}\qquad{i=1,2,\dots,n}
+\end{equation}
+where $\mu_{i}$ and $\sigma_{i}$ are the mean and standard deviation of the feature vector $\mathbf{x}_{i}$, respectively, $\hat{\mathbf{x}}_{i}$ is the $i$th centered (scaled) feature vector, 
+and $\mathbf{x}_{i}$ is the original feature vector. This is done to make sure all features are on the same scale, and have zero mean and unit variance.
+Thus, we are trying to find a projection (transformation) matrix $\mathbf{P}$ that minimizes the reconstruction error of the scaled features:
+\begin{equation}\label{eq:reconstruction-error-full}
+   \min_{\phi}\sum_{i=1}^{n}\norm{\hat{\mathbf{x}}_{i}-\mathbf{P}^{\top}\mathbf{y}_{i}}_{2}^{2}
+\end{equation}
+The derivation of the solution can be found in the \href{https://cornell.box.com/s/uuv2xeoil6pejul3hrdg6hqe96pxruui}{CS 4786 lecture notes on Principle Component Analysis by Prof. Karthik Sridharan} (note there as some differences in notation, but the ideas would be the same).  
+In the end, the minimization problem in Eqn \eqref{eq:reconstruction-error-full} is equivalent to solving eigendcompostion problem(s) of the form:
+\begin{equation}
+\mathbf{\Sigma}\mathbf{\phi}_{i} = \lambda_{i}\mathbf{\phi}_{i}\qquad{i=1,2,\dots,k}
+\end{equation}
+where we select the eigenvectors $\mathbf{\phi}_{i}$ corresponding to the $k$ largest eigenvalues $\lambda_{i}$ of the covariance matrix $\mathbf{\Sigma}$ to be the transformation vectors.
 
 \section{Summary and Conclusions}
 In this lecture we discussed the singular value decomposition (SVD) of data and systems, and a method for reducing the dimensionality of data called principal component analysis (PCA).
