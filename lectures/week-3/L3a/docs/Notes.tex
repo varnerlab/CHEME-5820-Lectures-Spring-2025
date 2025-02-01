@@ -1,11 +1,11 @@
-\documentclass{article}[12pt]
+\documentclass{article}[11pt]
 \usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
 %\usepackage{epstopdf}
 %\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
 \usepackage{amssymb} %maths
 \usepackage{amsmath} %maths
 \usepackage{amsthm, comment}
-\usepackage[round,comma,sort, numbers]{natbib}
+\usepackage[round,comma,sort,numbers]{natbib}
 
 % \bibliographystyle{plain}
 \bibliographystyle{plos2015}
@@ -29,10 +29,24 @@
 \usepackage{simplemargins}
 \usepackage{hyperref}
 
+\usepackage{mdframed}
+\definecolor{lgray}{rgb}{0.92,0.92,0.92}
+\definecolor{lsalmon}{rgb}{0.9921568627450981,0.9411764705882353, 0.9254901960784314}
+
 \renewcommand{\bibnumfmt}[1]{#1.}
 \setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
 \setallmargins{1in}
 \linespread{1.1}
+
+\newcommand{\brows}[1]{%
+  \begin{bmatrix}
+  \begin{array}{@{\protect\rotvert\;}c@{\;\protect\rotvert}}
+  #1
+  \end{array}
+  \end{bmatrix}
+}
+\newcommand{\rotvert}{\rotatebox[origin=c]{90}{$\vert$}}
+\newcommand{\rowsvdots}{\multicolumn{1}{@{}c@{}}{\vdots}}
 
 
 \def\R{\mathbb{R}}
@@ -43,6 +57,7 @@
 \def\G{\mathcal{G}}
 \def\H{\mathcal{H}}
 \def\S{\mathcal{S}}
+\def\D{\mathcal{D}}
 \def\P{\mathbb{P}}
 \def\1{\mathbf{1}}
 \def\n{\nappa}
@@ -84,12 +99,10 @@
    \vspace*{4mm}
 }
 
-
 \begin{document}
 \lecture{3a}{Linear Regression, Perceptron and Binary Classification}{Jeffrey Varner}{}
 
 \begin{mdframed}[backgroundcolor=lgray]
-    \section*{Topics}
     \begin{itemize}[leftmargin=16pt]
         \item{\textbf{Linear regression models}: A class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continuous or discrete input features. 
         Linear regression models assume that the output variable is a linear combination of the input features.}
@@ -107,6 +120,62 @@ The perceptron algorithm is a simple iterative algorithm that incrementally upda
 We will first introduce the perceptron algorithm and then discuss its convergence properties, i.e., when the algorithm converges to a solution and when it does not.
 The key concepts covered in this lecture include:
 
+\section{Optimizer}
+The material in this section was heavily inspired by the \href{}{Applied Machine Learning (Cornell CS5785, Fall 2024) course notes.}
+Before we present our first supervised learning algorithm, namely linear regression, let's do a quick calculus review as it relates to 
+the supervised learning problem. 
+
+\subsection{Calcular Review}
+A key part of a supervised learning algorithm is the \texttt{optimizer}, which takes  
+an objective $J$ (also called a loss function) and a model $\mathcal{M}$. 
+In general, an objective function $J$ measures the difference between the predicted values and the observed values in some way, e.g., the mean squared error (MSE), the cross-entropy loss, or the negative log-likelihood.
+The optimizer outputs a model $f \in \mathcal{M}$ with the smallest value of the objective $J$, i.e., $\min_{f \in \mathcal{M}} J(f)$.
+Intuitively, this is the function that best describes the (training) dataset
+$\mathcal{D} = \{(\mathbf{x}_{i}, y_{i}) \mid i = 1,2,...,n\}$. But what is this magical \texttt{optimizer} creature?
+
+The key tool from calculus that we will use to develop the \texttt{optimizer} is the derivative and its extensions.
+Suppose we have a a univariate function $f_{\theta} : \mathbb{R} \to \mathbb{R}$ then the derivative ${d f(\theta_0)}/{d \theta}$
+is the instantaneous rate of change of the function $f(\theta)$ with respect to its parameter $\theta$ at the point $\theta_0$.
+The partial derivative ${\partial f(\theta)}/{\partial \theta_j}$ of a multivariate function $f : \mathbb{R}^d \to \mathbb{R}$ is the derivative of $f$ with respect to $\theta_j$ 
+while all the other dimensions $\theta_k$ for $k\neq j$ are held constant. Finally, the gradient $\nabla f$ is the vector of all the partial derivatives:
+\begin{equation}
+\nabla f (\theta) = \begin{bmatrix}
+\frac{\partial f(\theta)}{\partial \theta_1} \\
+\frac{\partial f(\theta)}{\partial \theta_2} \\
+\vdots \\
+\frac{\partial f(\theta)}{\partial \theta_d}
+\end{bmatrix}
+\end{equation}
+The $j$-th entry of the gradient is the partial derivative ${\partial f(\theta)}/{\partial \theta_j}$ of $f$ with respect to the $j$-th component of $\theta$.
+We use the gradient to help us find fruitful directions to minimize our objective function $J$.
+
+\subsection{Gradient descent}
+Suppose there exists an objective function $J(\theta)$ that we want to minimize with respect to the parameters $\theta$. 
+Gradient descent is a numerical seach algorithm that minimizes an objective function by iteratively adjusting the parameters in the opposite direction of the gradient:
+\begin{equation*}
+    \theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla{J}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
+\end{equation*}
+where $k$ denotes the iteration index, and $\alpha(k)>0$ is a hyperparamter called the learning rate, which can be a function of the iteration count $k$.
+We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
+Pusedo-code for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
+\begin{algorithm}[H]
+\caption{Naive Gradient Descent for objective ${J}(\theta)$}\label{alg:gd}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\alpha$, stopping criterion $\epsilon$, maximum iterations $N$
+\State \textbf{Output:} Optimal parameter estimates $\theta$
+
+\State Initialize $\theta \gets \theta_0$\Comment{Initialize parameters to the initial guess}
+\State $k \gets 0$\Comment{Initialize iteration counter}
+\While{$k \leq N$ \textbf{or} $\|\theta_{k+1}  - \theta_{k} \| \leq \epsilon$}
+    \State $\mathbf{d} \gets \nabla J(\theta_{k})$\Comment{Compute gradient using analytical or numerical method, evaluate at $\theta_{k}$}
+    \State $\theta_{k+1} \gets \theta_{k} - \alpha \cdot \mathbf{d}$\Comment{Update parameters using the gradient direction $\mathbf{d}$}
+    \State $k \gets k + 1$
+\EndWhile
+
+\State \textbf{return} $\theta$
+\end{algorithmic}
+\end{algorithm}
+
 
 \section{Linear Regression Models}
 Linear regression models are a class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continous or discrete input features.
@@ -115,7 +184,7 @@ Linear in this context is a misnomer in the sense that the features are not nece
 Suppose we have a data set $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$ with $m$ examples, where each example where $\mathbf{x}_{i}\in\R^{n}$ is a feature vector and $y_{i}\in\R$ is the output variable.
 The linear regression model predicts the output variable $y_{i}$ for feature vector $\mathbf{x}_{i}$ using the linear function:
 \begin{equation*}
-    y_{i} = \mathbf{x}_{i}^{T}\cdot\beta + \epsilon_{i}
+    y_{i} = \hat{\mathbf{x}}_{i}^{T}\cdot\beta + \epsilon_{i}
 \end{equation*}
 where we have augmented the feature vector $\mathbf{x}_{i}$ with a bias term, i.e., $\mathbf{x}_{i}^{T} = \left(x^{(i)}_{1},\dots,x^{(i)}_{n},1\right)$, $\beta = \left(w_{1},\dots,w_{n},b\right)$ is a column vector of (unknown) parameters $w_{j}\in\R$ corresponding to the importance (weight) of feature $j$ and a bias parameter $b\in\R$
 and $\epsilon_{i}\sim\mathcal{N}(0,\sigma^{2})$ is a noise term, typically assumed to be a Normal distribution with mean zero and variance $\sigma^{2}$.
@@ -136,6 +205,8 @@ The parameters $\hat{\mathbf{\beta}}_{\lambda}$ that minimize the $||\star||^{2}
 \end{equation*}
 The matrix $\mathbf{X}^{T}\mathbf{X}+\lambda\cdot\mathbf{I}$ is the $\texttt{regularized normal matrix}$, while $\mathbf{X}^{T}\mathbf{y}$ is the $\texttt{moment vector}$. 
 The inverse $\left(\mathbf{X}^{T}\mathbf{X}+\lambda\cdot\mathbf{I}\right)^{-1}$ must exist to obtain the estimated parameter vector $\hat{\mathbf{\beta}}_{\lambda}$.
+
+
 
 \subsection{Underdetermined Linear Regression models}
 Assume the data matrix $\mathbf{X}$ is $\texttt{underdetermined}$, i.e., $m < n$ (more columns than rows), and 
