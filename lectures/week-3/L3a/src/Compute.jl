@@ -51,6 +51,10 @@ function _classify(features::Array{<:Number,2}, algorithm::MyPerceptronClassific
 end
 
 
+"""
+    learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm; 
+        maxiter::Int64 = 100, verbose::Bool = false)
+"""
 function learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm; 
     maxiter::Int64 = 100, verbose::Bool = false)
     
@@ -58,6 +62,9 @@ function learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm
     return _learn(features, labels, algorithm, maxiter = maxiter, verbose = verbose);
 end
 
+"""
+    classify(features::Array{<:Number,2}, algorithm::AbstractClassificationAlgorithm)
+"""
 function classify(features::Array{<:Number,2}, algorithm::AbstractClassificationAlgorithm)
     return _classify(features, algorithm);
 end
