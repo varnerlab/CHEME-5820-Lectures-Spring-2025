@@ -218,7 +218,7 @@ Let's look at the overdetermined linear regression solution without regularizati
 The steps below can also be applied to the regularized case (but we'll skip the details).
 
 \subsubsection*{Derivation: Overdetermined solution without regularization}
-To better understand the overdetermined linear regression solution, let's consider a simple example without regularization, i.e., $\lambda=0$. The objective function described in Eq. \ref{eq:regressionloss-regularization-L2} can be rewritten form as:
+To better understand the overdetermined linear regression solution, consider an example without regularization, i.e., $\lambda=0$. The objective function described in Eq. \ref{eq:regressionloss-regularization-L2} can be rewritten form as:
 \begin{equation}\label{eq:regressionloss-regularization-L2-2}
 J(\beta) = \frac{1}{2}(\hat{\mathbf{X}} \beta - \mathbf{y})^\top  (\hat{\mathbf{X}} \beta - \mathbf{y})
 \end{equation}
@@ -266,8 +266,7 @@ We can use a variety of statistical tests to check the normality of the residual
 the \href{https://en.wikipedia.org/wiki/Shapiro–Wilk_test}{Shapiro-Wilk test}, the \href{https://en.wikipedia.org/wiki/Kolmogorov–Smirnov_test}{Kolmogorov-Smirnov test}, 
 or the \href{https://en.wikipedia.org/wiki/Anderson–Darling_test}{Anderson-Darling test}.
 We can estimate the parameters of the error using \href{https://en.wikipedia.org/wiki/Maximum_likelihood_estimation}{maximum likelihood estimation} (MLE).
-We'll talk more about MLE and an alternative approach called \href{https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation}{maximum a posteriori estimation} in a future lecture.
-So, for now, let's move on to the classification problem.
+We'll talk more about MLE and an alternative approach called \href{https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation}{maximum a posteriori estimation} in a future lecture. So, for now, let's move on to the classification problem.
 
 \begin{figure}
     \centering
@@ -351,7 +350,7 @@ Various metrics can be used to evaluate the performance of a binary classifier, 
 The confusion matrix is a table often used to describe the performance of a classification model on a set of data for which the true values are known (Fig. \ref{fig:binaryconfusionmatrx}).
 The confusion matrix is a $2\times{2}$ matrix that contains four entries: true positive (TP), false positive (FP), true negative (TN), and false negative (FN).
 The true positive (TP) entry in the confusion matrix is the number of positive examples that were correctly classified as positive.
-The false negative (FN) entry is the number of positive examples that were incorrectly classified as negative by the model.
+The false negative (FN) entry indicates the number of positive examples the model incorrectly classified as negative.
 The false positive (FP) entry is the number of negative examples that were incorrectly classified as positive by the model.
 The true negative (TN) entry is the number of negative examples that were correctly classified as negative by the model.
 The confusion matrix is used to calculate a variety of performance metrics, including accuracy, precision, recall, and the F1 score.

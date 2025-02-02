@@ -185,17 +185,22 @@ Depending upon the shape of the data and various other problem constraints,
 there may be an \textit{analytical solution} for the linear model parameter vector $\beta$, e.g., the normal equations, or we can estimate an iterative solution using an optimizer such as gradient descent.
 Let's first consider the analytical solution for the linear regression parameter vector $\beta$ for an \textit{overdetermined} system of equations.
 
-\subsection{Overdetemined Linear models with regularization}
+\subsection{Overdetemined linear models with regularization}
 If the number of examples $n$ is greater than the number of features $m$, the linear model is said to be \texttt{overdetermined}.
 In other words, there are more examples than features.  Regularized linear regression models incorporate penalty terms to constrain the size of the coefficient estimates, 
 thereby reducing overfitting and enhancing the model's generalizability to new data. 
-Consider an overdetermined data matrix $\hat{\mathbf{X}}\in\mathbb{R}^{n\times{p}}$, i.e., the case where $n\gg{p}$ (there are many more examples than unknown parameters).
+Consider an overdetermined data matrix $\hat{\mathbf{X}}\in\mathbb{R}^{n\times{p}}$, i.e., the case where $n\gg{p}$ (there are many more examples than unknown parameters)
+whose rows are the augmented feature vectors:
+\begin{equation*}
+\hat{\mathbf{X}} = 
+    \brows{\hat{\mathbf{x}}_1^\top \\ \hat{\mathbf{x}}_2^\top \\ \rowsvdots \\ \hat{\mathbf{x}}_n^\top}
+\end{equation*}
 A regularized least squares estimate of the expected value of the unknown model parameters $\hat{\mathbf{\beta}}$ for an overdetermined system will minimize a loss (objective) function of the form:
 \begin{equation}\label{eq:regressionloss-regularization-L2}
-\hat{\mathbf{\beta}}_{\lambda} = \arg\min_{\mathbf{\beta}} \frac{1}{2}||~\mathbf{y} - \hat{\mathbf{X}}\mathbf{\beta}~||^{2}_{2} + 
-\frac{\lambda}{2}||~\mathbf{\beta}~||^{2}_{2}
+\hat{\mathbf{\beta}}_{\lambda} = \arg\min_{\mathbf{\beta}} \frac{1}{2}\norm{\mathbf{y} - \hat{\mathbf{X}}\mathbf{\beta}}^{2}_{2} + 
+\frac{\lambda}{2}\norm{\mathbf{\beta}}^{2}_{2}
 \end{equation}
-where $||\star||^{2}_{2}$ is the square of the $L2$-vector norm (Euclidean norm), and
+where $||\star||^{2}_{2}$ is the square of the $L2$-vector norm (Euclidean norm), the parameter
 $\lambda\geq{0}$ denotes a regularization parameter (user-defined hyperparameter), 
 and $\hat{\mathbf{\beta}}_{\lambda}$ denotes the estimated expected parameter vector. 
 The expected value of the parameters $\hat{\mathbf{\beta}}_{\lambda}$ that minimize the $||\star||^{2}_{2}$ loss plus penalty for the overdetermined data matrix $\mathbf{X}$ is given by:
@@ -213,7 +218,7 @@ Let's look at the overdetermined linear regression solution without regularizati
 The steps below can also be applied to the regularized case (but we'll skip the details).
 
 \subsubsection*{Derivation: Overdetermined solution without regularization}
-To better understand the overdetermined linear regression solution, let's consider a simple example without regularization, i.e., $\lambda=0$. The objective function described in Eq. \ref{eq:regressionloss-regularization-L2} can be rewritten form as:
+To better understand the overdetermined linear regression solution, consider an example without regularization, i.e., $\lambda=0$. The objective function described in Eq. \ref{eq:regressionloss-regularization-L2} can be rewritten form as:
 \begin{equation}\label{eq:regressionloss-regularization-L2-2}
 J(\beta) = \frac{1}{2}(\hat{\mathbf{X}} \beta - \mathbf{y})^\top  (\hat{\mathbf{X}} \beta - \mathbf{y})
 \end{equation}
@@ -261,8 +266,7 @@ We can use a variety of statistical tests to check the normality of the residual
 the \href{https://en.wikipedia.org/wiki/Shapiro–Wilk_test}{Shapiro-Wilk test}, the \href{https://en.wikipedia.org/wiki/Kolmogorov–Smirnov_test}{Kolmogorov-Smirnov test}, 
 or the \href{https://en.wikipedia.org/wiki/Anderson–Darling_test}{Anderson-Darling test}.
 We can estimate the parameters of the error using \href{https://en.wikipedia.org/wiki/Maximum_likelihood_estimation}{maximum likelihood estimation} (MLE).
-We'll talk more about MLE and an alternative approach called \href{https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation}{maximum a posteriori estimation} in a future lecture.
-So, for now, let's move on to the classification problem.
+We'll talk more about MLE and an alternative approach called \href{https://en.wikipedia.org/wiki/Maximum_a_posteriori_estimation}{maximum a posteriori estimation} in a future lecture. So, for now, let's move on to the classification problem.
 
 \begin{figure}
     \centering
@@ -303,7 +307,7 @@ A pseudocode for the perceptron algorithm is shown in Algorithm~\ref{alg:percept
     \begin{algorithmic}[1]
         % \Procedure{Incremental-Training-Perceptron}{$\mathcal{D}$}
         \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{n},y_{n})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
-        \State \textbf{Features:} $\hat{\mathbf}{x}_{i} = \left(x_{i1},\dots, x_{im},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
+        \State \textbf{Features:} $\hat{\mathbf{x}}_{i} = \left(x_{i1},\dots, x_{im},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
         \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{m}, b\right)$
         \State $\mathbf{\beta} \gets \texttt{rand}$\Comment{Initialize parameter vector $\mathbf{\beta}$ to a random vector}
         \State $i \gets 0$\Comment{Initialize the loop counter to zero}
@@ -346,7 +350,7 @@ Various metrics can be used to evaluate the performance of a binary classifier, 
 The confusion matrix is a table often used to describe the performance of a classification model on a set of data for which the true values are known (Fig. \ref{fig:binaryconfusionmatrx}).
 The confusion matrix is a $2\times{2}$ matrix that contains four entries: true positive (TP), false positive (FP), true negative (TN), and false negative (FN).
 The true positive (TP) entry in the confusion matrix is the number of positive examples that were correctly classified as positive.
-The false negative (FN) entry is the number of positive examples that were incorrectly classified as negative by the model.
+The false negative (FN) entry indicates the number of positive examples the model incorrectly classified as negative.
 The false positive (FP) entry is the number of negative examples that were incorrectly classified as positive by the model.
 The true negative (TN) entry is the number of negative examples that were correctly classified as negative by the model.
 The confusion matrix is used to calculate a variety of performance metrics, including accuracy, precision, recall, and the F1 score.
