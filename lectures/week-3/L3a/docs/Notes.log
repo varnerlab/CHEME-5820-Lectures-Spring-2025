@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  1 FEB 2025 17:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  2 FEB 2025 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -581,88 +581,87 @@ Package mdframed Info: mdframed detected package amsthm
  changed the theorem header of amsthm
 (mdframed)              on input line 105.
 LaTeX Font Info:    Trying to load font information for U+lasy on input line 11
-0.
+8.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 110
+LaTeX Font Info:    Trying to load font information for U+msa on input line 118
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 110
+LaTeX Font Info:    Trying to load font information for U+msb on input line 118
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-
-Package hyperref Warning: Suppressing link with empty target on input line 124.
-
-
-[1
+) [1
 
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 162.
-
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
 [2]
-<./figs/Fig-LinearSeperableData-Hyperplane.pdf, id=83, 540.0175pt x 407.5225pt>
+Overfull \vbox (6.94444pt too high) has occurred while \output is active []
+
+
+[3]
+<./figs/Fig-LinearSeperableData-Hyperplane.pdf, id=87, 540.0175pt x 407.5225pt>
 
 File: ./figs/Fig-LinearSeperableData-Hyperplane.pdf Graphic file (type pdf)
 <use ./figs/Fig-LinearSeperableData-Hyperplane.pdf>
 Package pdftex.def Info: ./figs/Fig-LinearSeperableData-Hyperplane.pdf  used on
- input line 227.
+ input line 243.
 (pdftex.def)             Requested size: 234.8775pt x 177.24597pt.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[3]
+[4]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 276.
+
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[4 <./figs/Fig-LinearSeperableData-Hyperplane.pdf>]
-<./figs/Fig-BinaryConfusionMatrix.pdf, id=159, 913.4125pt x 579.16376pt>
+[5 <./figs/Fig-LinearSeperableData-Hyperplane.pdf>]
+<./figs/Fig-BinaryConfusionMatrix.pdf, id=167, 913.4125pt x 579.16376pt>
 File: ./figs/Fig-BinaryConfusionMatrix.pdf Graphic file (type pdf)
 <use ./figs/Fig-BinaryConfusionMatrix.pdf>
 Package pdftex.def Info: ./figs/Fig-BinaryConfusionMatrix.pdf  used on input li
-ne 310.
+ne 315.
 (pdftex.def)             Requested size: 352.31625pt x 223.38966pt.
 
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[5]
+[6]
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[6 <./figs/Fig-BinaryConfusionMatrix.pdf>] (./Notes.bbl)
+[7 <./figs/Fig-BinaryConfusionMatrix.pdf>] (./Notes.bbl)
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[7] (./Notes.aux)
+[8] (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `Notes.out' has not changed.
-(rerunfilecheck)             Checksum: 95638FACC41B03D10AB66376D34C6C71;2127.
+(rerunfilecheck)             Checksum: A54BAAE5BACF66C9189A245B1E12C7E3;1444.
  ) 
 Here is how much of TeX's memory you used:
- 13036 strings out of 474116
- 204638 string characters out of 5743682
+ 13024 strings out of 474116
+ 204228 string characters out of 5743682
  1942187 words of memory out of 5000000
- 35151 multiletter control sequences out of 15000+600000
- 564758 words of font info for 63 fonts, out of 8000000 for 9000
+ 35135 multiletter control sequences out of 15000+600000
+ 564060 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 79i,9n,93p,542b,470s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,11n,93p,618b,452s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -681,10 +680,10 @@ ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/
 texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2
 024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (7 pages, 282519 bytes).
+Output written on Notes.pdf (8 pages, 289023 bytes).
 PDF statistics:
- 285 PDF objects out of 1000 (max. 8388607)
- 202 compressed objects within 3 object streams
- 33 named destinations out of 1000 (max. 500000)
- 107 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 300 PDF objects out of 1000 (max. 8388607)
+ 216 compressed objects within 3 object streams
+ 38 named destinations out of 1000 (max. 500000)
+ 83 words of extra memory for PDF output out of 10000 (max. 10000000)
 
