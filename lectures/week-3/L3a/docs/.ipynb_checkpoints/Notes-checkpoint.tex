@@ -145,6 +145,32 @@ while all the other dimensions $\theta_k$ for $k\neq j$ are held constant. Final
 \end{equation}
 The $j$th entry of the gradient is the partial derivative ${\partial f}/{\partial \theta_j}$ of $f$ with respect to the $j$th component of $\theta$. We are interested in the gradient because it tells us the direction of the steepest ascent of the function $f$ at the point $\theta_0$. We also know that when the gradient is zero, i.e., $\nabla_{\theta} f(\theta_0) = \mathbf{0}$, then we have a local minimum or maximum of the function $f$.
 
+\subsubsection*{Gradient descent}
+Suppose there exists an objective function $J(\theta)$ that we want to minimize with respect to the parameters $\theta$. 
+Gradient descent is a numerical search algorithm that minimizes an objective function by iteratively adjusting the parameters in the opposite direction of the gradient:
+\begin{equation*}
+    \theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla{J}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
+\end{equation*}
+where $k$ denotes the iteration index, and $\alpha(k)>0$ is a hyperparameter called the learning rate, which can be a function of the iteration count $k$.
+We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
+A pseudocode for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
+\begin{algorithm}[H]
+\caption{Naive Gradient Descent for objective ${J}(\theta)$}\label{alg:gd}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\alpha$, stopping criterion $\epsilon$, maximum iterations $N$
+\State \textbf{Output:} Optimal parameter estimates $\theta$
+\State Initialize $\theta \gets \theta_0$\Comment{Initialize parameters to the initial guess}
+\State $k \gets 0$\Comment{Initialize iteration counter}
+\While{$k \leq N$ \textbf{or} $\|\theta_{k+1}  - \theta_{k} \| \leq \epsilon$}
+    \State $\mathbf{d} \gets \nabla J(\theta_{k})$\Comment{Compute gradient using analytical or numerical method, evaluate at $\theta_{k}$}
+    \State $\theta_{k+1} \gets \theta_{k} - \alpha \cdot \mathbf{d}$\Comment{Update parameters using the gradient direction $\mathbf{d}$}
+    \State $k \gets k + 1$
+\EndWhile
+
+\State \textbf{return} $\theta$
+\end{algorithmic}
+\end{algorithm}
+
 \section{Linear Models}
 Linear models are a class of models used in machine learning for regression tasks, i.e., predicting a continuous output variable from one or more continuous or discrete input features.
 Linear models assume that the output variable is a linear combination of the input features, i.e., a linear function of the input features weighted by some parameters.
@@ -271,14 +297,14 @@ the features $\hat{\mathbf{x}}^{\top}_{i}=\left(x^{(i)}_{1},\dots,x^{(i)}_{m}, 1
 \end{equation*}
 If data set $\mathcal{D}$ is linearly separable, the Perceptron will incrementally learn a separating hyperplane in a finite number of passes through the $\mathcal{D}$. 
 However, if the data set $\mathcal{D}$ is not linearly separable, the Perceptron may not converge. 
-Psuedo code for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptron}.
+A pseudocode for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptron}.
 \begin{algorithm}[H]
     \caption{The Perceptron Algorithm}\label{alg:perceptron}
     \begin{algorithmic}[1]
         % \Procedure{Incremental-Training-Perceptron}{$\mathcal{D}$}
-        \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
-        \State \textbf{Features:} $\mathbf{x}_{i} = \left(x_{i1},\dots, x_{in},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
-        \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{n}, b\right)$
+        \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{n},y_{n})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
+        \State \textbf{Features:} $\hat{\mathbf}{x}_{i} = \left(x_{i1},\dots, x_{im},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
+        \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{m}, b\right)$
         \State $\mathbf{\beta} \gets \texttt{rand}$\Comment{Initialize parameter vector $\mathbf{\beta}$ to a random vector}
         \State $i \gets 0$\Comment{Initialize the loop counter to zero}
         \While{$\text{true}$}\Comment{Repeat until stopping criterion is met}

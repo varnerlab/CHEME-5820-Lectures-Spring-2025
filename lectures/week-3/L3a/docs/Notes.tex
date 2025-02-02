@@ -145,21 +145,20 @@ while all the other dimensions $\theta_k$ for $k\neq j$ are held constant. Final
 \end{equation}
 The $j$th entry of the gradient is the partial derivative ${\partial f}/{\partial \theta_j}$ of $f$ with respect to the $j$th component of $\theta$. We are interested in the gradient because it tells us the direction of the steepest ascent of the function $f$ at the point $\theta_0$. We also know that when the gradient is zero, i.e., $\nabla_{\theta} f(\theta_0) = \mathbf{0}$, then we have a local minimum or maximum of the function $f$.
 
-\subsection{Gradient descent}
+\subsubsection*{Gradient descent}
 Suppose there exists an objective function $J(\theta)$ that we want to minimize with respect to the parameters $\theta$. 
-Gradient descent is a numerical seach algorithm that minimizes an objective function by iteratively adjusting the parameters in the opposite direction of the gradient:
+Gradient descent is a numerical search algorithm that minimizes an objective function by iteratively adjusting the parameters in the opposite direction of the gradient:
 \begin{equation*}
     \theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla{J}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
 \end{equation*}
-where $k$ denotes the iteration index, and $\alpha(k)>0$ is a hyperparamter called the learning rate, which can be a function of the iteration count $k$.
+where $k$ denotes the iteration index, and $\alpha(k)>0$ is a hyperparameter called the learning rate, which can be a function of the iteration count $k$.
 We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
-Pusedo-code for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
+A pseudocode for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
 \begin{algorithm}[H]
 \caption{Naive Gradient Descent for objective ${J}(\theta)$}\label{alg:gd}
 \begin{algorithmic}[1]
 \State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\alpha$, stopping criterion $\epsilon$, maximum iterations $N$
 \State \textbf{Output:} Optimal parameter estimates $\theta$
-
 \State Initialize $\theta \gets \theta_0$\Comment{Initialize parameters to the initial guess}
 \State $k \gets 0$\Comment{Initialize iteration counter}
 \While{$k \leq N$ \textbf{or} $\|\theta_{k+1}  - \theta_{k} \| \leq \epsilon$}
@@ -186,17 +185,22 @@ Depending upon the shape of the data and various other problem constraints,
 there may be an \textit{analytical solution} for the linear model parameter vector $\beta$, e.g., the normal equations, or we can estimate an iterative solution using an optimizer such as gradient descent.
 Let's first consider the analytical solution for the linear regression parameter vector $\beta$ for an \textit{overdetermined} system of equations.
 
-\subsection{Overdetemined Linear models with regularization}
+\subsection{Overdetemined linear models with regularization}
 If the number of examples $n$ is greater than the number of features $m$, the linear model is said to be \texttt{overdetermined}.
 In other words, there are more examples than features.  Regularized linear regression models incorporate penalty terms to constrain the size of the coefficient estimates, 
 thereby reducing overfitting and enhancing the model's generalizability to new data. 
-Consider an overdetermined data matrix $\hat{\mathbf{X}}\in\mathbb{R}^{n\times{p}}$, i.e., the case where $n\gg{p}$ (there are many more examples than unknown parameters).
+Consider an overdetermined data matrix $\hat{\mathbf{X}}\in\mathbb{R}^{n\times{p}}$, i.e., the case where $n\gg{p}$ (there are many more examples than unknown parameters)
+whose rows are the augmented feature vectors:
+\begin{equation*}
+\hat{\mathbf{X}} = 
+    \brows{\hat{\mathbf{x}}_1^\top \\ \hat{\mathbf{x}}_2^\top \\ \rowsvdots \\ \hat{\mathbf{x}}_n^\top}
+\end{equation*}
 A regularized least squares estimate of the expected value of the unknown model parameters $\hat{\mathbf{\beta}}$ for an overdetermined system will minimize a loss (objective) function of the form:
 \begin{equation}\label{eq:regressionloss-regularization-L2}
-\hat{\mathbf{\beta}}_{\lambda} = \arg\min_{\mathbf{\beta}} \frac{1}{2}||~\mathbf{y} - \hat{\mathbf{X}}\mathbf{\beta}~||^{2}_{2} + 
-\frac{\lambda}{2}||~\mathbf{\beta}~||^{2}_{2}
+\hat{\mathbf{\beta}}_{\lambda} = \arg\min_{\mathbf{\beta}} \frac{1}{2}\norm{\mathbf{y} - \hat{\mathbf{X}}\mathbf{\beta}}^{2}_{2} + 
+\frac{\lambda}{2}\norm{\mathbf{\beta}}^{2}_{2}
 \end{equation}
-where $||\star||^{2}_{2}$ is the square of the $L2$-vector norm (Euclidean norm), and
+where $||\star||^{2}_{2}$ is the square of the $L2$-vector norm (Euclidean norm), the parameter
 $\lambda\geq{0}$ denotes a regularization parameter (user-defined hyperparameter), 
 and $\hat{\mathbf{\beta}}_{\lambda}$ denotes the estimated expected parameter vector. 
 The expected value of the parameters $\hat{\mathbf{\beta}}_{\lambda}$ that minimize the $||\star||^{2}_{2}$ loss plus penalty for the overdetermined data matrix $\mathbf{X}$ is given by:
@@ -298,14 +302,14 @@ the features $\hat{\mathbf{x}}^{\top}_{i}=\left(x^{(i)}_{1},\dots,x^{(i)}_{m}, 1
 \end{equation*}
 If data set $\mathcal{D}$ is linearly separable, the Perceptron will incrementally learn a separating hyperplane in a finite number of passes through the $\mathcal{D}$. 
 However, if the data set $\mathcal{D}$ is not linearly separable, the Perceptron may not converge. 
-Psuedo code for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptron}.
+A pseudocode for the perceptron algorithm is shown in Algorithm~\ref{alg:perceptron}.
 \begin{algorithm}[H]
     \caption{The Perceptron Algorithm}\label{alg:perceptron}
     \begin{algorithmic}[1]
         % \Procedure{Incremental-Training-Perceptron}{$\mathcal{D}$}
-        \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{m},y_{m})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
-        \State \textbf{Features:} $\mathbf{x}_{i} = \left(x_{i1},\dots, x_{in},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
-        \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{n}, b\right)$
+        \State \textbf{Input:} $\mathcal{D} = \left\{(\mathbf{x}_{1},y_{1}),\dotsc,(\mathbf{x}_{n},y_{n})\right\}$, tolerance $\epsilon\geq{0}$, maximum iterations $\texttt{maxiter}$
+        \State \textbf{Features:} $\hat{\mathbf{x}}_{i} = \left(x_{i1},\dots, x_{im},1\right)$ are augmented with a bias term, labels $y_{i}\in\{-1,1\}$.
+        \State \textbf{Output:} Classifier parameters $\mathbf{\beta} = \left(w_{1},\dots, w_{m}, b\right)$
         \State $\mathbf{\beta} \gets \texttt{rand}$\Comment{Initialize parameter vector $\mathbf{\beta}$ to a random vector}
         \State $i \gets 0$\Comment{Initialize the loop counter to zero}
         \While{$\text{true}$}\Comment{Repeat until stopping criterion is met}
