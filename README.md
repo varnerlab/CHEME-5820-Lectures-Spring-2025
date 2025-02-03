@@ -1,5 +1,7 @@
-# CHEME-5820-Lectures-Spring-2025
-Repository for the lectures for CHEME 5820 Spring 2025 instance. The lectures are in the form of Jupyter notebooks. The notebooks are available in each lecture folder. The lecture folders are organized by week. Lecture snapshots are linked below.
+# CHEME-5820: Machine Learning and Artificial Intelligence Methods for Engineers (Spring 2025)
+Repository for the lectures for the [CHEME 5820 Spring 2025 instance](https://classes.cornell.edu/browse/roster/SP25/class/CHEME/5820). The lectures are in the form of [Jupyter notebooks](https://jupyter.org) in combination with [the Julia programming language](https://julialang.org). 
+
+The notebooks are available in each lecture folder. The lecture folders are organized by week. Lecture snapshots and lecture notes are linked below.
 
 ## Lectures
 | Week | Lecture |   Topic   |  Date       | Notebook | Notes
