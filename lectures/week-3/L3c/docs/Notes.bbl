@@ -34,10 +34,4 @@ Kennedy J, Eberhart R.
 \newblock In: Proceedings of ICNN'95 - International Conference on Neural
   Networks. vol.~4; 1995. p. 1942--1948 vol.4.
 
-\bibitem{SG2019}
-Sidey-Gibbons JAM, Sidey-Gibbons CJ.
-\newblock Machine learning in medicine: a practical introduction.
-\newblock BMC Med Res Methodol. 2019;19(1):64.
-\newblock doi:{10.1186/s12874-019-0681-4}.
-
 \end{thebibliography}

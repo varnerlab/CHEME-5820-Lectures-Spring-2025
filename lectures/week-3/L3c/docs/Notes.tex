@@ -102,34 +102,46 @@
 \begin{document}
 \lecture{3c}{Logistic Regression for Binary Classification Problems}{Jeffrey Varner}{}
 
+\begin{mdframed}[backgroundcolor=lgray]
+The key concepts covered in this lecture include:
+\begin{itemize}[leftmargin=16pt]
+    \item{\textbf{Logistic regression} is a statistical method used for binary classification that models the relationship between a dependent categorical variable (label) and one or more independent variables (features) by estimating probabilities through the logistic function.}
+    \item{\textbf{Maximum likelihood estimation (MLE)} is a statistical technique to estimate the parameters of a probability distribution by maximizing the likelihood function, thereby determining the parameter values that make the observed data most probable.}
+    \item{\textbf{Gradient descent} is an optimization algorithm used to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient. Iteration continues until a local minimum of the function is found.}
+    \item{\textbf{Alternatives to gradient descent} include heuristic optimization algorithms such as the Nelder-Mead Simplex Algorithm, Simulated Annealing, Genetic Algorithms, and Particle Swarm Optimization, which can estimate model parameters without relying on the gradient.}
+\end{itemize}
+\end{mdframed}
+
 \section{Introduction}
 In this lecture, we will introduce logistic regression for binary classification problems. 
-We will start by discussing the logistic regression model and then the maximum likelihood estimation of the model parameters. 
-We will also discuss the gradient descent algorithm for estimating the model parameters. 
-Finally, we will discuss evaluating the logistic regression model using the confusion matrix, accuracy, precision, recall, and the F1 score.
-The key concepts covered in this lecture include:
-
-\begin{itemize}[leftmargin=16pt]
-\item{\textbf{Logistic regression} is a statistical method used for binary classification that models the relationship between a dependent categorical variable (label) and one or more independent variables (features) by estimating probabilities through the logistic function.}
-\item{\textbf{Maximum likelihood estimation (MLE)} is a statistical technique to estimate the parameters of a probability distribution by maximizing the likelihood function, thereby determining the parameter values that make the observed data most probable.}
-\item{\textbf{Gradient descent} is an optimization algorithm used to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient. Iteration continues until a local minimum of the function is found.}
-\item{\textbf{Performance assesment}. Evaluating the performance of a logistic regression model involves assessing its accuracy and predictive power through various metrics such as accuracy, precision, recall, F1-score, and the area under the receiver operating characteristic (ROC) curve. 
-These metrics provide insights into how well the model distinguishes between the binary classes and help fine-tune its parameters for improved performance.}
-\end{itemize}
+Logistic regression is a statistical method used for binary classification that models the relationship between a dependent categorical variable (label) 
+and one or more independent variables (features) by estimating probabilities through the logistic function.
+We will start by discussing the logistic model and then we'll explore the maximum likelihood estimation of the model parameters. 
+Unfortunately, the likelihood function of the logistic regression model has no closed-form analytical solution, so we must estimate the model parameters using numerical optimization algorithms.
+Toward this challenge, we will introduce the gradient descent algorithm, which is a numerical optimization algorithm that minimizes a function by iteratively adjusting the parameters in the opposite direction of the gradient.
+In addition to gradient descent, we will also discuss alternative heuristic optimization algorithms that can be used to estimate the model parameters without relying on the gradient.
+You might consider these alternative methods when the objective function is non-convex, non-differentiable, or has many local minima.
+Let's start by discussing the logistic regression model.
 
 \section{Logistic Regression}
 Logistic regression is a statistical method used for binary classification problems, where the dependent variable (label) is a binary categorical variable (e.g., $\pm{1}$, etc), 
 and the independent variables (features) are continuous or categorical variables. Unlike the Perceptron model, which outputs the class label directly, logistic regression models the probability that a given input belongs to a particular class based on the input features.
-The logistic regression model estimates the probability that a given input belongs to a particular class based on the input features.
+The logistic regression model estimates the probability that a given feature vector belongs to a particular class based on the input features.
 In particular, logistic regression is a discriminative model, which means it directly models the conditional probability of the label given the features, i.e., $P(y|\mathbf{x})$.
 This is in contrast to generative models, e.g., Naive Bayes, which we'll explore later, which model the joint probability of the features and the label, i.e., $P(y,\mathbf{x}) = P(\mathbf{x}|y)\cdot{P(y)}$.
-The logistic regression model uses the logistic function to model the probability of the binary label $y\in\{-1,+1\}$ given the feature vector $\mathbf{x}$:
+The logistic regression model uses the logistic function to model the probability of the binary label $y\in\{-1,+1\}$ given the (augmented) feature vector $\hat{\mathbf{x}} = \left(x_{1},x_{2},\dots,x_{m},1\right)$:
 \begin{equation}\label{eq:logistic}
-P(y|\mathbf{x};\theta) = \frac{1}{1 + e^{-y\cdot\theta^{T}\mathbf{x}}}
+P_{\theta}(y|\hat{\mathbf{x}}) = \frac{1}{1 + e^{-y\cdot\left(\hat{\mathbf{x}}^{\top}\theta\right)}}
 \end{equation}
-where $\theta\in\R^{n}$ is an (unknown) parameter vector (that we need to estimate somehow), and $e$ is the base of the natural logarithm.
-The logistic function is a sigmoid function that maps the input, i.e., $-y\cdot\theta^{T}\mathbf{x}$ to the range $[0,1]$, which is suitable for modeling probabilities.
-The logistic regression model predicts the label $y\in\{-1,+1\}$ for a given feature vector $\mathbf{x}$ by comparing the probability $P(y|\mathbf{x};\theta)$ to a threshold, e.g., 0.5.
+where $\theta\in\R^{p}$ ($p = m+1$) is an (unknown) parameter vector (that we need to estimate somehow), and $e$ is the base of the natural logarithm.
+The logistic function is a sigmoid function that maps the input, i.e., $-y\cdot\left(\hat{\mathbf{x}}^{\top}\theta\right)$ to the range $[0,1]$, which is suitable for modeling probabilities.
+The logistic model defines ("parameterizes") a probability distribution $P_{\theta}(y|\hat{\mathbf{x}}) : \mathcal{X} \times \mathcal{Y} \to [0,1]$ which is given by the logistic function:
+\begin{align*}
+P_\theta(y=1 | \mathbf{x}) & = \sigma(y\left(\hat{\mathbf{x}}^{\top}\theta\right)) \\
+P_\theta(y=-1 | \mathbf{x}) & = 1-\sigma(y\left(\hat{\mathbf{x}}^{\top}\theta\right)).
+\end{align*}
+where $\sigma(z) = 1/(1+e^{-z})$. Clearly this sums to one over $y$ for all $\mathbf{x}$.
+The logistic regression model predicts the label $y\in\{-1,+1\}$ for a given feature vector $\hat{\mathbf{x}}$ by comparing the probability $P_{\theta}(y|\mathbf{x})$ to a threshold, e.g., 0.5.
 The model predicts the positive class if the probability exceeds the threshold ($y = 1$). Otherwise, it predicts the negative class ($y = -1$).
 The logistic regression model is trained by estimating the parameters $\theta$ that maximize the likelihood of the observed labels given the features.
 The next section will discuss the maximum likelihood estimation of the logistic regression model parameters.
@@ -137,34 +149,30 @@ The next section will discuss the maximum likelihood estimation of the logistic 
 \subsection{Maximum Likelihood Estimation (MLE)}
 Maximum likelihood estimation (MLE) is a technique to estimate the parameters of a probability distribution by maximizing the likelihood function.
 In logistic regression, MLE estimates the parameters of the logistic regression model that make the observed label conditioned on the features the most probable.
-Given a set of training examples $\mathcal{D} = \left\{\left(\mathbf{x}_{1}, y_{1}\right),\dots,\left(\mathbf{x}_{m}, y_{m}\right)\right\}$, where $\mathbf{x}_{i}\in\mathbb{R}^{n}$ is an $n$-dimensional feature vector and $y_{i}\in\mathbb{R}$ is the binary (scalar) label, the likelihood function is defined as:
+Given a set of training examples $\mathcal{D} = \left\{\left(\mathbf{x}_{1}, y_{1}\right),\dots,\left(\mathbf{x}_{n}, y_{n}\right)\right\}$, where $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is an $m$-dimensional feature vector 
+and $y_{i}\in\mathbb{R}$ is the binary (scalar) label, the likelihood function is defined as:
 \begin{equation}
-L(\theta) = \prod_{i=1}^{m}P(y_{i}|\mathbf{x}_{i};\theta)
+L(\theta) = \prod_{i=1}^{n}P_{\theta}(y_{i}|\hat{\mathbf{x}}_{i})
 \end{equation}
-where $P(y_{i}|\mathbf{x}_{i};\theta)$ is the probability of observing the label $y_{i}$ given the feature vector $\mathbf{x}_{i}$ and the model parameters $\theta$.
+where $P_{\theta}(y_{i}|\hat{\mathbf{x}}_{i})$ is the probability of observing the label $y_{i}$ given the feature vector $\hat{\mathbf{x}}_{i}$ and the model parameters $\theta$.
 It's hard to maximize the likelihood function directly (because of the product), so we take the logarithm of the likelihood function to simplify the optimization:
-\begin{equation}
-\log{L}(\theta) = \sum_{i=1}^{m}\log P(y_{i}|\mathbf{x}_{i};\theta)
-\end{equation}
-The \texttt{log} is a monotonic function, so maximizing the log-likelihood is equivalent to maximizing the likelihood.
-Substituting our model for the $P(y_{i}|\mathbf{x}_{i};\theta)$ function, i.e., Eqn \eqref{eq:logistic} into the log-likelihood function gives:
-\begin{equation}
-\log{L}(\theta) = -\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)
-\end{equation}
-where we inverted the $P(y_{i}|\mathbf{x}_{i};\theta)$ function to get the log-likelihood function.
+\begin{align*}
+\log{L}(\theta) & = \sum_{i=1}^{n}\log P_{\theta}(y_{i}|\mathbf{x}_{i})\quad(\text{substituting}\,P_{\theta}(y_{i}|\mathbf{x}_{i}))\\
+    & = -\sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\mathbf{x}_{i}^{\top}\theta\right)}\right)
+\end{align*}
 The maximum likelihood estimation (MLE) of the logistic regression model parameters $\theta^{\star}$ is obtained by maximizing the log-likelihood function
 $\log{L}(\theta)$:
 \begin{equation}
-\theta^{\star} = \argmax_{\theta}\left[-\sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)\right]
+\theta^{\star} = \argmax_{\theta}\left[-\sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)\right]
 \end{equation}
-No closed-form analytical solution exists to this optimization problem, so we must estimate the model parameters using a numerical algorithm, 
-such as gradient descent algorithm (or one of many other approaches) to iteratively update the parameters $\theta$ to maximize the log-likelihood function 
-or alternatively, to minimize the negative log-likelihood function:
+or alternatively by minimizing the negative log-likelihood function:
 \begin{equation}
-\mathcal{L}(\theta) =-\log{L}(\theta) = \sum_{i=1}^{m}\log\left(1 + e^{-y_{i}\cdot\theta^{T}\mathbf{x}_{i}}\right)
+    \mathcal{L}(\theta) =-\log{L}(\theta) = \sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)
 \end{equation}
-We'll start by discussing the gradient descent algorithm and then consider some alternatives to gradient descent to 
-minimize the negative log-likelihood function and estimate the model parameters.
+Unfortunately, whichever perspective we take, the optimization problem has no closed-form analytical solution.
+Thus, we must estimate the model parameters using some numerical algorithm, such as gradient descent algorithm (or one of many other approaches).
+These approaches iteratively update the parameters $\theta$ to maximize the log-likelihood function
+until a stopping criterion is met, e.g., the change in the parameters is below a threshold, or the maximum number of iterations is reached.
 
 \subsection{Gradient Descent}
 Gradient descent is a numerical seach algorithm that minimizes a function by iteratively adjusting the parameters in the opposite direction of the gradient.
@@ -173,9 +181,9 @@ In general, an objective function measures the difference between the predicted 
 In logistic regression, the objective function is the negative log-likelihood function, which measures the difference between the predicted probabilities and the observed labels. However, whatever form the objective function takes, we assume that it is differentiable and that we can compute the gradient, i.e., $\nabla{l}(\theta)$ for the negative log-likelihood function, 
 which points in the direction of the steepest increase of the function. This gives us a way to update the parameters to minimize the objective function using the update rule:
 \begin{equation*}
-\theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla\mathcal{L}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
+\theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla_{\theta}\mathcal{L}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
 \end{equation*}
-The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla\mathcal{L}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
+The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla_{\theta}\mathcal{L}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
 We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
 Pusedo-code for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
 \begin{algorithm}[H]
@@ -196,12 +204,11 @@ Pusedo-code for a naive gradient descent algorithm (for a fixed learning rate) i
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection*{Choose the learning Rate $\alpha$}
+\subsubsection*{Choose the learning Rate $\alpha(k)$}
 The choice of the learning rate $\alpha$ is crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
 Choosing an appropriate learning rate is often challenging and may require tuning through hyperparameter optimization techniques. 
 In practice, we may use adaptive learning rate methods, such as the Adam optimizer, which adjusts the learning rate based on the gradient's magnitude and the second moment of the gradient \cite{ADAM-2014}.
 Alternatively, Adagrad and RMSprop (unpublished) are other adaptive learning rate methods that can be used to improve the convergence of the gradient descent algorithm \cite{ADAGrad2011}.
-
 
 \subsection{Alternatives to Gradient Descent}
 The central issue with gradient descent is that it can be slow to converge, especially when the objective function is non-convex or has many local minima.
@@ -409,16 +416,17 @@ Each particle adjusts its position based on its own experience and the collectiv
 \end{algorithm}
 
 
-\section{Performance Evaluation}
-Evaluating the performance of a logistic regression model involves assessing its accuracy and predictive power through various metrics such as accuracy, precision, recall, F1-score, and the area under the receiver operating characteristic (ROC) curve.
-The accuracy of a model is the proportion of correctly classified instances, while precision measures the proportion of true positive predictions among all positive predictions. 
-The recall is the proportion of true positive predictions among all actual positive instances, and the F1-score is the harmonic mean of precision and recall. 
-The area under the ROC curve measures the model's ability to distinguish between the two classes, with a higher AUC indicating better performance.
-See Sidey-Gibbon et al \cite{SG2019} for a detailed discussion of these metrics in the context of medical classification problems.
-
 \section{Summary and Conclusions}
-In this lecture, we introduced logistic regression for binary classification problems and discussed the maximum likelihood estimation of the model parameters. We also covered the gradient descent algorithm for estimating model parameters and evaluated the logistic regression model using the confusion matrix, accuracy, precision, recall, and F1 score. Gradient descent is an optimization algorithm employed to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient. However, various other optimization algorithms can estimate model parameters without relying on the gradient. For instance, simulated annealing, genetic algorithms, and particle swarm optimization are all methods that can be utilized to estimate the model parameters. Finally, we examined the logistic regression model's performance using various metrics, including accuracy, precision, recall, F1 score, and the area under the ROC curve. Logistic regression is a powerful tool for binary classification and is widely applied in numerous fields, including healthcare, finance, and marketing.
-
+In this lecture, we introduced logistic regression for binary classification problems.
+Logistic regression is a powerful tool for binary classification and is widely applied in numerous fields, including healthcare, finance, and marketing.
+Like the Perceptron model, logistic regression models the relationship between the features and the label, but it estimates the probability that a given input belongs to a particular class using the logistic function.
+To estimate the parameters that appear in the logistic regression model, we discussed the maximum likelihood estimation (MLE) technique, which maximizes the likelihood of the observed labels given the features.
+However, unlike our previous discussion of linear regression, the logistic regression model's likelihood function has no closed-form analytical solution.
+Thus, we must estimate the model parameters using numerical optimization algorithms, such as the gradient descent algorithm.
+Gradient descent is an optimization algorithm employed to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient. 
+However, we also discussed various other (heuritisc) optimization algorithms that be used to estimate model parameters without relying on the gradient. 
+For instance, simulated annealing, genetic algorithms, and particle swarm optimization are all methods that can be utilized to estimate the model parameters. 
+These methods can be particularly useful when the objective function is non-convex, non-differentiable, or has many local minima.
 
 \bibliography{References-L3c.bib}
 
