@@ -137,8 +137,8 @@ where $\theta\in\R^{p}$ ($p = m+1$) is an (unknown) parameter vector (that we ne
 The logistic function is a sigmoid function that maps the input, i.e., $-y\cdot\left(\hat{\mathbf{x}}^{\top}\theta\right)$ to the range $[0,1]$, which is suitable for modeling probabilities.
 The logistic model defines ("parameterizes") a probability distribution $P_{\theta}(y|\hat{\mathbf{x}}) : \mathcal{X} \times \mathcal{Y} \to [0,1]$ which is given by the logistic function:
 \begin{align*}
-P_\theta(y=1 | \mathbf{x}) & = \sigma(y\left(\hat{\mathbf{x}}^{\top}\theta\right)) \\
-P_\theta(y=-1 | \mathbf{x}) & = 1-\sigma(y\left(\hat{\mathbf{x}}^{\top}\theta\right)).
+P_\theta(y=1 | \mathbf{x}) & = \sigma(-\left(\hat{\mathbf{x}}^{\top}\theta\right)) \\
+P_\theta(y=-1 | \mathbf{x}) & = 1-\sigma(-\left(\hat{\mathbf{x}}^{\top}\theta\right)).
 \end{align*}
 where $\sigma(z) = 1/(1+e^{-z})$. Clearly this sums to one over $y$ for all $\mathbf{x}$.
 The logistic regression model predicts the label $y\in\{-1,+1\}$ for a given feature vector $\hat{\mathbf{x}}$ by comparing the probability $P_{\theta}(y|\mathbf{x})$ to a threshold, e.g., 0.5.
@@ -165,9 +165,9 @@ $\log{L}(\theta)$:
 \begin{equation}
 \theta^{\star} = \argmax_{\theta}\left[-\sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)\right]
 \end{equation}
-or alternatively by minimizing the negative log-likelihood function:
+or alternatively by minimizing the negative log-likelihood function $\mathcal{L}(\theta) = -\log{L}(\theta)$:
 \begin{equation}
-    \mathcal{L}(\theta) =-\log{L}(\theta) = \sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)
+    \theta^{\star}  = \argmin_{\theta} \sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)
 \end{equation}
 Unfortunately, whichever perspective we take, the optimization problem has no closed-form analytical solution.
 Thus, we must estimate the model parameters using some numerical algorithm, such as gradient descent algorithm (or one of many other approaches).
