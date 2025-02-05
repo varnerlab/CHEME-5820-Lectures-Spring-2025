@@ -16,12 +16,6 @@ Nelder JA, Mead R.
 \newblock The Computer Journal. 1965;7(4):308--313.
 \newblock doi:{10.1093/comjnl/7.4.308}.
 
-\bibitem{Kirkpatrick:1983aa}
-Kirkpatrick S, Gelatt CD Jr, Vecchi MP.
-\newblock Optimization by simulated annealing.
-\newblock Science. 1983;220(4598):671--80.
-\newblock doi:{10.1126/science.220.4598.671}.
-
 \bibitem{Holland:1975aa}
 Holland JH.
 \newblock Adaptation in natural and artificial systems: an introductory
@@ -33,5 +27,11 @@ Kennedy J, Eberhart R.
 \newblock Particle swarm optimization.
 \newblock In: Proceedings of ICNN'95 - International Conference on Neural
   Networks. vol.~4; 1995. p. 1942--1948 vol.4.
+
+\bibitem{Kirkpatrick:1983aa}
+Kirkpatrick S, Gelatt CD Jr, Vecchi MP.
+\newblock Optimization by simulated annealing.
+\newblock Science. 1983;220(4598):671--80.
+\newblock doi:{10.1126/science.220.4598.671}.
 
 \end{thebibliography}
