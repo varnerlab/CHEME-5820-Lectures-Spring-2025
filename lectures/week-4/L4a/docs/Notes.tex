@@ -1,11 +1,11 @@
-\documentclass{article}[12pt]
+\documentclass{article}[11pt]
 \usepackage{fullpage,graphicx, setspace, latexsym, cite,amsmath,amssymb,xcolor,subfigure}
 %\usepackage{epstopdf}
 %\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.mps} 
 \usepackage{amssymb} %maths
 \usepackage{amsmath} %maths
 \usepackage{amsthm, comment}
-\usepackage[round,comma,sort, numbers]{natbib}
+\usepackage[round,comma,sort,numbers]{natbib}
 
 % \bibliographystyle{plain}
 \bibliographystyle{plos2015}
@@ -29,10 +29,24 @@
 \usepackage{simplemargins}
 \usepackage{hyperref}
 
+\usepackage{mdframed}
+\definecolor{lgray}{rgb}{0.92,0.92,0.92}
+\definecolor{lsalmon}{rgb}{0.9921568627450981,0.9411764705882353, 0.9254901960784314}
+
 \renewcommand{\bibnumfmt}[1]{#1.}
 \setlist{noitemsep} % or \setlist{noitemsep} to leave space around whole list
 \setallmargins{1in}
 \linespread{1.1}
+
+\newcommand{\brows}[1]{%
+  \begin{bmatrix}
+  \begin{array}{@{\protect\rotvert\;}c@{\;\protect\rotvert}}
+  #1
+  \end{array}
+  \end{bmatrix}
+}
+\newcommand{\rotvert}{\rotatebox[origin=c]{90}{$\vert$}}
+\newcommand{\rowsvdots}{\multicolumn{1}{@{}c@{}}{\vdots}}
 
 
 \def\R{\mathbb{R}}
@@ -43,6 +57,7 @@
 \def\G{\mathcal{G}}
 \def\H{\mathcal{H}}
 \def\S{\mathcal{S}}
+\def\D{\mathcal{D}}
 \def\P{\mathbb{P}}
 \def\1{\mathbf{1}}
 \def\n{\nappa}
@@ -83,8 +98,6 @@
    usual scrutiny reserved for formal publications. }
    \vspace*{4mm}
 }
-
-
 \begin{document}
 \lecture{4c}{Support Vector Machines (SVMs)}{Jeffrey Varner}{}
 
@@ -95,8 +108,7 @@ SVMs are based on the concept of decision planes that define decision boundaries
 The goal of SVMs is to find the optimal decision plane that maximizes the margin between the classes. 
 The margin is the distance between the decision plane and the closest data points from each class. 
 SVMs are particularly useful for high-dimensional data and can handle non-linear decision boundaries using the kernel trick. 
-In this lecture, we will discuss the basic concepts of SVMs, including the optimization problem, the kernel trick, and the soft margin SVM. 
-We will also discuss the advantages and disadvantages of SVMs and provide an example of using SVMs for classification.
+In this lecture, we will discuss the basic concepts of SVMs, including the underlying optimization problem, the kernel trick, and the soft margin SVM. 
 
 \section{Basic Concepts of SVMs}
 Support Vector Machines (SVMs) are a class of supervised learning algorithms that can be used for classification and regression tasks.
@@ -119,30 +131,6 @@ y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1, \quad \forall i = 1, \ldots, n
 where $\mathbf{w}$ is the weight vector, $b$ is the bias term, $\mathbf{x}_i$ is the $i$-th data point, 
 $y_i$ is the label of the $i$-th data point, and $n$ is the number of data points.
 
-\subsection{The Kernel Trick}
-The kernel trick is a technique used in SVMs to handle non-linear decision boundaries.
-The kernel trick allows SVMs to implicitly map the input data into a higher-dimensional space where the data is linearly separable.
-This is achieved by using a kernel function that computes the dot product of the data points in the higher-dimensional space.
-The most common kernel functions used in SVMs are the linear kernel, polynomial kernel, and radial basis function (RBF) kernel.
-The linear kernel is defined as:
-\begin{equation}
-K(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^T\mathbf{x}_j
-\end{equation}
-The polynomial kernel is defined as:
-\begin{equation}
-K(\mathbf{x}_i, \mathbf{x}_j) = (\gamma \mathbf{x}_i^T\mathbf{x}_j + r)^d
-\end{equation}
-where $\gamma$ is a scaling factor, $r$ is a coefficient, and $d$ is the degree of the polynomial.
-The RBF kernel is defined as:
-\begin{equation}
-K(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \norm{\mathbf{x}_i - \mathbf{x}_j}^2)
-\end{equation}
-where $\gamma$ is a scaling factor. Given a kernel function $K(\mathbf{x}_i, \mathbf{x}_j)$, the decision function of the SVM can be written as:
-\begin{equation}
-f(\mathbf{x}) = \sum_{i=1}^{n} \alpha_i y_i K(\mathbf{x}_i, \mathbf{x}) + b
-\end{equation}
-where $\alpha_i$ are the Lagrange multipliers, $y_i$ are the labels of the data points, and $b$ is the bias term.
-
 \subsection{Soft Margin SVM}
 The soft margin SVM is an extension of the basic SVM that allows for some misclassification errors.
 The soft margin SVM introduces a slack variable $\xi_i$ for each data point, which measures the distance of the data point from the decision plane.
@@ -154,6 +142,49 @@ subject to the constraints:
 \begin{equation}
 y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1 - \xi_i, \quad \forall i = 1, \ldots, n
 \end{equation}
+
+\section{Kernel Functions}
+Kernel functions in machine learning are mathematical tools that enable algorithms to operate in high-dimensional spaces without explicitly computing the coordinates in those spaces.
+Kernel functions are used in a variety of machine learning algorithms, including Support Vector Machines (SVMs), kernelized regression, and kernelized clustering.
+Kernel functions have a few different interpretations. 
+For example, kernel functions can be thought of as similarity measures, i.e., they quantify the similarity between pairs of data points in a high-dimensional space.
+They are also implict mappings of data into a high-dimensional space, where the data becomes linearly separable (which is useful for classification algorithms).
+Thus, kernel functions are a powerful tool that we are going to use for many applications in machine learning.
+
+Kernel functions are useful, but what are they? There are several types of kernel functions, but the most common ones are the linear kernel, polynomial kernel, and radial basis function (RBF) kernel.
+Suppose we have a labeled dataset $\D = \{(\mathbf{x}_{i},y_{i}) \mid i = 1,2,\dots,n\}$, where the features $\mathbf{x}_i \in \mathbb{R}^{m}$ are $m$-dimensional vectors and the labels are binary $y_i \in \{-1,1\}$.
+A kernel function $k:\mathbb{R}^{m}\times\R^{m}\to\R$ is a function that takes fearure vectors points $\mathbf{x}_i$ and $\mathbf{x}_j$ and computes a scalar value that represents the similarity between the two data points.
+For example, the linear kernel function computes the dot product between the two data points, which is a measure of their similarity:
+\begin{equation}
+k(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^{\top}\mathbf{x}_j
+\end{equation}
+On the other hand, a polynomial kernel is defined as:
+\begin{equation}
+k_{d}(\mathbf{x}_i, \mathbf{x}_j) = (1+\mathbf{x}_i^{\top}\mathbf{x}_j)^d
+\end{equation}
+where $d$ is the degree of the polynomial. The radial basis function (RBF) kernel is defined as:
+\begin{equation}
+k_{\gamma}(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \norm{\mathbf{x}_i - \mathbf{x}_j}_{2}^2)
+\end{equation}
+where $\gamma$ is a scaling factor, and $\norm{\cdot}^{2}_{2}$ is the squared Euclidean norm.
+If we define $\gamma$ as $\frac{1}{2\sigma^2}$, the RBF kernel looks like a Gaussian function, without the normalization constant.
+Of course, not all functions can be used as kernel functions (Defn. \ref{def:kernel-valid}).
+
+\begin{defn}{(Kernel Function)}\label{def:kernel-valid}
+A function $k:\mathbb{R}^{m}\times\R^{m}\to\R$ is a valid kernel function if and only if the Gram matrix $\mathbf{K}$ is positive 
+semidefinite for all possible choices of the data points $\mathbf{x}_i$, where $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$.
+This is equivalent to saying that all eigenvalues of the Gram matrix $K$ are non-negative.
+Further, for all real value vectors $\mathbf{x}$, the Gram matrix $\mathbf{K}$ must satisfy $\mathbf{x}^{\top}\mathbf{K}\mathbf{x} \geq 0$.
+\end{defn}
+
+
+Given a kernel function $K(\mathbf{x}_i, \mathbf{x}_j)$, the decision function of the SVM can be written as:
+\begin{equation}
+f(\mathbf{x}) = \sum_{i=1}^{n} \alpha_i y_i K(\mathbf{x}_i, \mathbf{x}) + b
+\end{equation}
+where $\alpha_i$ are the Lagrange multipliers, $y_i$ are the labels of the data points, and $b$ is the bias term.
+
+
 
 \section{Summary and Conclusions}
 In this lecture, we discussed the basic concepts of Support Vector Machines (SVMs). 
