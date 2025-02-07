@@ -99,49 +99,56 @@
    \vspace*{4mm}
 }
 \begin{document}
-\lecture{4c}{Support Vector Machines (SVMs)}{Jeffrey Varner}{}
+\lecture{4c}{Kernel Functions and Kernelized Regression}{Jeffrey Varner}{}
 
 \section{Introduction}
-In this lecture, we will discuss Support Vector Machines (SVMs). 
-SVMs are a powerful class of supervised learning algorithms that can be used for classification and regression tasks. 
-SVMs are based on the concept of decision planes that define decision boundaries. A decision plane is a hyperplane that separates the data into classes. 
-The goal of SVMs is to find the optimal decision plane that maximizes the margin between the classes. 
-The margin is the distance between the decision plane and the closest data points from each class. 
-SVMs are particularly useful for high-dimensional data and can handle non-linear decision boundaries using the kernel trick. 
-In this lecture, we will discuss the basic concepts of SVMs, including the underlying optimization problem, the kernel trick, and the soft margin SVM. 
+In this lecture, we will discuss kernel functions and kernel regression.
+Kernel functions are mathematical tools that enable algorithms to operate in high-dimensional spaces without explicitly computing the coordinates in those spaces.
+Kernel functions are used in a variety of machine learning algorithms, including Support Vector Machines (SVMs), kernelized regression, and kernelized clustering.
+Today, we will focus on kernel regression, which is a non-parametric regression technique that uses kernel functions to estimate the relationship between the input and output variables.
+Let's start by discussing the basic concepts of kernel functions and then consider kernel regression.
 
-\section{Basic Concepts of SVMs}
-Support Vector Machines (SVMs) are a class of supervised learning algorithms that can be used for classification and regression tasks.
-The goal of SVMs is to find the optimal decision plane that maximizes the margin between the classes. 
-The decision plane is defined by the equation:
-\begin{equation}
-\mathbf{w}^T\mathbf{x} + b = 0
-\end{equation}
-where $\mathbf{w}$ is the weight vector, $\mathbf{x}$ is the data point, and $b$ is the bias term. 
-To estimate the decision plane, SVMs use the training data to find the optimal weight vector $\mathbf{w}$ and bias term $b$ that separate the data into classes.
-These parameters are estimated by solving an optimization problem that minimizes the norm of the weight vector subject to the constraints that the data points are correctly classified.
-The optimization problem for SVMs can be formulated as:
-\begin{equation}
-\min_{\mathbf{w},b} \frac{1}{2} \norm{\mathbf{w}}^2
-\end{equation}
-subject to the constraints:
-\begin{equation}
-y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1, \quad \forall i = 1, \ldots, n
-\end{equation}
-where $\mathbf{w}$ is the weight vector, $b$ is the bias term, $\mathbf{x}_i$ is the $i$-th data point, 
-$y_i$ is the label of the $i$-th data point, and $n$ is the number of data points.
 
-\subsection{Soft Margin SVM}
-The soft margin SVM is an extension of the basic SVM that allows for some misclassification errors.
-The soft margin SVM introduces a slack variable $\xi_i$ for each data point, which measures the distance of the data point from the decision plane.
-The optimization problem for the soft margin SVM can be formulated as follows:
-\begin{equation}
-\min_{\mathbf{w},b,\xi} \frac{1}{2} \norm{\mathbf{w}}^2 + C\sum_{i=1}^{n} \xi_i
-\end{equation}
-subject to the constraints:
-\begin{equation}
-y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1 - \xi_i, \quad \forall i = 1, \ldots, n
-\end{equation}
+% In this lecture, we will discuss Support Vector Machines (SVMs). 
+% SVMs are a powerful class of supervised learning algorithms that can be used for classification and regression tasks. 
+% SVMs are based on the concept of decision planes that define decision boundaries. A decision plane is a hyperplane that separates the data into classes. 
+% The goal of SVMs is to find the optimal decision plane that maximizes the margin between the classes. 
+% The margin is the distance between the decision plane and the closest data points from each class. 
+% SVMs are particularly useful for high-dimensional data and can handle non-linear decision boundaries using the kernel trick. 
+% In this lecture, we will discuss the basic concepts of SVMs, including the underlying optimization problem, the kernel trick, and the soft margin SVM. 
+
+% \section{Basic Concepts of SVMs}
+% Support Vector Machines (SVMs) are a class of supervised learning algorithms that can be used for classification and regression tasks.
+% The goal of SVMs is to find the optimal decision plane that maximizes the margin between the classes. 
+% The decision plane is defined by the equation:
+% \begin{equation}
+% \mathbf{w}^T\mathbf{x} + b = 0
+% \end{equation}
+% where $\mathbf{w}$ is the weight vector, $\mathbf{x}$ is the data point, and $b$ is the bias term. 
+% To estimate the decision plane, SVMs use the training data to find the optimal weight vector $\mathbf{w}$ and bias term $b$ that separate the data into classes.
+% These parameters are estimated by solving an optimization problem that minimizes the norm of the weight vector subject to the constraints that the data points are correctly classified.
+% The optimization problem for SVMs can be formulated as:
+% \begin{equation}
+% \min_{\mathbf{w},b} \frac{1}{2} \norm{\mathbf{w}}^2
+% \end{equation}
+% subject to the constraints:
+% \begin{equation}
+% y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1, \quad \forall i = 1, \ldots, n
+% \end{equation}
+% where $\mathbf{w}$ is the weight vector, $b$ is the bias term, $\mathbf{x}_i$ is the $i$-th data point, 
+% $y_i$ is the label of the $i$-th data point, and $n$ is the number of data points.
+
+% \subsection{Soft Margin SVM}
+% The soft margin SVM is an extension of the basic SVM that allows for some misclassification errors.
+% The soft margin SVM introduces a slack variable $\xi_i$ for each data point, which measures the distance of the data point from the decision plane.
+% The optimization problem for the soft margin SVM can be formulated as follows:
+% \begin{equation}
+% \min_{\mathbf{w},b,\xi} \frac{1}{2} \norm{\mathbf{w}}^2 + C\sum_{i=1}^{n} \xi_i
+% \end{equation}
+% subject to the constraints:
+% \begin{equation}
+% y_i(\mathbf{w}^T\mathbf{x}_i + b) \geq 1 - \xi_i, \quad \forall i = 1, \ldots, n
+% \end{equation}
 
 \section{Kernel Functions}
 Kernel functions in machine learning are mathematical tools that enable algorithms to operate in high-dimensional spaces without explicitly computing the coordinates in those spaces.
@@ -149,47 +156,71 @@ Kernel functions are used in a variety of machine learning algorithms, including
 Kernel functions have a few different interpretations. 
 For example, kernel functions can be thought of as similarity measures, i.e., they quantify the similarity between pairs of data points in a high-dimensional space.
 They are also implict mappings of data into a high-dimensional space, where the data becomes linearly separable (which is useful for classification algorithms).
-Thus, kernel functions are a powerful tool that we are going to use for many applications in machine learning.
+Thus, kernel functions are powerful tools that we are going to use for many applications in machine learning.
 
-Kernel functions are useful, but what are they? There are several types of kernel functions, but the most common ones are the linear kernel, polynomial kernel, and radial basis function (RBF) kernel.
-Suppose we have a labeled dataset $\D = \{(\mathbf{x}_{i},y_{i}) \mid i = 1,2,\dots,n\}$, where the features $\mathbf{x}_i \in \mathbb{R}^{m}$ are $m$-dimensional vectors and the labels are binary $y_i \in \{-1,1\}$.
-A kernel function $k:\mathbb{R}^{m}\times\R^{m}\to\R$ is a function that takes fearure vectors points $\mathbf{x}_i$ and $\mathbf{x}_j$ and computes a scalar value that represents the similarity between the two data points.
-For example, the linear kernel function computes the dot product between the two data points, which is a measure of their similarity:
+A kernel function $k:\mathbb{R}^{\star}\times\R^{\star}\to\R$ is a function that takes a pair of vectors 
+$\mathbf{z}_i\in\R^{\star}$ and $\mathbf{z}_j\in\R^{\star}$ as arguments, 
+e.g., a pair of feature vectors, a feature vector and a paramter vector, or any two vectors of compatible size 
+and computes a scalar value that represents the similarity (in some sense) between the two vector arguments.
+For example, the linear kernel function computes the dot product between two vectors:
 \begin{equation}
-k(\mathbf{x}_i, \mathbf{x}_j) = \mathbf{x}_i^{\top}\mathbf{x}_j
+k(\mathbf{z}_i, \mathbf{z}_j) = \mathbf{z}_i^{\top}\mathbf{z}_j
 \end{equation}
 On the other hand, a polynomial kernel is defined as:
 \begin{equation}
-k_{d}(\mathbf{x}_i, \mathbf{x}_j) = (1+\mathbf{x}_i^{\top}\mathbf{x}_j)^d
+k_{d}(\mathbf{z}_i, \mathbf{z}_j) = (1+\mathbf{z}_i^{\top}\mathbf{z}_j)^d
 \end{equation}
 where $d$ is the degree of the polynomial. The radial basis function (RBF) kernel is defined as:
 \begin{equation}
-k_{\gamma}(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \norm{\mathbf{x}_i - \mathbf{x}_j}_{2}^2)
+k_{\gamma}(\mathbf{z}_i, \mathbf{z}_j) = \exp(-\gamma \norm{\mathbf{z}_i - \mathbf{z}_j}_{2}^2)
 \end{equation}
-where $\gamma$ is a scaling factor, and $\norm{\cdot}^{2}_{2}$ is the squared Euclidean norm.
-If we define $\gamma$ as $\frac{1}{2\sigma^2}$, the RBF kernel looks like a Gaussian function, without the normalization constant.
-Of course, not all functions can be used as kernel functions (Defn. \ref{def:kernel-valid}).
-
-\begin{defn}{(Kernel Function)}\label{def:kernel-valid}
-A function $k:\mathbb{R}^{m}\times\R^{m}\to\R$ is a valid kernel function if and only if the Gram matrix $\mathbf{K}$ is positive 
-semidefinite for all possible choices of the data points $\mathbf{x}_i$, where $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$.
+where $\gamma$ is a scaling factor, and $\norm{\cdot}^{2}_{2}$ is the squared Euclidean norm;
+if we define $\gamma$ as ${1}/{2\sigma^2}$, the RBF kernel looks like a Gaussian function, without the normalization constant.
+Of course, not all functions are kernel functions (Defn. \ref{def:kernel-valid}).
+\begin{defn}{(Valid Kernel Function)}\label{def:kernel-valid}
+A function $k:\mathbb{R}^{\star}\times\R^{\star}\to\R$ is a valid kernel function if and only if the Gram matrix $\mathbf{K}$ is positive 
+semidefinite for all possible choices of the data points $\mathbf{z}_i$, where $K_{ij} = k(\mathbf{z}_i, \mathbf{z}_j)$.
 This is equivalent to saying that all eigenvalues of the Gram matrix $K$ are non-negative.
 Further, for all real value vectors $\mathbf{x}$, the Gram matrix $\mathbf{K}$ must satisfy $\mathbf{x}^{\top}\mathbf{K}\mathbf{x} \geq 0$.
 \end{defn}
+Kernel functions can also be combined to create more complex kernel functions using the concept of kernel composition.
+For example, the sum of two valid kernel functions is also a valid kernel function. 
+The product of two valid kernel functions is also a valid kernel function. 
+Multiplying a kernel function by a scalar is also a valid kernel function, etc.
+See \href{https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote14.html}{the CS 4780 Lecture Notes (Fall 2018)} for more details on kernel composition.
 
-
-Given a kernel function $K(\mathbf{x}_i, \mathbf{x}_j)$, the decision function of the SVM can be written as:
+\section{Kernel Regression}
+Kernel regression is a non-parametric regression technique that uses kernel functions to estimate the relationship between the input and output variables.
+Kernel regression is a powerful tool for modeling complex relationships in data and is widely used in machine learning applications.
+Suppose we have a dataset $\D = \{(\mathbf{x}_{i},y_{i}) \mid i = 1,2,\dots,n\}$, where the features $\mathbf{x}_i \in \mathbb{R}^{m}$ 
+are $m$-dimensional vectors and the target variables are continous values $y_i \in \mathbb{R}$, e.g., the price of a house, the temperature, etc.
+The basic idea behind kernel regression is to estimate the output variable $y$ as a weighted average of the output variables of the training data points, 
+where the weights are determined by the kernel functions. The kernel regression function is defined as:
 \begin{equation}
-f(\mathbf{x}) = \sum_{i=1}^{n} \alpha_i y_i K(\mathbf{x}_i, \mathbf{x}) + b
+f(\mathbf{x}) = \sum_{i=1}^{n} \alpha_i k(\mathbf{x}_i, \mathbf{x})
 \end{equation}
-where $\alpha_i$ are the Lagrange multipliers, $y_i$ are the labels of the data points, and $b$ is the bias term.
-
+where $\alpha_i$ are the weights, and $k(\mathbf{x}_i, \mathbf{x})$ is the kernel function that measures the similarity between the input features $\mathbf{x}_i$ and $\mathbf{x}$.
+The weights $\alpha_i$ are determined by minimizing the mean squared error between the predicted output $f(\mathbf{x})$ and the true output $y$:
+\begin{equation}
+\min_{\alpha} \sum_{i=1}^{n} (y_i - f(\mathbf{x}_i))^2
+\end{equation}
+The solution to this optimization problem can be written in matrix form as:
+\begin{equation}
+\alpha = (\mathbf{K} + \lambda \mathbf{I})^{-1}\mathbf{y}
+\end{equation}
+where $\mathbf{K}$ is the Gram matrix of the kernel function, $\mathbf{y}$ is the vector of target variables, and $\lambda$ is a regularization parameter.
+The regularization parameter $\lambda$ controls the smoothness of the regression function and prevents overfitting.
 
 
 \section{Summary and Conclusions}
-In this lecture, we discussed the basic concepts of Support Vector Machines (SVMs). 
-SVMs are a class of supervised learning algorithms that can be used for classification and regression tasks.
-
+In this lecture, we discussed kernel functions and kernel regression.
+Kernel functions are mathematical tools that enable algorithms to operate in high-dimensional spaces without explicitly computing the coordinates in those spaces.
+Kernel functions are used in a variety of machine learning algorithms, including Support Vector Machines (SVMs), kernelized regression, and kernelized clustering.
+They have several interpretations, including similarity measures and implicit mappings of data into high-dimensional spaces.
+We introduced the linear kernel, polynomial kernel, and radial basis function (RBF) kernel as examples of kernel functions, 
+and discussed the properties of valid kernel functions.
+Finally, we discussed kernel regression, a non-parametric regression technique that uses kernel functions to estimate the relationship between the input and output variables.
+Kernel regression is a powerful tool for modeling complex relationships in data and is widely used in machine learning applications.
 
 \bibliography{References-L3a.bib}
 
