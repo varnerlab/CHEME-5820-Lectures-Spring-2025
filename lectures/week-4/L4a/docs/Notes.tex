@@ -101,6 +101,17 @@
 \begin{document}
 \lecture{4c}{Kernel Functions and Kernelized Regression}{Jeffrey Varner}{}
 
+
+\begin{mdframed}[backgroundcolor=lgray]
+   In this lecture, we will discuss the following topics:
+   \begin{itemize}[leftmargin=16pt]
+      \item{\textbf{Positive definite kernel functions}: A positive definite kernel function $k:\mathbb{R}^{\star}\times\mathbb{R}^{\star}\to\mathbb{R}$ is a function that takes two vector arguments and returns a scalar that is in some sense a \textit{similarity} measure of the two input vectors. A positive definite kernel function produces a kernel matrix $\mathbf{K}$ that is positive (semi)definite.}
+      \item{\textbf{Kernel machines}: A kernel machine is a class of machine learning algorithms that uses kernel functions to implicitly transform input data into a high-dimensional feature space, enabling the solution of non-linear problems using linear classifiers without explicitly computing the coordinates in that space.}
+      \item{\textbf{Kernel regression}: Kernel regression is a technique that uses kernel functions to estimate (potentially) non-linear relationships between variables by assigning weights to data points based on their proximity to a point of interest, allowing for flexible modeling without assuming a specific functional form.}
+   \end{itemize}
+\end{mdframed}
+
+
 \section{Introduction}
 In this lecture, we will discuss kernel functions and kernel regression.
 Kernel functions are mathematical tools that enable algorithms to operate in high-dimensional spaces without explicitly computing the coordinates in those spaces.
@@ -159,29 +170,29 @@ They are also implict mappings of data into a high-dimensional space, where the 
 Thus, kernel functions are powerful tools that we are going to use for many applications in machine learning.
 
 A kernel function $k:\mathbb{R}^{\star}\times\R^{\star}\to\R$ is a function that takes a pair of vectors 
-$\mathbf{z}_i\in\R^{\star}$ and $\mathbf{z}_j\in\R^{\star}$ as arguments, 
+$\mathbf{v}_i\in\R^{\star}$ and $\mathbf{v}_j\in\R^{\star}$ as arguments, 
 e.g., a pair of feature vectors, a feature vector and a paramter vector, or any two vectors of compatible size 
 and computes a scalar value that represents the similarity (in some sense) between the two vector arguments.
 For example, the linear kernel function computes the dot product between two vectors:
 \begin{equation}
-k(\mathbf{z}_i, \mathbf{z}_j) = \mathbf{z}_i^{\top}\mathbf{z}_j
+k(\mathbf{v}_i, \mathbf{v}_j) = \mathbf{v}_i^{\top}\mathbf{v}_j
 \end{equation}
 On the other hand, a polynomial kernel is defined as:
 \begin{equation}
-k_{d}(\mathbf{z}_i, \mathbf{z}_j) = (1+\mathbf{z}_i^{\top}\mathbf{z}_j)^d
+k_{d}(\mathbf{v}_i, \mathbf{v}_j) = (1+\mathbf{v}_i^{\top}\mathbf{v}_j)^d
 \end{equation}
 where $d$ is the degree of the polynomial. The radial basis function (RBF) kernel is defined as:
 \begin{equation}
-k_{\gamma}(\mathbf{z}_i, \mathbf{z}_j) = \exp(-\gamma \norm{\mathbf{z}_i - \mathbf{z}_j}_{2}^2)
+k_{\gamma}(\mathbf{v}_i, \mathbf{v}_j) = \exp(-\gamma \norm{\mathbf{v}_i - \mathbf{v}_j}_{2}^2)
 \end{equation}
 where $\gamma$ is a scaling factor, and $\norm{\cdot}^{2}_{2}$ is the squared Euclidean norm;
 if we define $\gamma$ as ${1}/{2\sigma^2}$, the RBF kernel looks like a Gaussian function, without the normalization constant.
 Of course, not all functions are kernel functions (Defn. \ref{def:kernel-valid}).
 \begin{defn}{(Valid Kernel Function)}\label{def:kernel-valid}
-A function $k:\mathbb{R}^{\star}\times\R^{\star}\to\R$ is a valid kernel function if and only if the Gram matrix $\mathbf{K}$ is positive 
-semidefinite for all possible choices of the data points $\mathbf{z}_i$, where $K_{ij} = k(\mathbf{z}_i, \mathbf{z}_j)$.
-This is equivalent to saying that all eigenvalues of the Gram matrix $K$ are non-negative.
-Further, for all real value vectors $\mathbf{x}$, the Gram matrix $\mathbf{K}$ must satisfy $\mathbf{x}^{\top}\mathbf{K}\mathbf{x} \geq 0$.
+A function $k:\mathbb{R}^{\star}\times\R^{\star}\to\R$ is a valid kernel function if and only if the Kernel matrix $\mathbf{K}$ is positive 
+semidefinite for all possible choices of the data points $\mathbf{v}_i$, where $K_{ij} = k(\mathbf{v}_i, \mathbf{v}_j)$.
+This is equivalent to saying that all eigenvalues of the Kernel matrix $\mathbf{K}$ are non-negative.
+Further, for all real value vectors $\mathbf{x}$, the Kernel matrix $\mathbf{K}$ must satisfy $\mathbf{x}^{\top}\mathbf{K}\mathbf{x} \geq 0$.
 \end{defn}
 Kernel functions can also be combined to create more complex kernel functions using the concept of kernel composition.
 For example, the sum of two valid kernel functions is also a valid kernel function. 
@@ -200,16 +211,53 @@ where the weights are determined by the kernel functions. The kernel regression 
 f(\mathbf{x}) = \sum_{i=1}^{n} \alpha_i k(\mathbf{x}_i, \mathbf{x})
 \end{equation}
 where $\alpha_i$ are the weights, and $k(\mathbf{x}_i, \mathbf{x})$ is the kernel function that measures the similarity between the input features $\mathbf{x}_i$ and $\mathbf{x}$.
-The weights $\alpha_i$ are determined by minimizing the mean squared error between the predicted output $f(\mathbf{x})$ and the true output $y$:
+
+\subsection{Kernel Ridge Regression}
+Suppose we consider a linear regression problem of the form:
 \begin{equation}
-\min_{\alpha} \sum_{i=1}^{n} (y_i - f(\mathbf{x}_i))^2
+\hat{\mathbf{y}} = \hat{\mathbf{X}}\theta
 \end{equation}
-The solution to this optimization problem can be written in matrix form as:
+where $\hat{\mathbf{X}}\in\R^{n\times{p}}$ is a data matrix with the transpose of the augmented feature vectors $\hat{\mathbf{x}}^{\top}\in\R^{p}$ on the rows, and $\theta$ is an unknown parameter vector $\theta\in\mathbb{R}^{p}$ 
+where $p = m+1$. We can estimate the (expected value) of the parameter vector $\theta$ by minimizing the least squares loss function:
 \begin{equation}
-\alpha = (\mathbf{K} + \lambda \mathbf{I})^{-1}\mathbf{y}
+\hat{\theta} = \argmin_{\theta} \norm{\mathbf{y} - \hat{\mathbf{X}}\theta}_{2}^{2} + \lambda\norm{\theta}_{2}^{2}
 \end{equation}
-where $\mathbf{K}$ is the Gram matrix of the kernel function, $\mathbf{y}$ is the vector of target variables, and $\lambda$ is a regularization parameter.
-The regularization parameter $\lambda$ controls the smoothness of the regression function and prevents overfitting.
+where $\mathbf{y}$ is the target variable vector, and $\lambda\geq{0}$ is a regularization parameter. 
+When we include the L2 penalty term, this is referred to as ridge regression, but we'll refer to it as regularized least squares regression.
+If we include a different penalty, we would have a different type of regression, e.g., L1 penalty would be \href{https://en.wikipedia.org/wiki/Lasso_(statistics)}{Lasso regression}.
+The (regularized) least squares solution for the (expected value) of the parameters $\theta$ is given by:
+\begin{equation}
+\hat{\mathbf{\theta}}_{\lambda} = \left(\hat{\mathbf{X}}^{\top}\hat{\mathbf{X}}+\lambda\,\mathbf{I}\right)^{-1}\hat{\mathbf{X}}^{\top}\mathbf{y}
+\end{equation}
+where $\lambda$ is the regularization parameter, and $\mathbf{I}$ is the identity matrix.
+
+The basic idea of kernel regression is to rewrite the parameter vector $\hat{\theta}_{\lambda}$ 
+as a weighted sum of the augmented feature variables: 
+\begin{equation}
+\hat{\theta}_{\lambda} \equiv \sum_{i=1}^{n}\alpha_{i}\hat{\mathbf{x}}_{i}
+\end{equation}
+where $\alpha_{i}$ are the weights (that we need to estimate), and $\hat{\mathbf{x}}_{i}$ are the augmented feature vectors.
+Then for some (new) feature vector $\hat{\mathbf{z}}$, i.e., a vector not in the training set, the predicted output $\hat{y}$ is given by:
+\begin{align*}
+\hat{y} & = \hat{\mathbf{z}}^{\top}\theta = \sum_{i=1}^{n}\alpha_{i}\left<\hat{\mathbf{z}},\mathbf{x}_{i}\right>\quad\text{|\,Replace inner product with kernel}\\
+        & = \hat{\mathbf{z}}^{\top}\theta \simeq \sum_{i=1}^{n}\alpha_{i}\,k(\hat{\mathbf{z}},\mathbf{x}_{i})
+\end{align*}
+where $k(\hat{\mathbf{z}},\mathbf{x}_{i})$ denotes a kernel function (similarity score) between a new (augmented) feature vector and $\hat{\mathbf{z}}$
+and the (known) training feature vector $\hat{\mathbf{x}}_{i}$. The question is then how to estimate the weights $\alpha_{i}$.
+
+As it turns out the weights $\alpha_{i}$ have an analytical solution. However, before we go through this derivation
+we need to introduce a slightly different form for the orignal $\theta_{\lambda}$ solution (Lemma \ref{lemma:ridge-solution}).
+
+\begin{lemma}\label{lemma:ridge-solution}
+   First, for any data matrix $\mathbf{X}$, output vector $\mathbf{y}$ and regularization parameter $\lambda\geq{0}$, we can show:
+   \begin{equation*}
+   \hat{\mathbf{X}}^{\top}\left(\hat{\mathbf{X}}\hat{\mathbf{X}}^{\top}+\lambda\,\mathbf{I}\right)^{-1}\mathbf{y} = \left(\hat{\mathbf{X}}^{\top}\hat{\mathbf{X}}+\lambda\,\mathbf{I}\right)^{-1}\hat{\mathbf{X}}^{\top}\mathbf{y}
+   \end{equation*}
+   Thus. we can rewrite the regularized least squares solution for the (expected value) of the parameters $\theta$ as:
+   \begin{equation*}
+   \hat{\mathbf{\theta}}_{\lambda} = \hat{\mathbf{X}}^{\top}\left(\hat{\mathbf{X}}\hat{\mathbf{X}}^{\top}+\lambda\,\mathbf{I}\right)^{-1}\mathbf{y}
+   \end{equation*}
+\end{lemma}
 
 
 \section{Summary and Conclusions}

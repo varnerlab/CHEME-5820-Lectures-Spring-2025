@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  6 FEB 2025 20:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  10 FEB 2025 06:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -577,30 +577,38 @@ Package hyperref Info: Link coloring OFF on input line 101.
 \@outlinefile=\write4
 \openout4 = `Notes.out'.
 
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 16
-1.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 105.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 10
+8.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 161
+LaTeX Font Info:    Trying to load font information for U+msa on input line 108
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 161
+LaTeX Font Info:    Trying to load font information for U+msb on input line 108
 .
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
+al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[2] (./Notes.bbl
+[2]
+Overfull \vbox (6.94444pt too high) has occurred while \output is active []
+
+
+[3] (./Notes.bbl
 
 Package natbib Warning: Empty `thebibliography' environment on input line 3.
 
@@ -608,22 +616,22 @@ Package natbib Warning: Empty `thebibliography' environment on input line 3.
 Overfull \vbox (6.94444pt too high) has occurred while \output is active []
 
 
-[3] (./Notes.aux)
+[4] (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `Notes.out' has not changed.
-(rerunfilecheck)             Checksum: F139E8D43B555E6C0C680CE921D62508;524.
+(rerunfilecheck)             Checksum: DCAE7F393997BBBB16F3C8C9C0A53C6C;702.
  ) 
 Here is how much of TeX's memory you used:
- 12917 strings out of 474116
- 202113 string characters out of 5743682
- 1940187 words of memory out of 5000000
- 35055 multiletter control sequences out of 15000+600000
- 562317 words of font info for 54 fonts, out of 8000000 for 9000
+ 12944 strings out of 474116
+ 202659 string characters out of 5743682
+ 1941187 words of memory out of 5000000
+ 35075 multiletter control sequences out of 15000+600000
+ 563257 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 79i,6n,93p,542b,567s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,11n,93p,555b,457s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -636,11 +644,12 @@ cal/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
 texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
 live/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
-ive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Notes.pdf (3 pages, 160414 bytes).
+ive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/
+texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on Notes.pdf (4 pages, 175568 bytes).
 PDF statistics:
- 116 PDF objects out of 1000 (max. 8388607)
- 84 compressed objects within 1 object stream
- 16 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 138 PDF objects out of 1000 (max. 8388607)
+ 102 compressed objects within 2 object streams
+ 21 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
