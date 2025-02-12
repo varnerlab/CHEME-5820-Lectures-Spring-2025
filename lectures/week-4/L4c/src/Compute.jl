@@ -142,7 +142,7 @@ function _classify(test::Array{<:Number,1}, features::Array{<:Number,2}, labels:
     end
 
     # sort the distances -
-    sorted_indices = sortperm(distances);
+    sorted_indices = sortperm(distances, rev=true);
 
     # get the K nearest neighbours -
     for i ∈ 1:K
@@ -165,7 +165,6 @@ function _classify(test::Array{<:Number,1}, features::Array{<:Number,2}, labels:
 
     # compute the highest count -
     class = maximum(keys(invcounts) |> collect) |> key -> invcounts[key]
-    @show invcounts, counts, class
 
     # return the most common label -
     return class

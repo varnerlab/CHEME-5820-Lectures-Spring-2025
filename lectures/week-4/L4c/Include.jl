@@ -17,6 +17,7 @@ using LinearAlgebra
 using Distances
 using PrettyTables
 using Random
+using KernelFunctions
 
 # load my own packages -
 include(joinpath(_PATH_TO_SRC, "Types.jl"));
