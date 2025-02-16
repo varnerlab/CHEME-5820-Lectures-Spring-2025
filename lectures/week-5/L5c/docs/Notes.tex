@@ -175,13 +175,8 @@ However, we can factor out the norm of the normal vector $\theta$ from the objec
 \begin{equation*}
     \max_{\theta}\frac{1}{\norm{\theta}_{2}}\left[\min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\}\right]\quad\text{subject to}\quad y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i
 \end{equation*}
-Finally, we can use the scale invariance of the margin and the hyperplane to simplify the optimization problem further:
-\begin{equation*}
-    \max_{\theta}\frac{1}{\norm{\theta}_{2}}\quad\text{subject to}\quad y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i
-\end{equation*}
-where we have used the fact that the margin is scale invariant, i.e., we can always find a parameter vector $\theta$ such that
-$\min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\} = 1$.
-Putting all these ideas together (and using the fact that maximing the inverse of a function is equivalent to minimizing the function), we can define the optimization problem for the maximum margin classifier problem:
+Finally, we can use the scale invariance of the margin and the hyperplane,  using the fact that maximing the inverse of a function is equivalent to minimizing the function, 
+to simplify the optimization problem (Defn. \ref{defn:max-margin}):
 \begin{defn}\label{defn:max-margin}
     The maximum margin classifier problem is defined as the optimization problem:
     \begin{align*}
