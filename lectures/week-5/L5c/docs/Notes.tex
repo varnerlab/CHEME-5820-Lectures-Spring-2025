@@ -28,6 +28,13 @@
 \usepackage{enumitem}
 \usepackage{simplemargins}
 \usepackage{hyperref}
+\hypersetup{
+     colorlinks=true,
+     linkcolor=blue,
+     filecolor=red,
+     citecolor = red,      
+     urlcolor=cyan,
+}
 
 \usepackage{mdframed}
 \definecolor{lgray}{rgb}{0.92,0.92,0.92}
@@ -105,7 +112,10 @@
 \begin{mdframed}[backgroundcolor=lgray]
 The key concepts covered in this lecture include:
 \begin{itemize}[leftmargin=16pt]
-\item{Support Vector Machines (SVMs)}
+    \item{A \href{sec:svm}{support vector machine} is a supervised machine learning algorithm that finds an optimal hyperplane in an $N$-dimensional space to classify (binary) data points distinctly, maximizing the \textit{margin} between different classes. 
+    The \textit{margin} in a support vector machine is defined as the distance from the separating hyperplane to the closest data points of either class.}
+    \item{A \href{sec:max-margin}{hard margin support vector machine} is a binary linear classifier that finds the optimal hyperplane to separate two classes of data points with the maximum possible \textit{margin}, allowing no misclassifications and requiring the data to be linearly separable.}
+    \item{A \href{sec:soft-margin}{soft margin support vector machine} is a variant of the SVM algorithm that allows for some misclassification of training data points, enabling it to handle non-linearly separable datasets and reduce overfitting by finding a balance between maximizing the decision boundary margin and minimizing classification errors.}
 \end{itemize}
 \end{mdframed}
 
@@ -118,8 +128,9 @@ SVMs are particularly well-suited for binary classification problems, where the 
 However, SVMs are based on the concept of finding an \textit{optimal seperating hyperplane} (not just some seperating hyperplane) 
 that maximizes the margin between the two classes.
 
-\section{Support Vector Machines (SVMs)}
-Support vector machines (SVMs) are a class of supervised learning algorithms that can be used for both classification and regression tasks.
+\section{Support Vector Machines (SVMs)}\label{sec:svm}
+Support vector machines (SVMs) are a class of supervised learning algorithms that can be used for both classification and regression tasks, 
+published by Cortes and Vapnik \cite{Cortes:1995aa} while they worked at AT\&T Bell Labs.
 In many ways, SVMs are similar to the perceptron and logistic regression, as they are also based on the concept (in the simplest case) of finding a hyperplane that separates data points into different classes.
 Suppose, we have dataset $\mathcal{D} = \{(\hat{\mathbf{x}}_{i}, y_{i}) \mid i = 1,2,\dots,n\}$, where $\hat{\mathbf{x}}_i \in \R^p$ is an \textit{augmented} feature vector ($m$ features with additional 1 last entry to model the bias) and $y_i \in \{-1, 1\}$ is the corresponding class label.
 Then, the goal of SVMs is to find the hyperplane $\mathcal{H} = \{\hat{\mathbf{x}} \mid \left<\hat{\mathbf{x}},\theta\right> = 0\}$ that separates the data points into two classes (those points above the hyperplane, and those points below the hyperplane), 
@@ -127,7 +138,7 @@ where $\theta \in \R^{p}$ ($p=m+1$) is the normal vector to the hyperplane, or a
 So far, this is similar to the perceptron and logistic regression, but the key difference is that SVMs aim to find the \textit{optimal} hyperplane in some sense. 
 Let's explore the notion of an \textit{optimal hyperplane} in more detail.
 
-\subsection{Maximum Margin Classifier}
+\subsection{Maximum Margin Classifier}\label{sec:max-margin}
 Suppose we have found a hyperplane $\mathcal{H}$ that separates the data points into two classes.
 Then, the margin of the hyperplane is defined as the distance $\gamma$ between the hyperplane and the closest data point from either class.
 Thus, the margin is a measure of how well the hyperplane separates the two classes, and the goal of a maximizing margin SVM classifier is to find the hyperplane that maximizes the margin.
@@ -153,14 +164,29 @@ We can now find the length of the vector $\mathbf{d}$ by computing $\norm{\mathb
 \end{align*}
 The length of the distance vector $\mathbf{d}$ gives us the distance from a feature vector $\hat{\mathbf{x}}$ to the hyperplane $\mathcal{H}$.
 Thus, we can define the margin $\gamma_{\theta}$ of the hyperplane $\mathcal{H}$ as the distance between the hyperplane and the closest data point (Defn. \ref{defn:margin}).
-\begin{defn}\label{defn:margin}
+\begin{defn}[Margin]\label{defn:margin}
     The margin $\gamma_{\theta}$ of a hyperplane $\mathcal{H}$ is given by the distance between the hyperplane and the closest data point:
     \begin{align*}
         \gamma_{\theta} & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta\right>|}{\norm{\theta}_{2}}\right\}
     \end{align*}
 where we use the absolute value to account for the fact that the distance can be positive or negative, i.e., the data point can be on either side of the hyperplane.
-The margin and the hyperplane are scale invaraient, i.e., $\gamma_{\theta} = \gamma_{c\theta}$ for any $c \neq 0$.
 \end{defn}
+
+On interesting feature of the margin is that it is scale-invariant, i.e., the margin is the same regardless of the scale of the normal vector $\theta$
+(Lemma \ref{lem:scale-invariance}).
+\begin{lemma}[Scale Invariance]\label{lem:scale-invariance}
+    The margin $\gamma_{\theta}$ is scale-invariant, i.e., the margin is the same regardless of the scale of the normal vector $\theta$.
+    To see that the margin is scale-invariant, consider the scaled normal vector $\theta^{\prime} = \alpha\theta$, where the scalar $\alpha\neq{0}$.
+    Then, we can show that the margin of the scaled normal vector $\theta^{\prime}$ is the same as the margin of the original normal vector $\theta$:
+    \begin{align*}
+        \gamma_{\theta^{\prime}} & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta^{\prime}\right>|}{\norm{\theta^{\prime}}_{2}}\right\}\quad\mid\,\text{substitute $\theta^{\prime} = \alpha\theta$} \\
+        & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\alpha\theta\right>|}{\norm{\alpha\theta}_{2}}\right\}\quad\mid\,\text{substitute $\norm{\alpha\theta}_{2} = |\alpha|\norm{\theta}_{2}$} \\
+        & = \min_{i}\left\{\frac{|\alpha\left<\hat{\mathbf{x}}_{i},\theta\right>|}{|\alpha|\norm{\theta}_{2}}\right\}\quad\mid\,\text{cancel out $\alpha$} \\
+        & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta\right>|}{\norm{\theta}_{2}}\right\} = \gamma_{\theta}
+    \end{align*}
+    Practically this means the margin is only dependent on the direction of the normal vector $\theta$, not its magnitude.
+    Thus, we can set the scale to be whatever is most convenient.
+\end{lemma}
 
 Now that have a model for the margin of the hyperplane, we can define the problem of finding the optimal hyperplane as an optimization problem.
 Ideally, we would like to estimate the parameters $\theta$ of the hyperplane that maximize the margin $\gamma_{\theta}$, i.e., the distance between the hyperplane and the closest data point is maxzimized:
@@ -175,24 +201,102 @@ However, we can factor out the norm of the normal vector $\theta$ from the objec
 \begin{equation*}
     \max_{\theta}\frac{1}{\norm{\theta}_{2}}\left[\min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\}\right]\quad\text{subject to}\quad y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i
 \end{equation*}
-Finally, we can use the scale invariance of the margin and the hyperplane,  using the fact that maximing the inverse of a function is equivalent to minimizing the function, 
-to simplify the optimization problem (Defn. \ref{defn:max-margin}):
-\begin{defn}\label{defn:max-margin}
-    The maximum margin classifier problem is defined as the optimization problem:
-    \begin{align*}
-    \text{find}\qquad & \min_{\theta}\norm{\theta}_{2}^{2}\\
+Finally, we can use the scale invariance of the margin and the hyperplane, and the fact that maximing the inverse of a function is equivalent to minimizing the function, 
+to simplify the optimization problem:
+\begin{align*}
+    \text{objective}\qquad & \min_{\theta}\norm{\theta}_{2}^{2}\\
     \text{subject to}\qquad & y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i\\
-    \text{subject to}\qquad & \min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\} = 1
-    \end{align*}
-where the objective function is the squared norm of the normal vector $\theta$, and the constraints ensure that the data points are correctly classified by the hyperplane, 
-and the margin of the hyperplane is equal to 1.
+    & \min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\} = 1
+\end{align*}
+However, the last constraint is tricky to handle. 
+We can simplify the optimization problem futher and get rid of the last constraint by modifying the second set of constraints (Defn. \ref{defn:max-margin}):
+
+\begin{mdframed}
+\begin{defn}[Maximim Hard Margin Classifier]\label{defn:max-margin}
+The maximum hard margin classifier is a solution of the quadratic programming problem:
+\begin{align*}
+    \text{objective}\qquad & \frac{1}{2}\min_{\theta}\norm{\theta}_{2}^{2}\\
+    \text{subject to}\qquad & y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1\quad\forall i
+\end{align*}
+where $\theta\in\R^{p}$ denote the unknown parameters that we are trying to estimate,
+$\hat{\mathbf{x}}_{i}\in\R^{p}$ are the augmented feature vectors, $y_{i}\in\{-1,1\}$ are the class labels, and $p=m+1$ is the number of parameters, where $m$ is the number of features.
+The index $i$ runs over the training examples, i.e., there is one constraint per training example.
 \end{defn}
+The maximum margin classifier problem is a quadratic optimization problem with linear constraints, thus, it can be solved using a variety of optimization approaches.
+However, a key practical takeaway is that the maximum hard margin classifier will only exist, i.e., find an optimal hyperplane, if the data points are linearly separable.
+Finally, support vector machines get the their name from the so-called support vectors (Defn. \ref{defn:max-margin-support-vector})
+\begin{defn}[Support Vectors]\label{defn:max-margin-support-vector}
+The special case where $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> = 1$ are called the \textit{support vectors}. 
+For the maximum margin classifier, the support vectors are the data points that are closest to the hyperplane, i.e., the data points that define the margin.
+\end{defn}
+\end{mdframed}
+
+
+\subsection{Soft Margin Classifier}\label{sec:soft-margin}
+Suppose there exists points in our dataset $\mathcal{D}$ that are not linearly separable, i.e., there is no hyperplane that can perfectly separate the two classes.
+Just like we did in our perceptron implementation, we can allow the support vector machine to make some mistakes by introducing a slack variable $\xi_{i}$ for each data point.
+Let the slack variable $\xi_{i}$ represent the cost of a mistake (in some sense) for the $i$-th data point.
+Then, we can modify the constraints and the objective function in the maximum margin classifier problem to allow for some slack, i.e., the constraints are relaxed (Defn. \ref{defn:soft-margin}):
+\begin{mdframed}
+\begin{defn}[Maximim Soft Margin Classifier]\label{defn:soft-margin}
+The soft margin classifier problem is defined as the quadratic programming problem:
+\begin{align*}
+    \text{objective}\qquad & \frac{1}{2}\min_{\theta}\norm{\theta}_{2}^{2} + C\sum_{i=1}^{n}\xi_{i}\\
+    \text{subject to}\qquad & y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1 - \xi_{i}\quad\forall i\\
+    & \xi_{i} \geq 0\quad\forall i
+\end{align*}
+where $C\geq{0}$ is a user-adjustable parameter that controls the trade-off between maximizing the margin and minimizing the slack variables.
+If $C\gg{1}$ the classifier will behave like the maximum margin classifier, and if $C\ll{1}$ the classifier will allow more slack (mistakes).
+\end{defn}
+\end{mdframed}
+We could solve the soft margin classifier problem (directly) using the same optimization techniques as the maximum margin classifier problem.
+However, we can also reformulate it as an unconstrained problem by introducing the \texttt{hinge loss} function. 
+Let's consider what value the slack variables $\xi_{i}$ can take on (assuming $C>{0}$) where the classifier is correct, and when it makes a mistake.
+For data points that are correctly classified, the slack variable $\xi_{i}$ will be zero, i.e., $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1$ 
+(the data point is on the correct side of the hyperplane, the SVM didn't make a mistake). 
+However, for data points that are misclassified, the slack variable $\xi_{i}$ will be positive, i.e., there is a penalty associated with making a mistake. 
+Putting these two cases together gives the possible values of the slack variables $\xi_{i}$:
+\begin{equation*}
+    \xi_{i} = \begin{cases}
+        0 & \text{if $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1$}\,\quad\text{correct}\\
+        1 - y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> & \text{if $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> < 1$}\,\quad\text{mistake}
+    \end{cases}
+\end{equation*}
+These two cases can be rewritten in a more convient form:
+\begin{equation*}
+    \xi_{i} = \max\{0, 1 - y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right>\}
+\end{equation*}
+Now we have an expression for the slack variables $\xi_{i}$ in terms of the inner product between the augmented feature vectors and the parameter vector.
+We can substitute this expression into the objective function of the soft margin classifier problem, which gives us the \texttt{hinge loss} function (Defn. \ref{defn:hinge-loss}):
+\begin{mdframed}
+\begin{defn}\label{defn:hinge-loss}
+The optimal soft margin classifier problem can be reformulated as an unconstrained optimization problem using the \texttt{hinge loss} function:
+\begin{equation*}
+    \min_{\theta}\norm{\theta}_{2}^{2} + C\sum_{i=1}^{n}\max\{0, 1 - y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right>\}
+\end{equation*}
+where $C>{0}$ is a user-adjustable parameter that controls the trade-off between maximizing the margin and minimizing the slack variables.
+The hinge loss is not differentiable everywhere, i.e., the gradient is not defined at tie points. 
+Thus, we need to fancier gradients, or alternative techniques such as simulated annealing (or another huerstic method) to solve the problem. 
+\end{defn}
+\end{mdframed}
+
+Finally, while we are not going to discuss the underlying theory in this lecture, SVMs can be extended to handle non-linearly separable data using the kernel trick.
+This involves solving the dual optimization problem, which is beyond the scope of this lecture.
+For more details on the kernel trick and the dual optimization problem, \href{https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote14.html}{see the CS4780 (2018 fall) lecture 14 notes}.
+
 
 \section{Summary and Conclusions}
 In this lecture, we introduced support vector machines (SVMs), a powerful and versatile machine learning algorithm that can be used for both classification and regression tasks.
 SVMs are particularly well-suited for binary classification problems, where the goal is to separate data points into two classes using an optimal hyperplane.
+In this lecture, we discussed the concept of the maximum margin classifier, which aims to find the hyperplane that maximizes the margin between the two classes.
+However, the maximum margin classifier only exists if the data points are linearly separable. 
+In cases where the data points are not linearly separable, we can use the soft margin classifier, which allows for some slack (mistakes) in the constraints.
+Finally, we discussed the \texttt{hinge loss} function, which can be used to reformulate the soft margin classifier problem as an unconstrained optimization problem.
+While not covered in this lecture, SVMs can be extended to handle non-linearly separable data using the kernel trick, which allows us to map the data points into a 
+higher-dimensional space where they are linearly separable. 
 
-\bibliography{References-L3c.bib}
+\raggedright
+\bibliography{References-L5c.bib}
 
 \end{document}
 
