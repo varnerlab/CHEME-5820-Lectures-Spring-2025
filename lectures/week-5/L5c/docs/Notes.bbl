@@ -1,5 +1,37 @@
 \begin{thebibliography}{1}
 
+\bibitem{CERVANTES2020189}
+Cervantes J, Garcia-Lamont F, Rodr{\'\i}guez-Mazahua L, Lopez A.
+\newblock A comprehensive survey on support vector machine classification:
+  Applications, challenges and trends.
+\newblock Neurocomputing. 2020;408:189--215.
+\newblock doi:{https://doi.org/10.1016/j.neucom.2019.10.118}.
+
+\bibitem{info15040235}
+Guido R, Ferrisi S, Lofaro D, Conforti D.
+\newblock An Overview on the Advancements of Support Vector Machine Models in
+  Healthcare Applications: A Review.
+\newblock Information. 2024;15(4).
+\newblock doi:{10.3390/info15040235}.
+
+\bibitem{polym17040491}
+Malashin I, Tynchenko V, Gantimurov A, Nelyub V, Borodulin A.
+\newblock Support Vector Machines in Polymer Science: A Review.
+\newblock Polymers. 2025;17(4).
+\newblock doi:{10.3390/polym17040491}.
+
+\bibitem{Byvatov:2003aa}
+Byvatov E, Schneider G.
+\newblock Support vector machine applications in bioinformatics.
+\newblock Appl Bioinformatics. 2003;2(2):67--77.
+
+\bibitem{Lamani:2025aa}
+Lamani D, Kumar P, Bhagyalakshmi A, Shanthi JM, Maguluri LP, Arif M, et~al.
+\newblock SVM directed machine learning classifier for human action recognition
+  network.
+\newblock Scientific Reports. 2025;15(1):672.
+\newblock doi:{10.1038/s41598-024-83529-7}.
+
 \bibitem{Cortes:1995aa}
 Cortes C, Vapnik V.
 \newblock Support-vector networks.

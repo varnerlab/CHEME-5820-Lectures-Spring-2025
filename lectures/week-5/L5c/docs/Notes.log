@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  17 FEB 2025 13:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  17 FEB 2025 13:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,26 +608,29 @@ Overfull \vbox (7.5pt too high) has occurred while \output is active []
  [2]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 215.
+(mdframed)              on input line 217.
 
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
  [3]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 241.
+(mdframed)              on input line 243.
 
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
  [4]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 272.
+(mdframed)              on input line 274.
 
-(./Notes.bbl)
+(./Notes.bbl
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
- [5]
+ [5])
+Overfull \vbox (7.5pt too high) has occurred while \output is active []
+
+ [6]
 (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
@@ -637,13 +640,13 @@ Package rerunfilecheck Info: File `Notes.out' has not changed.
 (rerunfilecheck)             Checksum: 2E7F5CF524EB5CC45A3CB344C3D01F5E;836.
  ) 
 Here is how much of TeX's memory you used:
- 12963 strings out of 474116
- 202922 string characters out of 5743682
+ 12985 strings out of 474116
+ 203354 string characters out of 5743682
  1948187 words of memory out of 5000000
- 35093 multiletter control sequences out of 15000+600000
+ 35109 multiletter control sequences out of 15000+600000
  564291 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 79i,16n,93p,542b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,16n,93p,599b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -661,10 +664,10 @@ ve/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
 e/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive
 /2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/tex
 live/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (5 pages, 204373 bytes).
+Output written on Notes.pdf (6 pages, 207255 bytes).
 PDF statistics:
- 160 PDF objects out of 1000 (max. 8388607)
- 117 compressed objects within 2 object streams
- 19 named destinations out of 1000 (max. 500000)
+ 175 PDF objects out of 1000 (max. 8388607)
+ 131 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

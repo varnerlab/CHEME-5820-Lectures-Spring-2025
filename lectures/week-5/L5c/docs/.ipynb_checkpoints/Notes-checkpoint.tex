@@ -28,6 +28,13 @@
 \usepackage{enumitem}
 \usepackage{simplemargins}
 \usepackage{hyperref}
+\hypersetup{
+     colorlinks=true,
+     linkcolor=blue,
+     filecolor=red,
+     citecolor = red,      
+     urlcolor=cyan,
+}
 
 \usepackage{mdframed}
 \definecolor{lgray}{rgb}{0.92,0.92,0.92}
@@ -100,217 +107,190 @@
 }
 
 \begin{document}
-\lecture{3c}{Logistic Regression for Binary Classification Problems}{Jeffrey Varner}{}
+\lecture{5c}{Support Vector Machines (SVMs)}{Jeffrey Varner}{}
 
 \begin{mdframed}[backgroundcolor=lgray]
 The key concepts covered in this lecture include:
 \begin{itemize}[leftmargin=16pt]
-    \item{\textbf{Logistic regression} is a statistical method used for binary classification that models the relationship between a dependent categorical variable (label) and one or more independent variables (features) by estimating probabilities through the logistic function.}
-    \item{\textbf{Maximum likelihood estimation (MLE)} is a statistical technique to estimate the parameters of a probability distribution by maximizing the likelihood function, thereby determining the parameter values that make the observed data most probable.}
-    \item{\textbf{Gradient descent} is an optimization algorithm used to minimize a function by iteratively adjusting parameters in the opposite direction of the gradient. Iteration continues until a local minimum of the function is found.}
-    \item{\textbf{Alternatives to gradient descent} include heuristic optimization algorithms such as the Nelder-Mead Simplex Algorithm, Simulated Annealing, Genetic Algorithms, and Particle Swarm Optimization, which can estimate model parameters without relying on the gradient.}
+    \item{A \href{sec:svm}{support vector machine} is a supervised machine learning algorithm that finds an optimal hyperplane in an $N$-dimensional space to classify (binary) data points distinctly, maximizing the \textit{margin} between different classes. 
+    The \textit{margin} in a support vector machine is defined as the distance from the separating hyperplane to the closest data points of either class.}
+    \item{A \href{sec:max-margin}{hard margin support vector machine} is a binary linear classifier that finds the optimal hyperplane to separate two classes of data points with the maximum possible \textit{margin}, allowing no misclassifications and requiring the data to be linearly separable.}
+    \item{A \href{sec:soft-margin}{soft margin support vector machine} is a variant of the SVM algorithm that allows for some misclassification of training data points, enabling it to handle non-linearly separable datasets and reduce overfitting by finding a balance between maximizing the decision boundary margin and minimizing classification errors.}
 \end{itemize}
 \end{mdframed}
 
 \section{Introduction}
-In this lecture, we will introduce logistic regression for binary classification problems. 
-Logistic regression is a statistical method used for binary classification that models the relationship between a dependent categorical variable (label) 
-and one or more independent variables (features) by estimating probabilities through the logistic function.
-We will start by discussing the logistic model and then explore the maximum likelihood estimation of the model parameters. 
-Unfortunately, the likelihood function of the logistic regression model does not have a closed-form analytical solution, so we must estimate the model parameters using numerical optimization algorithms.
-To address this challenge, we will introduce the gradient descent algorithm. This numerical optimization algorithm minimizes a function by iteratively adjusting the parameters in the opposite direction of the gradient.
-In addition to gradient descent, we will discuss alternative heuristic optimization algorithms that can estimate the model parameters without relying on the gradient.
-These alternative methods might be considered when the objective function is non-differentiable or has many local minima.
-Let's start by discussing the logistic regression model.
+In the previous lectures, we've discussed several binary classification algorithms, 
+including the perceptron, logistic regression, K-nearest neighbors, and the concept of Kernel functions and the kerner trick.
+In this lecture, we will conclude our discussion (for now) of classification algorithms by introducing support vector machines (SVMs), 
+a powerful and versatile machine learning algorithm that can be used for both classification and regression tasks. 
+SVMs are particularly well-suited for binary classification problems, where the goal is to separate data points into two classes using a hyperplane, e.g., like the perceptron.
+However, SVMs are based on the concept of finding an \textit{optimal separating hyperplane} (not just some separating hyperplane) 
+that maximizes the margin between the two classes.
 
-\section{Logistic Regression}
-Logistic regression is a statistical method used for binary classification problems, where the dependent variable (label) is a binary categorical variable (e.g., $\pm{1}$, etc), 
-and the independent variables (features) are continuous or categorical. Unlike the Perceptron model, which outputs the class label directly, logistic regression models the probability that a given input belongs to a particular class based on the input features.
-The logistic regression model estimates the probability that a given feature vector belongs to a particular class based on the input features.
-In particular, logistic regression is a discriminative model, which means it directly models the conditional probability of the label given the features, i.e., $P(y|\mathbf{x})$.
-This is in contrast to generative models, e.g., Naive Bayes, which we'll explore later, which model the joint probability of the features and the label, i.e., $P(y,\mathbf{x}) = P(\mathbf{x}|y)\cdot{P(y)}$.
-The logistic regression model uses the logistic function to model the probability of the binary label $y\in\{-1,+1\}$ given the (augmented) feature vector $\hat{\mathbf{x}} = \left(x_{1},x_{2},\dots,x_{m},1\right)$:
-\begin{equation}\label{eq:logistic}
-P_{\theta}(y|\hat{\mathbf{x}}) = \frac{1}{1 + e^{-y\cdot\left(\hat{\mathbf{x}}^{\top}\theta\right)}}
-\end{equation}
-where $\theta\in\R^{p}$ ($p = m+1$) is an (unknown) parameter vector (that we need to estimate somehow), and $e$ is the base of the natural logarithm.
-The logistic function is a sigmoid function that maps the input, i.e., $-y\cdot\left(\hat{\mathbf{x}}^{\top}\theta\right)$ to the range $[0,1]$. Thus, it is suitable for modeling probabilities.
-The logistic model \textit{parameterizes} a probability distribution $P_{\theta}(y|\hat{\mathbf{x}}) : \mathbb{R}^{p} \times \mathbb{R} \to [0,1]$ which is given by the logistic function.
-Given that we have a binary decision, i.e., a label $y\in\{-1,+1\}$, we can write the probability of the label $y$ given the feature vector $\hat{\mathbf{x}}$ as:
-\begin{equation}
-    P_{\theta}(y = 1|\hat{\mathbf{x}}) + P_{\theta}(y = -1|\hat{\mathbf{x}}) = 1
-\end{equation}
-where $P_{\theta}(y = 1|\hat{\mathbf{x}})$ and $P_{\theta}(y = -1|\hat{\mathbf{x}})$ are the probabilities of the positive and negative classes, respectively. 
-We model these probabilities using the logistic function as follows:
-\begin{equation}
-    P_{\theta}(y|\hat{\mathbf{x}}) = \begin{cases}
-    \sigma(\hat{\mathbf{x}}^{\top}\theta) & \text{if}~y = 1\\
-    1-\sigma(\hat{\mathbf{x}}^{\top}\theta) & \text{if}~y = -1
-    \end{cases}
-\end{equation}
-where $\sigma(z) = 1/(1+e^{-z})$. 
+\section{Support Vector Machines (SVMs)}\label{sec:svm}
+Support vector machines (SVMs) are a class of supervised learning algorithms that can be used for both classification and regression tasks, 
+published by Cortes and Vapnik \cite{Cortes:1995aa} while they worked at AT\&T Bell Labs.
+In many ways, SVMs are similar to the perceptron and logistic regression, as they are also based on the concept (in the simplest case) of finding a hyperplane that separates data points into different classes.
+Suppose, we have dataset $\mathcal{D} = \{(\hat{\mathbf{x}}_{i}, y_{i}) \mid i = 1,2,\dots,n\}$, where $\hat{\mathbf{x}}_i \in \R^p$ is an \textit{augmented} feature vector ($m$ features with additional 1 last entry to model the bias) and $y_i \in \{-1, 1\}$ is the corresponding class label.
+Then, the goal of SVMs is to find the hyperplane $\mathcal{H} = \{\hat{\mathbf{x}} \mid \left<\hat{\mathbf{x}},\theta\right> = 0\}$ that separates the data points into two classes (those points above the hyperplane, and those points below the hyperplane), 
+where $\theta \in \R^{p}$ ($p=m+1$) is the normal vector to the hyperplane, or alternatively, the parameters of the model that we need to estimate.
+So far, this is similar to the perceptron and logistic regression, but the key difference is that SVMs aim to find the \textit{optimal} hyperplane in some sense. 
+Let's explore the notion of an \textit{optimal hyperplane} in more detail.
 
-\subsection{Decision Boundary}
-The logistic regression model predicts the label $y\in\{-1,+1\}$ for a given feature vector $\hat{\mathbf{x}}$ by computing the probability $P_{\theta}(y|\hat{\mathbf{x}})$  and comparing it to a 
-threshold, e.g., 0.5. The model predicts the positive class if the probability exceeds the threshold ($y = 1$). Otherwise, it predicts the negative class ($y = -1$).
-In the binary case, this is equivalent to selecting the class label with the highest probability.
-Suppose we have computed the probability of each binary label for $n$ examples. We can store this data in a matrix $\mathbf{P}\in\mathbb{R}^{n\times 2}$,
-each row corresponds to an instance, and each column holds the probabilities of the positive and negative classes for a given example. Then, for each example, we can predict the label $\hat{y}$ by comparing the probabilities:
-\begin{equation}
-    i = \argmax_{y} \left\{P_{\theta}(y = 1|\hat{\mathbf{x}}_{i}), P_{\theta}(y = -1|\hat{\mathbf{x}}_{i})\right\}\quad\text{for}~i = 1,2,\dots,n
-\end{equation}
-where the label is then given by:
-\begin{equation}
-    \hat{y}_{i} = \begin{cases}
-    1 & \text{if}~i = 1\\
-    -1 & \text{otherwise}
-    \end{cases}
-\end{equation}
-Of course, these predictions are based on the model parameters $\theta$, which we need to estimate from the training data.
-The following section will discuss the maximum likelihood estimation of the logistic regression model parameters.
+\subsection{Maximum Margin Classifier}\label{sec:max-margin}
+Suppose we have found a hyperplane $\mathcal{H}$ that separates the data points into two classes.
+Then, the margin of the hyperplane is defined as the distance $\gamma$ between the hyperplane and the closest data point from either class.
+Thus, the margin is a measure of how well the hyperplane separates the two classes, and the goal of a maximizing margin SVM classifier is to find the hyperplane that maximizes the margin.
+Let's develop a model for the margin of the separating hyperplane.
 
-\subsection{Maximum Likelihood Estimation (MLE)}
-Maximum likelihood estimation (MLE) is a technique to estimate the parameters of a probability distribution by maximizing the likelihood function.
-In logistic regression, MLE estimates the parameters of the logistic regression model that make the observed label conditioned on the features the most probable.
-Given a set of training examples $\mathcal{D} = \left\{\left(\mathbf{x}_{1}, y_{1}\right),\dots,\left(\mathbf{x}_{n}, y_{n}\right)\right\}$, where $\mathbf{x}_{i}\in\mathbb{R}^{m}$ is an $m$-dimensional feature vector 
-and $y_{i}\in\mathbb{R}$ is the binary (scalar) label, the likelihood function is defined as:
-\begin{equation}
-L(\theta) = \prod_{i=1}^{n}P_{\theta}(y_{i}|\hat{\mathbf{x}}_{i})
-\end{equation}
-where $P_{\theta}(y_{i}|\hat{\mathbf{x}}_{i})$ is the probability of observing the label $y_{i}$ given the feature vector $\hat{\mathbf{x}}_{i}$ and the model parameters $\theta$.
-It's hard to maximize the likelihood function directly (because of the product), so we take the logarithm of the likelihood function to simplify the optimization:
+Consider some feature vector $\hat{\mathbf{x}} \in \R^{m}$. Let $\mathbf{d}$ denote the vector from the hyperplane $\mathcal{H}$ to the feature vector $\hat{\mathbf{x}}$.
+Finally, let the point $\mathbf{p}$ be the projection of $\hat{\mathbf{x}}$ onto the hyperplane $\mathcal{H}$.
+Because the vector $\mathbf{d}$ is orthogonal to the hyperplane $\mathcal{H}$, we can write $\mathbf{d} = \hat{\mathbf{x}} - \mathbf{p}$.
+Further, the vector $\mathbf{d}$ can be written as some scalar multiple of the normal vector $\theta$, i.e., $\mathbf{d} = \lambda \theta$.
+Then we can find the value of $\lambda$ by taking the dot product of $\mathbf{d}$ with the normal vector $\theta$:
 \begin{align*}
-\log{L}(\theta) & = \sum_{i=1}^{n}\log P_{\theta}(y_{i}|\mathbf{x}_{i})\quad(\text{substituting}\,P_{\theta}(y_{i}|\mathbf{x}_{i}))\\
-    & = -\sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\mathbf{x}_{i}^{\top}\theta\right)}\right)
+    \hat{\mathbf{p}} & = \hat{\mathbf{x}} - \mathbf{d}\quad\mid\,\text{take dot product with $\theta$} \\
+    \left<\hat{\mathbf{p}},\theta\right> & = \left<\hat{\mathbf{x}},\theta\right> - \left<\mathbf{d},\theta\right> = 0\quad\mid\,\text{substitute $\mathbf{d} = \lambda \theta$} \\
+    \left<\hat{\mathbf{p}},\theta\right> & = \left<\hat{\mathbf{x}},\theta\right> - \lambda \left<\theta,\theta\right> = 0\quad\mid\,\text{solve for $\lambda$} \\
+    \lambda & = \frac{\left<\hat{\mathbf{x}},\theta\right>}{\left<\theta,\theta\right>}
 \end{align*}
-The maximum likelihood estimation (MLE) of the logistic regression model parameters $\theta^{\star}$ is obtained by maximizing the log-likelihood function
-$\log{L}(\theta)$:
-\begin{equation}
-\theta^{\star} = \argmax_{\theta}\left[-\sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)\right]
-\end{equation}
-or alternatively by minimizing the negative log-likelihood function $\mathcal{L}(\theta) = -\log{L}(\theta)$:
-\begin{equation}
-    \theta^{\star}  = \argmin_{\theta} \sum_{i=1}^{n}\log\left(1 + e^{-y_{i}\cdot\left(\hat{\mathbf{x}}^{\top}_{i}\theta\right)}\right)
-\end{equation}
-Unfortunately, the optimization problem has no closed-form analytical solution, regardless of the perspective we take.
-Thus, we must estimate the model parameters using some numerical algorithm, such as gradient descent algorithm (or one of many other approaches).
-These approaches iteratively update the parameters $\theta$ to maximize the log-likelihood function (or minimize the negative log-likelihood function)
-until a stopping criterion is met, e.g., the parameter change is below a threshold or the maximum number of iterations is reached.
+We can now find the length of the vector $\mathbf{d}$ by computing $\norm{\mathbf{d}}_{2}$:
+\begin{align*}
+    \norm{\mathbf{d}}_{2} & = \sqrt{\mathbf{d}^{\top}\mathbf{d}}\quad\mid\,\text{substitute $\mathbf{d} = \lambda \theta$} \\
+    & = \sqrt{\lambda^{2}\theta^{\top}\theta}\quad\mid\,\text{substitute $\lambda = \frac{\left<\hat{\mathbf{x}},\theta\right>}{\left<\theta,\theta\right>}$} \\
+    & = \sqrt{\frac{\left<\hat{\mathbf{x}},\theta\right>^{2}}{\left<\theta,\theta\right>^{2}}\,\theta^{\top}\theta}\quad\mid\, \text{substitute $\left<\theta,\theta\right> = \theta^{\top}\theta$ and simplify} \\
+    & = \frac{\left<\hat{\mathbf{x}},\theta\right>}{\norm{\theta}_{2}}\quad\mid\,\text{where $\norm{\theta}_{2} = \sqrt{\left<\theta,\theta\right>}$}
+\end{align*}
+The length of the distance vector $\mathbf{d}$ gives us the distance from a feature vector $\hat{\mathbf{x}}$ to the hyperplane $\mathcal{H}$.
+Thus, we can define the margin $\gamma_{\theta}$ of the hyperplane $\mathcal{H}$ as the distance between the hyperplane and the closest data point (Defn. \ref{defn:margin}).
+\begin{defn}[Margin]\label{defn:margin}
+    The margin $\gamma_{\theta}$ of a hyperplane $\mathcal{H}$ is given by the distance between the hyperplane and the closest data point:
+    \begin{align*}
+        \gamma_{\theta} & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta\right>|}{\norm{\theta}_{2}}\right\}
+    \end{align*}
+where we use the absolute value to account for the fact that the distance can be positive or negative, i.e., the data point can be on either side of the hyperplane.
+\end{defn}
 
-\subsection{Gradient Descent}
-Gradient descent is a numerical search algorithm that minimizes a function by iteratively adjusting the parameters in the opposite direction of the gradient.
-Suppose there exists an objective function $\mathcal{L}(\theta)$ that we want to minimize with respect to the parameter $\theta$, i.e., the negative log-likelihood function.
-In general, an objective function measures the difference between the predicted values and the observed values in some way, e.g., the mean squared error (MSE), the cross-entropy loss, or the negative log-likelihood.
-In logistic regression, the objective function is the negative log-likelihood function, which measures the difference between the predicted probabilities and the observed labels. However, whatever form the objective function takes, we assume that it is differentiable and that we can compute the gradient, i.e., $\nabla{l}(\theta)$ for the negative log-likelihood function, 
-which points in the direction of the steepest increase of the function. This gives us a way to update the parameters to minimize the objective function using the update rule:
-\begin{equation*}
-\theta_{k+1} = \theta_{k} - \alpha(k)\cdot\nabla_{\theta}\mathcal{L}(\theta_{k})\quad\text{where}{~k = 0,1,2,\dots}
+On interesting feature of the margin is that it is scale-invariant, i.e., the margin is the same regardless of the scale of the normal vector $\theta$
+(Lemma \ref{lem:scale-invariance}).
+\begin{lemma}[Scale Invariance]\label{lem:scale-invariance}
+    The margin $\gamma_{\theta}$ is scale-invariant, i.e., the margin is the same regardless of the scale of the normal vector $\theta$.
+    To see that the margin is scale-invariant, consider the scaled normal vector $\theta^{\prime} = \alpha\theta$, where the scalar $\alpha\neq{0}$.
+    Then, we can show that the margin of the scaled normal vector $\theta^{\prime}$ is the same as the margin of the original normal vector $\theta$:
+    \begin{align*}
+        \gamma_{\theta^{\prime}} & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta^{\prime}\right>|}{\norm{\theta^{\prime}}_{2}}\right\}\quad\mid\,\text{substitute $\theta^{\prime} = \alpha\theta$} \\
+        & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\alpha\theta\right>|}{\norm{\alpha\theta}_{2}}\right\}\quad\mid\,\text{substitute $\norm{\alpha\theta}_{2} = |\alpha|\norm{\theta}_{2}$} \\
+        & = \min_{i}\left\{\frac{|\alpha\left<\hat{\mathbf{x}}_{i},\theta\right>|}{|\alpha|\norm{\theta}_{2}}\right\}\quad\mid\,\text{cancel out $\alpha$} \\
+        & = \min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta\right>|}{\norm{\theta}_{2}}\right\} = \gamma_{\theta}
+    \end{align*}
+    Practically, this means the margin only depends on the direction of the normal vector $\theta$, not its magnitude.
+    Thus, we can set the scale to be whatever is most convenient.
+\end{lemma}
+
+Now that we have a model for the margin of the hyperplane, we can define the problem of finding the optimal hyperplane as an optimization problem.
+Ideally, we would like to estimate the parameters $\theta$ of the hyperplane that maximize the margin $\gamma_{\theta}$, i.e., the distance between the hyperplane and the closest data point is maximized:
+\begin{equation*}\label{eq:max-margin}
+    \max_{\theta}\gamma_{\theta}\quad\text{subject to}\quad y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i
 \end{equation*}
-The (hyper) parameter $\alpha(k)>0$ is the learning rate (which can be a function of the iteration count $k$), and $\nabla_{\theta}\mathcal{L}(\theta)$ is the gradient of the negative log-likelihood function with respect to the parameters.  
-We iterate until a stopping criterion is met, i.e., $\norm{\theta_{k+1} - \theta_{k}}\leq\epsilon$, the maximum number of iterations is reached, or some other stopping criterion is met.
-Pusedo-code for a naive gradient descent algorithm (for a fixed learning rate) is shown in Algorithm \ref{alg:gd}.
-\begin{algorithm}[H]
-\caption{Naive Gradient Descent for Negative Log-Likelihood $\mathcal{L}(\theta)$}\label{alg:gd}
-\begin{algorithmic}[1]
-\State \textbf{Input:} Initial parameters $\theta_0$, learning rate $\alpha$, stopping criterion $\epsilon$, maximum iterations $N$
-\State \textbf{Output:} Optimal parameter estimates $\theta$
+We can substitute the definition of the margin $\gamma_{\theta}$ into the optimization problem, which gives as a new objective function:
+\begin{equation*}
+    \max_{\theta}\left[\min_{i}\left\{\frac{|\left<\hat{\mathbf{x}}_{i},\theta\right>|}{\norm{\theta}_{2}}\right\}\right]\quad\text{subject to}\quad y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i
+\end{equation*}
+However, we can factor out the norm of the normal vector $\theta$ from the objective function, which simplifies the optimization problem:
+\begin{equation*}
+    \max_{\theta}\frac{1}{\norm{\theta}_{2}}\left[\min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\}\right]\quad\text{subject to}\quad y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i
+\end{equation*}
+Finally, we can use the scale invariance of the margin and the hyperplane, and the fact that maximizing the inverse of a function is equivalent to minimizing the function, 
+to simplify the optimization problem:
+\begin{align*}
+    \text{objective}\qquad & \min_{\theta}\norm{\theta}_{2}^{2}\\
+    \text{subject to}\qquad & y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 0\quad\forall i\\
+    & \min_{i}\left\{|\left<\hat{\mathbf{x}}_{i},\theta\right>|\right\} = 1
+\end{align*}
+However, the last constraint is tricky to handle. 
+We can simplify the optimization problem further and get rid of the last constraint by modifying the second set of constraints (Defn. \ref{defn:max-margin}):
 
-\State Initialize $\theta \gets \theta_0$\Comment{Initialize parameters to the initial guess}
-\State $k \gets 0$\Comment{Initialize iteration counter}
-\While{$k \leq N$ \textbf{or} $\|\theta_{k+1}  - \theta_{k} \| \leq \epsilon$}
-    \State $\mathbf{d} \gets \nabla \mathcal{L}(\theta_{k})$\Comment{Compute gradient using analytical or numerical method, evaluate at $\theta_{k}$}
-    \State $\theta_{k+1} \gets \theta_{k} - \alpha \cdot \mathbf{d}$\Comment{Update parameters using the gradient direction $\mathbf{d}$}
-    \State $k \gets k + 1$
-\EndWhile
+\begin{mdframed}
+\begin{defn}[Maximim Hard Margin Classifier]\label{defn:max-margin}
+The maximum hard margin classifier is a solution of the quadratic programming problem:
+\begin{align*}
+    \text{objective}\qquad & \frac{1}{2}\min_{\theta}\norm{\theta}_{2}^{2}\\
+    \text{subject to}\qquad & y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1\quad\forall i
+\end{align*}
+where $\theta\in\R^{p}$ denote the unknown parameters that we are trying to estimate,
+$\hat{\mathbf{x}}_{i}\in\R^{p}$ are the augmented feature vectors, $y_{i}\in\{-1,1\}$ are the class labels, and $p=m+1$ is the number of parameters, where $m$ is the number of features.
+The index $i$ runs over the training examples, i.e., one constraint per training example.
+\end{defn}
+The maximum margin classifier problem is a quadratic optimization problem with linear constraints; thus, it can be solved using various optimization approaches.
+However, a key practical takeaway is that the maximum hard margin classifier will only exist, i.e., find an optimal hyperplane, if the data points are linearly separable.
+Finally, support vector machines get their name from the so-called support vectors (Defn. \ref{defn:max-margin-support-vector})
+\begin{defn}[Support Vectors]\label{defn:max-margin-support-vector}
+The special case where $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> = 1$ are called the \textit{support vectors}. 
+For the maximum margin classifier, the support vectors are the data points that are closest to the hyperplane, i.e., the data points that define the margin.
+\end{defn}
+\end{mdframed}
 
-\State \textbf{return} $\theta$
-\end{algorithmic}
-\end{algorithm}
 
-\subsubsection*{Choose the learning Rate $\alpha(k)$}
-The choice of the learning rate $\alpha$ is crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
-Choosing an appropriate learning rate is often challenging and may require tuning through hyperparameter optimization techniques. 
-In practice, we may use adaptive learning rate methods, such as the Adam optimizer, which adjusts the learning rate based on the gradient's magnitude and the second moment of the gradient \cite{ADAM-2014}.
-Alternatively, Adagrad and RMSprop (unpublished) are other adaptive learning rate methods that can improve the convergence of the gradient descent algorithm \cite{ADAGrad2011}.
+\subsection{Soft Margin Classifier}\label{sec:soft-margin}
+Suppose there exist points in our dataset $\mathcal{D}$ that are not linearly separable, i.e., there is no hyperplane that can perfectly separate the two classes.
+Just like we did in our perceptron implementation, we can allow the support vector machine to make some mistakes by introducing a slack variable $\xi_{i}$ for each data point.
+Let the slack variable $\xi_{i}$ represent the cost of a mistake (in some sense) for the $i$-th data point.
+Then, we can modify the constraints and the objective function in the maximum margin classifier problem to allow for some slack, i.e., the constraints are relaxed (Defn. \ref{defn:soft-margin}):
+\begin{mdframed}
+\begin{defn}[Maximim Soft Margin Classifier]\label{defn:soft-margin}
+The soft margin classifier problem is defined as the quadratic programming problem:
+\begin{align*}
+    \text{objective}\qquad & \frac{1}{2}\min_{\theta}\norm{\theta}_{2}^{2} + C\sum_{i=1}^{n}\xi_{i}\\
+    \text{subject to}\qquad & y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1 - \xi_{i}\quad\forall i\\
+    & \xi_{i} \geq 0\quad\forall i
+\end{align*}
+where $C\geq{0}$ is a user-adjustable parameter that controls the trade-off between maximizing the margin and minimizing the slack variables.
+If $C\gg{1}$ the classifier will behave like the maximum margin classifier, and if $C\ll{1}$ the classifier will allow more slack (mistakes).
+\end{defn}
+\end{mdframed}
+We could solve the soft margin classifier problem (directly) using the same optimization techniques as the maximum margin classifier problem.
+However, we can also reformulate it as an unconstrained problem by introducing the \texttt{hinge loss} function. 
+Let's consider what value the slack variables $\xi_{i}$ can take on (assuming $C>{0}$) where the classifier is correct and when it makes a mistake.
+For data points that are correctly classified, the slack variable $\xi_{i}$ will be zero, i.e., $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1$ 
+(The data point is on the correct side of the hyperplane; the SVM didn't make a mistake.) 
+However, for data points that are misclassified, the slack variable $\xi_{i}$ will be positive, i.e., there is a penalty associated with making a mistake. 
+Putting these two cases together gives the possible values of the slack variables $\xi_{i}$:
+\begin{equation*}
+    \xi_{i} = \begin{cases}
+        0 & \text{if $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> \geq 1$}\,\quad\text{correct}\\
+        1 - y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> & \text{if $y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right> < 1$}\,\quad\text{mistake}
+    \end{cases}
+\end{equation*}
+These two cases can be rewritten in a more convenient form:
+\begin{equation*}
+    \xi_{i} = \max\{0, 1 - y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right>\}
+\end{equation*}
+Now we have an expression for the slack variables $\xi_{i}$ in terms of the inner product between the augmented feature vectors and the parameter vector.
+We can substitute this expression into the objective function of the soft margin classifier problem, which gives us the \texttt{hinge loss} function (Defn. \ref{defn:hinge-loss}):
+\begin{mdframed}
+\begin{defn}\label{defn:hinge-loss}
+The optimal soft margin classifier problem can be reformulated as an unconstrained optimization problem using the \texttt{hinge loss} function:
+\begin{equation*}
+    \min_{\theta}\norm{\theta}_{2}^{2} + C\sum_{i=1}^{n}\max\{0, 1 - y_{i}\left<\hat{\mathbf{x}}_{i},\theta\right>\}
+\end{equation*}
+where $C>{0}$ is a user-adjustable parameter that controls the trade-off between maximizing the margin and minimizing the slack variables.
+The hinge loss is not differentiable everywhere, i.e., the gradient is not defined at tie points. 
+Thus, we need fancier gradients or alternative techniques such as simulated annealing (or another heuristic method) to solve the problem. 
+\end{defn}
+\end{mdframed}
 
-\subsection{Alternatives to Gradient Descent}
-The central issue with gradient descent is computing the gradient, which can be challenging for complex models or large datasets.
-Further, the choice of the learning rate $\alpha$ is also crucial, as a too-large value can cause the algorithm to diverge, while a too-small value can slow down convergence.
-In these cases, alternative heuristic optimization algorithms can be used to estimate the model parameters.
-The central theme of these approaches is that they directly evaluate the objective function at different points in the parameter space, update the model parameters using a heuristic, and then continue exploring the parameter space.
-New search points are generated randomly or with some heuristic, and the objective function is evaluated at these points to determine the next search direction.
-Let's walk through some of the alternatives to gradient descent.
+Finally, while we are not going to discuss the underlying theory in this lecture, SVMs can be extended to handle non-linearly separable data using the kernel trick.
+This involves solving the dual optimization problem, which is beyond the scope of this lecture.
+For more details on the kernel trick and the dual optimization problem, \href{https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote14.html}{see the CS4780 (2018 fall) lecture 14 notes}.
 
-There are many alternatives to gradient descent. The Nelder-Mead algorithm \cite{NelderMead-1965}, also known as the simplex algorithm, is a direct search optimization algorithm that does not require the gradient of the objective function.
-It maintains a simplex (a geometric shape with $n+1$ vertices in an $n$-dimensional parameter space) that evolves through geometric operations such as reflection, expansion, contraction, and shrinkage.
-Thus, the Nelder-Mead algorithm can optimize non-differentiable or noisy objective functions, making it suitable for many optimization problems.
-However, the Nelder-Mead algorithm may struggle with high-dimensional problems or functions with many local minima, as it does not leverage gradient information to guide the search.
-Genetic algorithms (GAs), popularized by John Holland in the 1970s \cite{Holland:1975aa}, are adaptive heuristic search techniques inspired by natural selection and genetics principles. 
-They are designed to solve optimization and search problems by iteratively evolving a population of candidate solutions through selection, crossover, and mutation. 
-GAs aim to improve solution quality over generations by mimicking the evolutionary process. This makes them particularly effective for complex problems that may be discontinuous, non-differentiable, or highly nonlinear.
-However, GAs have several hyperparameters that need to be tuned, such as the population size, crossover rate, mutation rate, and the number of generations.
-Further, GAs can be computationally expensive, especially for large search spaces, and may require significant computational resources to converge to the optimal solution.
-This will be especially true for complex objective functions that are expensive to evaluate, as the algorithm will need to evaluate the objective function for each candidate solution in the population.
-Particle Swarm Optimization (PSO), developed by Kennedy and Eberhart in the mid-1990s \cite{PSO1995} is an example of a meta-heuristic optimization algorithm inspired by the social behavior of birds and fish, which utilizes a population of candidate solutions, 
-referred to as particles that move through the search space to find optimal solutions. 
-Each particle adjusts its position based on its own experience and the collective knowledge of the swarm, allowing for efficient exploration and exploitation of the solution space to address complex optimization problems across various fields.
-
-Simulated annealing, developed by Kirkpatrick et al. \cite{Kirkpatrick:1983aa}, is a probabilistic optimization algorithm inspired by the physical process of 
-heating and then slowly cooling (annealing) materials to minimize defects.
-Simulated annealing works by iteratively exploring the solution space. First, a random (candidate) solution is generated, and then the objective function is evaluated.
-The difference in the objective function between the current and candidate solutions is computed, and the candidate solution is accepted if it improves the objective function.
-Alternatively, the candidate solution may be accepted with a certain probability even if it worsens the objective function. 
-Thus, simulated annealing can escape local minima and explore the solution space more thoroughly than gradient descent, at least when the system is hot.
-As the number of iterations increases, the algorithm gradually decreases the temperature, i.e., the probability of accepting worse solutions, allowing it to converge to the global optimum.
-This method effectively solves complex optimization problems with large search spaces, where traditional techniques may struggle to find the global optimum.
-However, simulated annealing can be computationally expensive. It may require tuning of hyperparameters, particularly the annealing schedule, i.e., the decrease in temperature at each iteration, which impacts how willing the algorithm is to accept worse solutions to perform well. 
-The pseudocode for the simulated annealing algorithm is shown in Algorithm \ref{alg:sa}.
-\begin{algorithm}[H]
-\caption{Simulated Annealing}\label{alg:sa}
-\begin{algorithmic}[1]
-\State Initialize current solution $x \gets x_0$
-\State Initialize temperature $T \gets T_0$
-\State Define cooling schedule $T \gets \alpha \cdot T$, where $0 < \alpha < 1$
-\State Define maximum iterations $N$
-\State Initialize best solution $x_\text{best} \gets x$
-
-\For{$i = 1$ to $N$}
-    \State Generate a new candidate solution $x_\text{new}$ in the neighborhood of $x$
-    \State Compute $\Delta E \gets f(x_\text{new}) - f(x)$
-    \If{$\Delta E < 0$} 
-        \State Accept $x_\text{new}$: $x \gets x_\text{new}$
-    \Else
-        \State Accept $x_\text{new}$ with probability $P \gets e^{-\Delta E / T}$
-        \State Draw a random number $r \in [0, 1]$
-        \If{$r < P$}
-            \State $x \gets x_\text{new}$
-        \EndIf
-    \EndIf
-    \If{$f(x) < f(x_\text{best})$}
-        \State Update $x_\text{best} \gets x$
-    \EndIf
-    \State Update temperature: $T \gets \alpha \cdot T$
-    \If{$T$ is below a threshold $T_\text{min}$}
-        \State \textbf{break}
-    \EndIf
-\EndFor
-
-\State \textbf{return} $x_\text{best}$
-\end{algorithmic}
-\end{algorithm}
 
 \section{Summary and Conclusions}
-In this lecture, we introduced logistic regression for binary classification problems.
-Logistic regression is a powerful tool for binary classification and is widely applied in numerous fields, including healthcare, finance, and marketing.
-Like the Perceptron model, logistic regression uses a linear model to describe the relationship between the features and the label. However, using the logistic function, it estimates the probability that a given input belongs to a particular class. We discussed the maximum likelihood estimation (MLE) technique, which maximizes the likelihood of the observed labels given the features to estimate the parameters in the logistic model.
-However, unlike our previous discussion of linear regression, the logistic regression model's likelihood function does not have a closed-form analytical solution.
-Thus, we must estimate the model parameters using numerical optimization algorithms, such as the gradient descent algorithm.
-Gradient descent is an optimization algorithm that minimizes a function by iteratively adjusting parameters in the opposite direction of the gradient. 
-However, we also discussed other (heuristic) optimization algorithms that can estimate model parameters without relying on the gradient. 
-For instance, simulated annealing, genetic algorithms, and particle swarm optimization are all methods that can be utilized to estimate the model parameters. 
-These methods can be particularly useful when the objective function is non-convex, non-differentiable, or has many local minima.
+In this lecture, we introduced support vector machines (SVMs), a powerful and versatile machine learning algorithm for classification and regression tasks. SVMs are particularly well-suited for binary classification problems, where the goal is to separate data points into two classes using an optimal hyperplane. In this lecture, we discussed the concept of the maximum margin classifier, which aims to find the hyperplane that maximizes the margin between the two classes. However, the maximum margin classifier only exists if the data points are linearly separable. 
+In cases where the data points are not linearly separable, we can use the soft margin classifier, which allows for some slack (mistakes) in the constraints. Finally, we discussed the \texttt{hinge loss} function, which can be used to reformulate the soft margin classifier problem as an unconstrained optimization problem. While not covered in this lecture, SVMs can be extended to handle non-linearly separable data using the kernel trick, which allows us to map the data points into a higher-dimensional space where they are linearly separable. 
 
-\bibliography{References-L3c.bib}
+\raggedright
+\bibliography{References-L5c.bib}
 
 \end{document}
 
