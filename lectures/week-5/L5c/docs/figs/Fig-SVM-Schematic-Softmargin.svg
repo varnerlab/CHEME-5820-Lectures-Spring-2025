@@ -36,14 +36,14 @@
         <rect id="Rectangle" fill-opacity="0.06" fill="#000000" transform="translate(215.3872, 188.0088) rotate(-40) translate(-215.3872, -188.0088)" x="172.387241" y="12.508752" width="86" height="351"></rect>
         <line x1="104.107903" y1="52.5134011" x2="327.892097" y2="320.486599" id="Line-2" stroke="#000000" stroke-width="3" stroke-linecap="square" stroke-dasharray="6"></line>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="227" cy="98" r="7.5"></circle>
-        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="179" cy="106" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="142" cy="125" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="256" cy="164" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="316" cy="171" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="272" cy="98" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="235" cy="131" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="348" cy="178" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="364" cy="260" r="7.5"></circle>
-        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="324" cy="292" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="286" cy="311" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="324" cy="244" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="332" cy="204" r="7.5"></circle>
         <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="286" cy="186" r="7.5"></circle>
@@ -59,9 +59,9 @@
         <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="157" cy="196" r="7.5"></circle>
         <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="99" cy="252" r="7.5"></circle>
         <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="148" cy="233" r="7.5"></circle>
-        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="251" cy="266" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="289" cy="247" r="7.5"></circle>
         <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="113" cy="148" r="7.5"></circle>
-        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="99" cy="84" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="137" cy="63" r="7.5"></circle>
         <line x1="71.5" y1="79.5" x2="295.5" y2="348.5" id="Line-5" stroke="#979797" stroke-width="4" fill="#D8D8D8" stroke-linecap="square"></line>
         <line x1="137" y1="24" x2="361" y2="293" id="Line-5" stroke="#979797" stroke-width="4" fill="#D8D8D8" stroke-linecap="square"></line>
     </g>
