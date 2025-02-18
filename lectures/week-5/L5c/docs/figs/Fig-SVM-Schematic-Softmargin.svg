@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="606px" height="406px" viewBox="0 0 606 406" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Artboard</title>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path id="Line" d="M56.5,9.44040671 L57.8073633,11.7646081 L66.8073633,27.7646081 L67.5427552,29.0719714 L64.9280286,30.5427552 L64.1926367,29.2353919 L58,18.226 L58,389 L55,389 L55,18.226 L48.8073633,29.2353919 L48.0719714,30.5427552 L45.4572448,29.0719714 L46.1926367,27.7646081 L55.1926367,11.7646081 L56.5,9.44040671 Z" fill="#000000" fill-rule="nonzero"></path>
+        <path id="Line" d="M512.938726,344.442176 L514.245377,345.178833 L530.236657,354.194317 L532.559591,355.50393 L530.234125,356.809043 L514.22542,365.79355 L512.917346,366.527675 L511.449094,363.911526 L512.757169,363.1774 L523.771,356.995 L513.500459,356.98548 L11.9985479,356.499999 L10.4985486,356.498547 L10.5014528,353.498549 L12.0014521,353.500001 L513.503364,353.985482 L523.775,353.995 L512.772062,347.792134 L511.465412,347.055477 L512.938726,344.442176 Z" fill="#000000" fill-rule="nonzero"></path>
+        <text id="Coordinate-1" font-family="Helvetica-Light, Helvetica" font-size="20" font-weight="300" fill="#000000">
+            <tspan x="396" y="389">Coordinate 1</tspan>
+        </text>
+        <g id="Group" transform="translate(396, 36)">
+            <text id="Class-1" font-family="Helvetica-Light, Helvetica" font-size="18" font-weight="300" fill="#000000">
+                <tspan x="23" y="18">Class 1</tspan>
+            </text>
+            <text id="Class-2" font-family="Helvetica-Light, Helvetica" font-size="18" font-weight="300" fill="#000000">
+                <tspan x="23" y="50">Class 2</tspan>
+            </text>
+            <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="8" cy="11" r="7.5"></circle>
+            <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="8" cy="43" r="7.5"></circle>
+        </g>
+        <text id="Hyperplane-(linear)" font-family="Helvetica-Light, Helvetica" font-size="18" font-weight="300" fill="#000000">
+            <tspan x="400" y="329">Hyperplane (linear)</tspan>
+        </text>
+        <text id="Support-vectors" font-family="Helvetica-Light, Helvetica" font-size="18" font-weight="300" fill="#000000">
+            <tspan x="217" y="41">Support vectors</tspan>
+        </text>
+        <text id="margin" transform="translate(259, 204) rotate(51) translate(-259, -204)" font-family="Helvetica-Light, Helvetica" font-size="18" font-weight="300" fill="#000000">
+            <tspan x="231" y="211">margin</tspan>
+        </text>
+        <line x1="390.5" y1="321.5" x2="338.5" y2="321.5" id="Line-3" stroke="#979797" stroke-linecap="square"></line>
+        <line x1="211" y1="36" x2="159" y2="36" id="Line-3" stroke="#979797" stroke-linecap="square"></line>
+        <path id="Line-3" d="M250.7206,166.594393 L250.358076,167.405997 L246.614603,175.786713 L246.410683,176.24324 L245.497629,175.8354 L245.701549,175.378873 L248.666,168.74 L243.825436,172.332749 L224.770411,186.470349 L219.93,190.061 L227.141747,189.149049 L227.637788,189.08625 L227.763386,190.078331 L227.267345,190.14113 L218.16125,191.293964 L217.2794,191.405607 L217.641924,190.594003 L221.385397,182.213287 L221.589317,181.75676 L222.502371,182.1646 L222.298451,182.621127 L219.333,189.259 L224.174564,185.667251 L243.229589,171.529651 L248.069,167.938 L240.858253,168.850951 L240.362212,168.91375 L240.236614,167.921669 L240.732655,167.85887 L249.83875,166.706036 L250.7206,166.594393 Z" fill="#979797" fill-rule="nonzero"></path>
+        <path id="Line-3" d="M240.2206,211.094393 L239.858076,211.905997 L236.114603,220.286713 L235.910683,220.74324 L234.997629,220.3354 L235.201549,219.878873 L238.166,213.24 L233.325436,216.832749 L214.270411,230.970349 L209.43,234.561 L216.641747,233.649049 L217.137788,233.58625 L217.263386,234.578331 L216.767345,234.64113 L207.66125,235.793964 L206.7794,235.905607 L207.141924,235.094003 L210.885397,226.713287 L211.089317,226.25676 L212.002371,226.6646 L211.798451,227.121127 L208.833,233.759 L213.674564,230.167251 L232.729589,216.029651 L237.569,212.438 L230.358253,213.350951 L229.862212,213.41375 L229.736614,212.421669 L230.232655,212.35887 L239.33875,211.206036 L240.2206,211.094393 Z" fill="#979797" fill-rule="nonzero"></path>
+        <text id="Coordinate-2" transform="translate(29, 90) rotate(-90) translate(-29, -90)" font-family="Helvetica-Light, Helvetica" font-size="20" font-weight="300" fill="#000000">
+            <tspan x="-29" y="97">Coordinate 2</tspan>
+        </text>
+        <rect id="Rectangle" fill-opacity="0.06" fill="#000000" transform="translate(215.3872, 188.0088) rotate(-40) translate(-215.3872, -188.0088)" x="172.387241" y="12.508752" width="86" height="351"></rect>
+        <line x1="104.107903" y1="52.5134011" x2="327.892097" y2="320.486599" id="Line-2" stroke="#000000" stroke-width="3" stroke-linecap="square" stroke-dasharray="6"></line>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="227" cy="98" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="179" cy="106" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="256" cy="164" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="316" cy="171" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="272" cy="98" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="235" cy="131" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="348" cy="178" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="364" cy="260" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="324" cy="292" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="324" cy="244" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="332" cy="204" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="286" cy="186" r="7.5"></circle>
+        <circle id="Oval" stroke="#FA6400" fill="#FA6400" cx="302" cy="130" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="258" cy="308" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="194" cy="314" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="201" cy="239" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="112" cy="195" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="88" cy="106" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="126" cy="300" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="169" cy="276" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="219" cy="276" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="157" cy="196" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="99" cy="252" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="148" cy="233" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="251" cy="266" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="113" cy="148" r="7.5"></circle>
+        <circle id="Oval" stroke="#44D7B6" fill="#44D7B6" cx="99" cy="84" r="7.5"></circle>
+        <line x1="71.5" y1="79.5" x2="295.5" y2="348.5" id="Line-5" stroke="#979797" stroke-width="4" fill="#D8D8D8" stroke-linecap="square"></line>
+        <line x1="137" y1="24" x2="361" y2="293" id="Line-5" stroke="#979797" stroke-width="4" fill="#D8D8D8" stroke-linecap="square"></line>
+    </g>
+</svg>
