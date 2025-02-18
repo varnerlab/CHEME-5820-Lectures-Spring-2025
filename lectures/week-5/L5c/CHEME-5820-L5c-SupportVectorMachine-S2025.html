@@ -7508,7 +7508,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">include</span><span class="p">(</span><span class="s">"Include.jl"</span><span class="p">);</span>
@@ -7539,7 +7539,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Banknote-Authentication-Dataset">Banknote Authentication Dataset<a class="anchor-link" href="#Banknote-Authentication-Dataset">¶</a></h4><p>The second dataset we will explore is the <a href="https://archive.ics.uci.edu/dataset/267/banknote+authentication">banknote authentication dataset from the UCI archive</a>. This dataset has <code>1372</code> instances of 4 continuous features and an integer $\{-1,1\}$ class variable.</p>
+<h4 id="Banknote-Authentication-Dataset">Banknote Authentication Dataset<a class="anchor-link" href="#Banknote-Authentication-Dataset">¶</a></h4><p>The dataset we will explore is the <a href="https://archive.ics.uci.edu/dataset/267/banknote+authentication">banknote authentication dataset from the UCI archive</a>. This dataset has <code>1372</code> instances of 4 continuous features and an integer $\{-1,1\}$ class variable.</p>
 <ul>
 <li><strong>Description</strong>: Data were extracted from images taken from genuine and forged banknote-like specimens.  An industrial camera, usually used for print inspection, was used for digitization. The final images have 400x 400 pixels. Due to the object lens and distance to the investigated object, gray-scale pictures with a resolution of about 660 dpi were gained. Wavelet Transform tools were used to extract features from images.</li>
 <li><strong>Features</strong>: The data has four continuous features from each image: <code>variance</code> of the wavelet transformed image, <code>skewness</code> of the wavelet transformed image, <code>kurtosis</code> of the wavelet transformed image, and the <code>entropy</code> of the wavelet transformed image. The class is $\{-1,1\}$ where a class value of <code>-1</code> indicates genuine, <code>1</code> forged.</li>
@@ -7653,7 +7653,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Case-1:-Linearly-separable">Case 1: Linearly separable<a class="anchor-link" href="#Case-1:-Linearly-separable">¶</a></h3><p>Let's take a look at a <a href="https://github.com/varnerlab/CHEME-5820-Lectures-Spring-2025/blob/main/lectures/week-5/L5c/docs/figs/Fig-SVM-Schematic.pdf">schematic of the ideas behind a hard margin support vector machine</a>. If the data is linearly separable, then we know that a separting hyperplane $\mathcal{H}(\hat{\mathbf{x}})$ exists. We can estimate the best hyperplane by maximizing the <em>margin</em>, which is equivalent to minimizing the parameter vector. The <em>maximum hard margin problem</em> is given by:
+<h3 id="Case-1:-Linearly-separable">Case 1: Linearly separable<a class="anchor-link" href="#Case-1:-Linearly-separable">¶</a></h3><p>Let's take a look at a <a href="https://github.com/varnerlab/CHEME-5820-Lectures-Spring-2025/blob/main/lectures/week-5/L5c/docs/figs/Fig-SVM-Schematic.pdf">schematic of the ideas behind a hard margin support vector machine</a>. If the data is linearly separable, a hyperplane $\mathcal{H}(\hat{\mathbf{x}})$ exists that perfectly seperates the data. We can estimate the <em>best</em> hyperplane by maximizing the <em>margin</em>, which is equivalent to minimizing the parameter vector $\theta$. The <em>maximum hard margin problem</em> is given by:
 $$
 \begin{align*}
     \min_{\theta}\quad &amp; \frac{1}{2}\lVert{\theta}\rVert_{2}^{2}\\
@@ -7687,10 +7687,10 @@ where $\xi_{i}$ is a <em>slack variable</em>, that quantifies the cost of a clas
 <li><strong>Values of $C$</strong>: If $C\gg{1}$ the classifier will behave like the maximum (hard) margin classifier, i.e., mistakes will be expensive, and the search will avoid making choices with mistakes. However, if $C\ll{1}$, the classifier will allow more slack (mistakes), i.e., mistakes are cheap, so what's it matter!</li>
 </ul>
 <p><strong>Do we solve the soft margin problem?</strong></p>
-<p>Typically, we don't solve the problem above; instead, we reformulate it as an <em>unconstrained</em> problem <a href="https://en.wikipedia.org/wiki/Hinge_loss">using the hinge-loss function</a>:
+<p>Typically, we don't solve the problem above directly; instead, we reformulate it as an <em>unconstrained</em> problem <a href="https://en.wikipedia.org/wiki/Hinge_loss">using a hinge-loss function</a>:
 $$
 \begin{equation*}
-    \min_{\theta}\frac{1}{2}\lVert{\theta}\rVert_{2}^{2} + C\sum_{i=1}^{n}\max\{0, 1 - y_{i}\left&lt;\hat{\mathbf{x}}_{i},\theta\right&gt;\}
+    \min_{\theta}\left[\frac{1}{2}\lVert{\theta}\rVert_{2}^{2} + C\sum_{i=1}^{n}\max\{0, 1 - y_{i}\left&lt;\hat{\mathbf{x}}_{i},\theta\right&gt;\}\right]
 \end{equation*}
 $$
 where the sum is computed over $n$ training examples.</p>
@@ -7718,7 +7718,7 @@ where the sum is computed over $n$ training examples.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [58]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">let</span>
@@ -7759,7 +7759,7 @@ where the sum is computed over $n$ training examples.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [46]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">ŷ</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">let</span>
@@ -7797,7 +7797,7 @@ where the sum is computed over $n$ training examples.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [50]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">CM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">confusion</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ŷ</span><span class="p">)</span><span class="w"> </span><span class="c"># call with the SVM percepton values</span>
@@ -7811,11 +7811,11 @@ where the sum is computed over $n$ training examples.</p>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[50]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>2×2 Matrix{Int64}:
- 153    0
-   0  219</pre>
+ 154    0
+   3  215</pre>
 </div>
 </div>
 </div>
@@ -7825,7 +7825,7 @@ where the sum is computed over $n$ training examples.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">number_of_test_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
@@ -7843,7 +7843,7 @@ where the sum is computed over $n$ training examples.</p>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Fraction correct: 1.0 Fraction incorrect 0.0
+<pre>Fraction correct: 0.9919354838709677 Fraction incorrect 0.008064516129032251
 </pre>
 </div>
 </div>
