@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  17 FEB 2025 13:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.15)  19 FEB 2025 08:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -603,50 +603,64 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
 al/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+<./figs/Fig-SVM-Schematic.pdf, id=58, 608.2725pt x 407.5225pt>
+File: ./figs/Fig-SVM-Schematic.pdf Graphic file (type pdf)
+<use ./figs/Fig-SVM-Schematic.pdf>
+Package pdftex.def Info: ./figs/Fig-SVM-Schematic.pdf  used on input line 145.
+(pdftex.def)             Requested size: 300.64291pt x 201.42267pt.
+
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
- [2]
-Package mdframed Info: mdframed detected package amsthm 
- changed the theorem header of amsthm
-(mdframed)              on input line 217.
-
+ [2 <./figs/Fig-SVM-Schematic.pdf>]
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
  [3]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 243.
+(mdframed)              on input line 226.
+<./figs/Fig-SVM-Schematic-Softmargin.pdf, id=140, 608.2725pt x 407.5225pt>
+File: ./figs/Fig-SVM-Schematic-Softmargin.pdf Graphic file (type pdf)
+<use ./figs/Fig-SVM-Schematic-Softmargin.pdf>
+Package pdftex.def Info: ./figs/Fig-SVM-Schematic-Softmargin.pdf  used on input
+ line 248.
+(pdftex.def)             Requested size: 300.64291pt x 201.42267pt.
 
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
  [4]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 274.
+(mdframed)              on input line 262.
 
-(./Notes.bbl
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
- [5])
+ [5 <./figs/Fig-SVM-Schematic-Softmargin.pdf>]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 293.
+ (./Notes.bbl
 Overfull \vbox (7.5pt too high) has occurred while \output is active []
 
- [6]
+ [6])
+Overfull \vbox (7.5pt too high) has occurred while \output is active []
+
+ [7]
 (./Notes.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `Notes.out' has not changed.
-(rerunfilecheck)             Checksum: 2E7F5CF524EB5CC45A3CB344C3D01F5E;836.
+(rerunfilecheck)             Checksum: EA94C6E6F1ECD8BE00637D55C1EF339B;974.
  ) 
 Here is how much of TeX's memory you used:
- 12985 strings out of 474116
- 203354 string characters out of 5743682
- 1948187 words of memory out of 5000000
- 35109 multiletter control sequences out of 15000+600000
+ 13010 strings out of 474116
+ 204164 string characters out of 5743682
+ 1944187 words of memory out of 5000000
+ 35130 multiletter control sequences out of 15000+600000
  564291 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 79i,16n,93p,599b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,16n,93p,623b,559s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -664,10 +678,10 @@ ve/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
 e/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive
 /2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/tex
 live/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on Notes.pdf (6 pages, 207255 bytes).
+Output written on Notes.pdf (7 pages, 257740 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 131 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 322 PDF objects out of 1000 (max. 8388607)
+ 214 compressed objects within 3 object streams
+ 29 named destinations out of 1000 (max. 500000)
+ 59 words of extra memory for PDF output out of 10000 (max. 10000000)
 
