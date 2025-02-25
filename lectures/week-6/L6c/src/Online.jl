@@ -61,7 +61,7 @@ function play(model::MyTwoPersonZeroSumGameModel)
     ϵ = model.ϵ; # learning rate
     weights = model.weights; # weights of the experts
     M = model.payoffmatrix; # payoff matrix
-    results_array = zeros(Int64, T, 3+n); # aggregator predictions
+    results_array = zeros(Int64, T, 2); # aggregator predictions
 
     # main simulation loop -
     for t ∈ 1:T
@@ -69,18 +69,21 @@ function play(model::MyTwoPersonZeroSumGameModel)
         # compute the probability vector p -
         Φ = sum(weights[t, :]); # Φ is sum of the weights at time t
         p = weights[t, :]/Φ; # probability vector p
-
+        results_array[t, 1] = argmax(p); # store the aggregator prediction (choose max probability)
+        
         # define q -
         q = zeros(Float64, n);
         for i ∈ 1:n
             q[i] = sum(M[i, :].*p); # compute the expected payoff for each expert
         end
         qstar =  argmax(q);
+        results_array[t, 2] = qstar; # store the adversary action
+        
         q̄ = zeros(Float64, n);
         q̄[qstar] = 1.0; # action for the adversary
 
-        # compute m -
-        m = M*q̄;
+        # compute for 
+        m = -M*q̄;
 
         # update the weights -
         for i ∈ 1:n

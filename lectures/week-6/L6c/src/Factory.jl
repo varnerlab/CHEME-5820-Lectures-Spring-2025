@@ -36,7 +36,10 @@ function build(modeltype::Type{MyTwoPersonZeroSumGameModel},
     model.n = n;
     model.T = T;
     model.payoffmatrix = payoffmatrix;
-    model.weights = ones(Float64, T+1, n) # initialize the weights array with ones
+    model.weights = zeros(Float64, T+1, n) # initialize the weights array with ones
+
+    # generate a random initial weight vector -
+    model.weights[1, :] = rand(n);
 
     # return the model -
     return model;
