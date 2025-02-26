@@ -1,0 +1,2 @@
+These course notes were prepared by [Prof. Thomas Vidick](http://users.cms.caltech.edu/~vidick/) at Caltech for the course [CMS 139 Design and Analysis of Algorithms](http://users.cms.caltech.edu/~vidick/teaching/CMS139_Winter19/) and were not modified. 
+* The [original notes are available here](http://users.cms.caltech.edu/~vidick/notes/CMS139/multiplicative_weights.pdf)
