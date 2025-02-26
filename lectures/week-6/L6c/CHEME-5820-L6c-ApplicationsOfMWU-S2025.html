@@ -7553,18 +7553,11 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Zero-sum-games">Zero sum games<a class="anchor-link" href="#Zero-sum-games">¶</a></h2><p>Let's consider the application the mutiplicative weights update algorithm to zero sum games. In <a href="https://en.wikipedia.org/wiki/Zero-sum_game">a zero-sum game</a>, two players have <em>opposing interests</em>, and the sum of their payoffs is always zero. The goal of each player is to maximize their own payoff while minimizing the opponent's payoff. The MWA can be used to solve zero-sum games by iteratively adjusting strategies based on outcomes.</p>
+<h2 id="Zero-sum-games">Zero-sum games<a class="anchor-link" href="#Zero-sum-games">¶</a></h2><p>Let's consider the application of the multiplicative weights update algorithm to zero-sum games. In <a href="https://en.wikipedia.org/wiki/Zero-sum_game">a zero-sum game</a>, two players have <em>opposing interests</em>, and the sum of their payoffs is always zero. The goal of each player is to maximize their payoff while minimizing the opponent's payoff. The MWA can be used to solve zero-sum games by iteratively adjusting strategies based on outcomes.</p>
 <ul>
-<li><strong>Game</strong>: A set of $k$ players play a zero-sum game. During each turn of the game, each player can choose an action $a\in\mathcal{A}$ from the set of actions $\mathcal{A}$, where the number of possible actions is $\dim\mathcal{A} = N$. If we consider $k = 2$, the payoff for the players is represented in a payoff matrix $\mathbf{M}\in\mathbb{R}^{N\times{N}}$. Let player <code>1</code> be the row player, and player <code>2</code> be the column player; then $m_{ij}\in\mathbf{M}$ is the payoff for player <code>1</code> choosing action $i$ and player <code>2</code> choosing action $j$.</li>
-<li><strong>Goal</strong>: The goal of each player is to maximize their own payoff while minimizing the opponent's payoff. If the row player chooses action $i$ and the column player chooses action $j$, the payoff for the row player is $-m_{ij}$, and the payoff for the column player is $m_{ij}$. Suppose the row player chooses actions according to a distribution $p$, and the column player chooses actions based on a distribution $q$. The expected payoff for the row player is: $-p^{T}\mathbf{M}q$ while the expected payoff for the column player is: $p^{T}\mathbf{M}q$. Thus, the row player wants to mininize $p^{T}\mathbf{M}q$, while the column player wants to maximize $p^{T}\mathbf{M}q$.</li>
+<li><strong>Game</strong>: A set of $k$ players play a zero-sum game. During each turn of the game, each player can choose an action $a\in\mathcal{A}$ from the set of actions $\mathcal{A}$, where the number of possible actions is $\dim\mathcal{A} = N$. If we consider $k = 2$, the payoff for the players is represented in a payoff matrix $\mathbf{M}\in\mathbb{R}^{N\times{N}}$. If the row player chooses action $i$ and the column player chooses action $j$, the payoff for the row player is $-m_{ij}\in\mathbf{M}$, and the column player is $m_{ij}\in\mathbf{M}$.</li>
+<li><strong>Goal</strong>: The goal of each player is to maximize their payoff while minimizing the opponent's payoff.  Suppose the <em>row player</em> chooses actions according to a distribution $p$, and the <em>column player</em> chooses actions based on a distribution $q$. The expected payoff for the <em>row player</em> is: $-p^{\top}\mathbf{M}q$ while the expected payoff for the <em>column player</em> is: $p^{\top}\mathbf{M}q$. Thus, the row player wants to minimize $p^{\top}\mathbf{M}q$, while the column player wants to maximize $p^{\top}\mathbf{M}q$.</li>
 </ul>
-<h3 id="Von-Neumann's-Minimax-Theorem">Von Neumann's Minimax Theorem<a class="anchor-link" href="#Von-Neumann's-Minimax-Theorem">¶</a></h3><p><a href="https://en.wikipedia.org/wiki/Minimax_theorem">Von Neumann's Minimax Theorem</a> states that for any two-player zero-sum game, there exists an optimal mixed strategy for each player that minimizes the maximum expected payoff. The optimal mixed strategy for the row player is $p^{*}$ and for the column player is $q^{*}$, such that:
-$$
-\begin{align*}
-\max_{q}\min_{p}p^{\top}\mathbf{M}q &amp; = \min_{p}\max_{q}p^{\top}\mathbf{M}q = \lambda^{\star}
-\end{align*}
-$$
-where $\lambda^{\star}$ is the optimal utility (also called the value of the game). The <em>near optimal</em> mixed strategies $p^{*}$ and $q^{*}$ can be computed using the MWA algorithm.</p>
 </div>
 </div>
 </div>
@@ -7575,15 +7568,14 @@ where $\lambda^{\star}$ is the optimal utility (also called the value of the gam
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Algorithm">Algorithm<a class="anchor-link" href="#Algorithm">¶</a></h3><p>We have a <a href="https://en.wikipedia.org/wiki/Zero-sum_game">two player zero sum game</a> with a payoff matrix $\mathbf{M}\in\mathbb{R}^{N\times{N}}$. The row player chooses actions according to a distribution $p$, and the column player chooses actions based on a distribution $q$. The MWA algorithm can compute the near-optimal mixed strategies $p^{*}$ and $q^{*}$ for the row and column players, respectively.</p>
-<p><strong>Initialize</strong> the weights $w_{i} = \texttt{rand}$ for all actions $i\in\mathcal{A}$, and set the learning rate $\eta\in\left(0,1\right)$.</p>
+<h3 id="Algorithm">Algorithm<a class="anchor-link" href="#Algorithm">¶</a></h3><p><strong>Initialize</strong> the weights $w_{i} = \texttt{rand}$ for all actions $i\in\mathcal{A}$, and set the learning rate $\eta\in\left(0,1\right)$.</p>
 <p>For round $t=1,2,\dots,T$:</p>
 <ol>
-<li>The row player chooses an action $i$ with probability $p^{(t)} = \left\{w_{i}^{(t)}/\Phi^{(t)} \mid i = 1,2,\dots,N\right\}$ where $\Phi^{(t)} = \sum_{j=1}^{N}w_{j}^{(t)}$.</li>
-<li>Define $q^{(t)} = \text{arg}\max_{q}\left\{(p^{(t)})^{\top}\mathbf{M}q\right\}$ and $m^{(t)} = \mathbf{M}q^{(t)}$ for the column player.</li>
-<li>Penalize costly decisions by updating the weights as: $w_{i}^{(t+1)} = w_{i}^{(t)}\cdot\exp\left(-\eta\cdot{m}_{i}^{(t)}\right)$ for all actions $i\in\mathcal{A}$</li>
+<li>The <em>row player</em> chooses an action $i$ with probability $p^{(t)} = \left\{w_{i}^{(t)}/\Phi^{(t)} \mid i = 1,2,\dots,N\right\}$ where $\Phi^{(t)} = \sum_{j=1}^{N}w_{j}^{(t)}$.</li>
+<li>Define $q^{(t)} = \text{arg}\max_{q}\left\{(p^{(t)})^{\top}\mathbf{M}q\right\}$ and $m^{(t)} = \mathbf{M}q^{(t)}$ for the <em>column player</em>.</li>
+<li>Update the weights as: $w_{i}^{(t+1)} = w_{i}^{(t)}\cdot\exp\left(-\eta\cdot{m}_{i}^{(t)}\right)$ for all actions $i\in\mathcal{A}$</li>
 </ol>
-<p>where we assume that the payoffs (elements of $\mathbf{M}$) are in the range $m_{ij}\in[-1, 1]$.</p>
+<p>where the payoffs (elements of $\mathbf{M}$) are in the range $m_{ij}\in[-1, 1]$.</p>
 </div>
 </div>
 </div>
@@ -7608,7 +7600,7 @@ $$
 \end{pmatrix}
 \end{align*}
 $$
-where the rows correspond to the actions of the <em>row player</em> and the columns, correspond to the actions of the <em>column player</em>. The payoff for the row player is $-m_{ij}$, and the payoff for the column player is $m_{ij}$.</p>
+where the rows correspond to the actions of the <em>row player</em> and the columns, correspond to the actions of the <em>column player</em>. The payoff for the <em>row player</em> is $-m_{ij}$, and the payoff for the <em>column player</em> is $m_{ij}$.</p>
 </div>
 </div>
 </div>
@@ -7634,7 +7626,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Build a model</strong>. Let's construct an instance of <a href="src/Types.jl">the <code>MyTwoPersonZeroSumGameModel</code> type</a> using <a href="src/Factory.jl">a custom <code>build(...)</code> method</a>. The model holds information associated with the game.</p>
-<p>We the game model in the <code>model::MyTwoPersonZeroSumGameModel</code> variable:</p>
+<p>We store the game model in the <code>model::MyTwoPersonZeroSumGameModel</code> variable:</p>
 </div>
 </div>
 </div>
@@ -7655,7 +7647,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">build</span><span class="p">(</span><span class="n">MyTwoPersonZeroSumGameModel</span><span class="p">,</span><span class="w"> </span><span class="p">(</span>
 <span class="w">        </span><span class="n">ϵ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.8</span><span class="p">,</span><span class="w"> </span><span class="c"># learning rate</span>
 <span class="w">        </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="c"># number of actions</span>
-<span class="w">        </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="c"># number of rounds we play the game</span>
+<span class="w">        </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="c"># number of rounds we play the game</span>
 <span class="w">        </span><span class="n">payoffmatrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="c"># payoff matrix</span>
 <span class="w">    </span><span class="p">));</span>
 
@@ -7673,7 +7665,11 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>Play the game</strong>. Next, we play the game. We pass the <code>model::MyTwoPersonZeroSumGameModel</code> instance into <a href="src/Online.jl">the <code>play(...)</code> method</a> as the only argument. This method returns the raw game output, where each row is a game instance (round), and each column is a player action, and the weights matrix.</p>
+<p><strong>Play the game</strong>. Next, we play the game. We pass the <code>model::MyTwoPersonZeroSumGameModel</code> instance into <a href="src/Online.jl">the <code>play(...)</code> method</a> as the only argument. This method returns the raw game output, where each row is a game instance (round), each column is a player action, and the weights matrix.</p>
+<ul>
+<li>The <code>rps_sims::Array{Int64,2}</code> array holds the outcome of each game encoded as 1 = rock, 2 = paper and 3 = scissors. The first column is the <em>row player</em>, while the second is the <em>column player</em>.</li>
+<li>The <code>weights::Array{Float64,2}</code> holds the <em>row player</em> distribution for each instance of the game.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7696,7 +7692,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [82]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="n">weights</span>
@@ -7710,30 +7706,20 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[82]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>21×3 Matrix{Float64}:
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581
- 0.564277  0.16212   0.340581
- 0.253546  0.16212   0.757978
- 0.253546  0.360805  0.340581</pre>
+<pre>11×3 Matrix{Float64}:
+ 0.90711   0.466676  0.431303
+ 0.407591  0.466676  0.959883
+ 0.407591  1.03861   0.431303
+ 0.90711   0.466676  0.431303
+ 0.407591  0.466676  0.959883
+ 0.407591  1.03861   0.431303
+ 0.90711   0.466676  0.431303
+ 0.407591  0.466676  0.959883
+ 0.407591  1.03861   0.431303
+ 0.90711   0.466676  0.431303
+ 0.407591  0.466676  0.959883</pre>
 </div>
 </div>
 </div>
@@ -7747,7 +7733,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Games outcome table</strong>. <code>Unhide</code> the code block below to see how we constructed the game table <a href="https://github.com/ronisbr/PrettyTables.jl">using the <code>pretty_tables(...)</code> method exported by the <code>PrettyTables.jl</code> package</a>.</p>
 <ul>
-<li><em>Summary</em>: Each row of the table displays the game's outcome. The first column shows the action of the <em>row player</em>, while the second column shows the (near) optimal action of the <em>column</em> player, given the action of the <em>row player</em>.</li>
+<li><em>Summary</em>: Each row of the table displays the game's outcome. The first column shows the action of the <em>row player</em>, while the second column shows the (near) optimal action of the <em>column player</em>, given the action of the <em>row player</em>.</li>
 </ul>
 </div>
 </div>
@@ -7757,7 +7743,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="k">let</span>
@@ -7771,8 +7757,8 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">∈</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">T</span>
 <span class="w">        </span><span class="n">row_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>
 <span class="w">            </span><span class="n">game</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">,</span>
-<span class="w">            </span><span class="n">player_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rps_sim</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">moves</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-<span class="w">            </span><span class="n">player_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rps_sim</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">moves</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+<span class="w">            </span><span class="n">row_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rps_sim</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">moves</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+<span class="w">            </span><span class="n">col_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rps_sim</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">i</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">moves</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
 <span class="w">        </span><span class="p">)</span>
 <span class="w">        </span><span class="n">push!</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="n">row_df</span><span class="p">);</span>
 <span class="w">    </span><span class="k">end</span>
@@ -7792,31 +7778,21 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>======== ========== ===========
- <span class="ansi-bold">  game </span> <span class="ansi-bold"> player_1 </span> <span class="ansi-bold"> player_2 </span>
- <span class="ansi-black-intense-fg"> Int64 </span> <span class="ansi-black-intense-fg">   String </span> <span class="ansi-black-intense-fg">   String </span>
-======== ========== ===========
-      1       rock      paper
-      2   scissors       rock
-      3      paper   scissors
-      4       rock      paper
-      5   scissors       rock
-      6      paper   scissors
-      7       rock      paper
-      8   scissors       rock
-      9      paper   scissors
-     10       rock      paper
-     11   scissors       rock
-     12      paper   scissors
-     13       rock      paper
-     14   scissors       rock
-     15      paper   scissors
-     16       rock      paper
-     17   scissors       rock
-     18      paper   scissors
-     19       rock      paper
-     20   scissors       rock
-======== ========== ===========
+<pre>======== ============ =============
+ <span class="ansi-bold">  game </span> <span class="ansi-bold"> row_player </span> <span class="ansi-bold"> col_player </span>
+ <span class="ansi-black-intense-fg"> Int64 </span> <span class="ansi-black-intense-fg">     String </span> <span class="ansi-black-intense-fg">     String </span>
+======== ============ =============
+      1         rock        paper
+      2     scissors         rock
+      3        paper     scissors
+      4         rock        paper
+      5     scissors         rock
+      6        paper     scissors
+      7         rock        paper
+      8     scissors         rock
+      9        paper     scissors
+     10         rock        paper
+======== ============ =============
 </pre>
 </div>
 </div>
@@ -7829,7 +7805,13 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="What-about-the-min-max-theorem?">What about the min-max theorem?<a class="anchor-link" href="#What-about-the-min-max-theorem?">¶</a></h3><p>From the game output table, we see that the actions of the column player (in this case) are near optimal. Let's dig a little deeper into this, and look at the optimal payoff.</p>
+<h3 id="Von-Neumann's-Minimax-Theorem">Von Neumann's Minimax Theorem<a class="anchor-link" href="#Von-Neumann's-Minimax-Theorem">¶</a></h3><p><a href="https://en.wikipedia.org/wiki/Minimax_theorem">Von Neumann's Minimax Theorem</a> says that for any two-player zero-sum game, there exists an optimal mixed strategy for each player that minimizes the maximum expected payoff. The optimal mixed strategy for the row player is $p^{*}$ and for the column player is $q^{*}$, such that:
+$$
+\begin{align*}
+\max_{q}\min_{p}p^{\top}\mathbf{M}q &amp; = \min_{p}\max_{q}p^{\top}\mathbf{M}q = \lambda^{\star}
+\end{align*}
+$$
+where $\lambda^{\star}$ is the optimal utility (also called the value of the game). The <em>near optimal</em> mixed strategies $p^{*}$ and $q^{*}$ can be computed using the MWA algorithm.</p>
 </div>
 </div>
 </div>
@@ -7838,7 +7820,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [80]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-julia"><pre><span></span><span class="k">let</span><span class="w"> </span>
@@ -7847,8 +7829,8 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <span class="w">    </span><span class="n">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="o">.</span><span class="w"> </span><span class="n">payoffmatrix</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c"># actions - (r,p,s)</span>
-<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="c"># select a move for player 1</span>
-<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="c"># select a move for player 2</span>
+<span class="w">    </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="c"># select a move for player 1</span>
+<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="c"># select a move for player 2</span>
 
 <span class="w">    </span><span class="c"># compute the payoff</span>
 <span class="w">    </span><span class="n">payoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transpose</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">M</span><span class="o">*</span><span class="n">q</span>
@@ -7868,7 +7850,7 @@ where the rows correspond to the actions of the <em>row player</em> and the colu
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Payoff for player 1: -1.0 and player 2: 1.0
+<pre>Payoff for player 1: 1.0 and player 2: -1.0
 </pre>
 </div>
 </div>
