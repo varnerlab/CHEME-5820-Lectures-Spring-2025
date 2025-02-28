@@ -69,7 +69,9 @@ function play(model::MyTwoPersonZeroSumGameModel)
         # compute the probability vector p -
         Φ = sum(weights[t, :]); # Φ is sum of the weights at time t
         p = weights[t, :]/Φ; # probability vector p
-        results_array[t, 1] = argmax(p); # store the aggregator prediction (choose max probability)
+        d = Categorical(p); # define the distribution
+        #results_array[t, 1] = argmax(p); # store the aggregator prediction (choose max probability)
+        results_array[t, 1] = rand(d); # store the aggregator prediction (choose random according to the distribution)
         
         # define q -
         q = zeros(Float64, n);
