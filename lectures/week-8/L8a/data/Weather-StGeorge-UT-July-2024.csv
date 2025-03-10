@@ -1,4 +1,4 @@
-Date       ,Max Temp ,Min Temp ,Avg Temp ,Departure ,HDD ,CDD ,Precipitation ,New Snow ,Snow Depth
+Date,Max Temp,Min Temp,Avg Temp,Departure,HDD,CDD,Precipitation,New Snow,Snow Depth
 2024-07-01 ,     105 ,      70 ,    87.5 ,2.8       ,  0 , 23 ,0.0           ,     0.0 ,         0
 2024-07-02 ,     102 ,      71 ,    86.5 ,1.6       ,  0 , 22 ,0.0           ,     0.0 ,         0
 2024-07-03 ,     105 ,      71 ,    88.0 ,2.9       ,  0 , 23 ,0.0           ,     0.0 ,         0

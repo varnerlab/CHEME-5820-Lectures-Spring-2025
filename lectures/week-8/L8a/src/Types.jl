@@ -54,10 +54,9 @@ end
 mutable struct MyContextualBernoulliBanditAlgorithmWeatherContextModel <: AbstractBanditAlgorithmContextModel
 
     # data -
-    d::Gumbel{Float64} # distribution for high temperatures
-    expected_average::Float64 # base (normal) temperature 
-    observed_average::Float64 # observed average temperaturex
+    d::Normal # distribution for high temperatures
     key::Int64 # context key
+    data::DataFrame
 
     # constructor -
     MyContextualBernoulliBanditAlgorithmWeatherContextModel() = new();

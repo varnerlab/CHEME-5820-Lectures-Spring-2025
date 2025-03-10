@@ -89,20 +89,19 @@ function build(modeltype::Type{MyContextualBernoulliBanditAlgorithmModel}, data:
     return model;
 end
 
-function build(modeltype::Type{MyContextualBernoulliBanditAlgorithmWeatherContextModel}, data::NamedTuple)
+function build(modeltype::Type{MyContextualBernoulliBanditAlgorithmWeatherContextModel}, 
+    data::NamedTuple)
 
     # initialize -
     d = data.d; # distribution for high temperatures
-    expected_average = data.expected_average; # base (normal) temperature 
-    observed_average = data.observed_average; # observed average temperature
     key = data.key; # context key
+    dataframe = data.dataframe; # data
 
     # build empty model -
     model = modeltype();
     model.d = d;
-    model.expected_average = expected_average;
-    model.observed_average = observed_average;
     model.key = key;
+    model.data = dataframe;
 
     # return -
     return model;

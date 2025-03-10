@@ -4,12 +4,12 @@ _null(action::Int64)::Int64 = return 0;
 
 
 function _solve(model::MyContextualBernoulliBanditAlgorithmModel; 
-    T::Int = 0, world::Function = _null, context::Int = 0)::Array{Float64,2}
+    T::Int = 0, world::Function = _null, 
+    context::AbstractBanditAlgorithmContextModel = MyEmptyContextModel())::Array{Float64,2}
 
-    # initialize -
-    
-
-    # return -
+    context_index = context.key; # get the context index
+    bandit = model.bandits[context_index]; # get the bandit for this context
+    rewards = _solve(bandit, T = T, world = world, context = context); # solve the bandit problem
     return rewards;
 end
 
@@ -41,7 +41,7 @@ function _solve(model::MyBinaryBanditGreedyAlgorithmModel;
         end
 
         # implement the action, and recieve a reward -
-        rₜ = world(t,aₜ);
+        rₜ = world(t,aₜ, context);
 
         # update S and F give the action and the reward -
         S[aₜ] = S[aₜ] |> v-> v + rₜ;
@@ -73,7 +73,7 @@ function _solve(model::MyExploreFirstAlgorithmModel;
     counter = 1;
     for a ∈ 1:K
         for _ ∈ 1:Nₐ
-            rewards[counter, a] = world(a); # store from action a
+            rewards[counter, a] = world(t,a,context); # store from action a
             counter += 1;
         end
     end
@@ -86,7 +86,7 @@ function _solve(model::MyExploreFirstAlgorithmModel;
     # exploitation phase -
     a = argmax(μ); # compute the arm with best average reward
     for _ ∈ 1:(T - Nₐ*K)
-        rewards[counter, a] = world(a); # store the reward
+        rewards[counter, a] = world(t,a, context); # store the reward
         counter += 1;
     end
     
@@ -117,7 +117,7 @@ function _solve(model::MyEpsilonGreedyAlgorithmModel;
             end
             aₜ = argmax(μ); # compute the arm with best average reward
         end
-        rewards[t, aₜ] = world(aₜ); # store the reward
+        rewards[t, aₜ] = world(t,aₜ, context); # store the reward
     end
 
     # return -
@@ -136,7 +136,7 @@ function _solve(model::MyUCB1AlgorithmModel;
     # try each arm once
     counter = 1;
     for a = 1:K
-        rewards[counter, a] = world(a); # pull each arm once
+        rewards[counter, a] = world(t, a, context); # pull each arm once
         Nₐ[a] += 1; # increment the counter
         counter += 1;
     end
@@ -157,7 +157,7 @@ function _solve(model::MyUCB1AlgorithmModel;
 
         aₜ = argmax(tmp); # select the arm with the highest UCB value
         Nₐ[aₜ] += 1; # increment the counter
-        rewards[t, aₜ] = world(aₜ); # store the reward
+        rewards[t, aₜ] = world(t,aₜ,context); # store the reward
     end
 
     # return -
