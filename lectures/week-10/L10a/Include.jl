@@ -2,6 +2,7 @@
 const _ROOT = @__DIR__
 const _PATH_TO_SRC = joinpath(_ROOT, "src");
 const _PATH_TO_IMAGES = joinpath(_ROOT, "images");
+const _PATH_TO_FRAMES = joinpath(_ROOT, "frames");
 
 # load external packages -
 using Pkg

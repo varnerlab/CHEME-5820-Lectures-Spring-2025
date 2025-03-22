@@ -7,15 +7,19 @@ function simulate(model::MySimpleBoltzmannMachineModel, sₒ::Vector{Int};
     b = model.b; # bias vector
 
     number_of_neurons = length(sₒ);
-    S = zeros(Int, number_of_neurons, T+1);
+    S = zeros(Int, number_of_neurons, T);
     turns = zeros(Int, T);
     energy = zeros(Float64, T);
     is_ok_to_stop = false; # flag to stop the simulation
-    t = 1; # time step
+
+    # package initial state -
+    s = copy(sₒ); # initial state
+    energy[1] = -(1/2)*dot(s, W*s) - dot(b, s); # compute the energy of the initial state
+    S[:, 1] .= s; # store the initial state in the S matrix
+    turns[1] = 1; # store the time step
 
     # main loop -
-    t = 1;
-    s = copy(sₒ);
+    t = 2;
     while (is_ok_to_stop == false)
 
         # process each neuron -
@@ -39,4 +43,26 @@ function simulate(model::MySimpleBoltzmannMachineModel, sₒ::Vector{Int};
 
     # return the results -    
     return (turns, S, energy);
+end
+
+function decode(simulationstate::Array{T,1}; 
+    number_of_rows::Int64 = 28, number_of_cols::Int64 = 28)::Array{T,2} where T <: Number
+    
+    # initialize -
+    reconstructed_image = Array{Int32,2}(undef, number_of_rows, number_of_cols);
+    linearindex = 1;
+    for row ∈ 1:number_of_rows
+        for col ∈ 1:number_of_cols
+            s = simulationstate[linearindex];
+            if (s == -1)
+                reconstructed_image[row,col] = 0;
+            else
+                reconstructed_image[row,col] = 1;
+            end
+            linearindex+=1;
+        end
+    end
+    
+    # return 
+    return reconstructed_image
 end
