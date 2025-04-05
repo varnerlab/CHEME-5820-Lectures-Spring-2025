@@ -7,11 +7,13 @@ function _evaluate(model::MyLayerModel, x::Array{<: Number})
     σ = model.σ # activation function
     W = model.W # weights (m x n) includes bias terms
     
+    # augment the input vector -
+    x̂ = [x ; 1.0] # augment the input vector with a bias term
     
     # create the output vector -
     y = zeros(m) # output vector of size m
     for i ∈ 1:m
-        zᵢ = dot(W[i, :], x) # compute the weighted sum of inputs
+        zᵢ = dot(W[i, :], x̂) # compute the weighted sum of inputs
         y[i] = σ(zᵢ) # apply the activation function
     end
 

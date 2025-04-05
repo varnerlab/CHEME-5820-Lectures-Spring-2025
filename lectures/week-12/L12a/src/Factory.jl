@@ -11,7 +11,7 @@ function build(modeltype::Type{MyLayerModel}, data::NamedTuple)::MyLayerModel
     # Initialize the model with data
     model.n = n; # number of inputs
     model.m = m; # number of outputs (nodes in layer)
-    model.W = randn(m, n)  # Random weights for example
+    model.W = 0.1*randn(m, n+1)  # Random weights for example
     model.σ = σ  # Assign the activation function
     
     # return the model -
