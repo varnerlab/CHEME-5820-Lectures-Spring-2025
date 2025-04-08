@@ -36,8 +36,8 @@ function _loss(p::Array{Float64,1}, model::MyElamanRecurrentLayerModel, x::Array
     end
     
     # compute the loss -
-
-
+    value = (1/number_of_time_steps)*norm(Y .- y)^2 # compute the loss
+    return value # return the loss
 end
 
 

@@ -15,16 +15,11 @@ end
 mutable struct MyElamanRecurrentLayerModel <: MyAbstractLayerModel
     
     # initilize -
-    number_of_inputs::Int # number of inputs
-    number_of_outputs::Int # number of outputs
-    number_of_hidden_units::Int # number of hidden units
-    Whh::Array{Float64, 2} # hidden state weights (h x h)
-    Wxh::Array{Float64, 2} # input weights (h x n)
-    Why::Array{Float64, 2} # output weights (m x h)
-    bh::Array{Float64, 1} # hidden state bias (h)
-    by::Array{Float64, 1} # output bias (m)
-    σ₁::Function # activation function for hidden state
-    σ₂::Function # activation function for output
+    din::Int # number of inputs
+    dout::Int # number of outputs
+    dh::Int # number of hidden units
+    batchsize::Int # batch size
+    model::Flux.Chain; # RNN layer
 
     # constructor -
     MyElamanRecurrentLayerModel() = new(); # empty constructor

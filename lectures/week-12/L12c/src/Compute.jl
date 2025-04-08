@@ -21,24 +21,12 @@ end
 function _evaluate(model::MyElamanRecurrentLayerModel, x::Array{<: Number}, h::Array{<: Number})
     
     # initilize -
-    σ₁ = model.σ₁ # activation function for hidden state
-    σ₂ = model.σ₂ # activation function for output
-    Wxh = model.Wxh # input weights (h x n)
-    Whh = model.Whh # hidden state weights (h x h)
-    Why = model.Why # output weights (m x h)
-    bh = model.bh # hidden state bias (h)
-    by = model.by # output bias (m)
+    number_of_time_steps = size(x,1) # number of time steps
+    m = model.dout # number of outputs
+    h = model.dh # number of hidden units
 
-    # compute the new hidden state -
-    h̄ = σ₁.(Wxh * x .+ Whh * h .+ bh) # element-wise activation
-
-    # compute the output -
-    y = σ₂.(Why * h̄ .+ by) # element-wise activation
-
-    # return -
-    return y, h̄ # return the output and new hidden state
 end
 
 
 (model::MyFeedforwardLayerModel)(x::Array{<: Number,1}) = _evaluate(model, x) # call the function
-(model::MyElamanRecurrentLayerModel)(x::Array{<: Number,1}, h::Array{<: Number,1}) = _evaluate(model, x, h) # call the function
+(model::MyElamanRecurrentLayerModel)(x::Array{<: Number}, h::Array{<: Number}) = _evaluate(model, x, h) # call the function
