@@ -7485,7 +7485,7 @@ a.anchor-link {
 <h1 id="L15c:-Introduction-to-Graph-Neural-Networks">L15c: Introduction to Graph Neural Networks<a class="anchor-link" href="#L15c:-Introduction-to-Graph-Neural-Networks">¶</a></h1><p>In this lecture, we introduce the concept of <a href="https://en.wikipedia.org/wiki/Graph_neural_network">Graph Neural Networks (GNNs)</a> and their applications in various domains. The key concepts that students should be able to define and demonstrate from this lecture are:</p>
 <ul>
 <li><strong>Graph Neural Networks (GNNs)</strong> are a type of neural network architecture specifically designed to operate on data structured as graphs, where entities (nodes) and their relationships (edges) are represented explicitly. The nodes and edges have features (attributes) that can be used to learn graph representations and perform computational operations on the graph structure.</li>
-<li><strong>Message passing in GNNs</strong>: GNNs use message passing, in which nodes update their representations by exchanging information with their neighbors, enabling the network to learn complex patterns and dependencies within the graph structure.</li>
+<li><strong>Message passing in GNNs</strong>: GNNs use message passing, a paradigm in which nodes update their representations by exchanging information with their neighbors. This enables the network to learn complex patterns and dependencies within the graph structures.</li>
 <li><strong>How are GNNs different from traditional neural networks?</strong> Traditional neural networks typically operate on fixed-size, grid-like data structures (e.g., images, sequences), while GNNs can handle variable-sized graphs with complex connectivity patterns. This flexibility allows GNNs to model relationships and dependencies between entities more effectively, e.g., predicting user behavior in social networks by analyzing connections</li>
 </ul>
 <p>The sources for this lecture are:</p>
@@ -7512,7 +7512,11 @@ a.anchor-link {
 <ul>
 <li><em>Can I get the course materials</em>?: Yes! The entire course from 2023 is available on <a href="https://www.youtube.com/watch?v=ZfK4FDk9uy8&amp;list=PLlweTYMJoEmfttflTmuIqf9WSTQw9h-Io">YouTube</a>, and the <a href="https://web.stanford.edu/class/cs224w/">course website</a> contains all the lecture notes, slides, and assignments for 2024. The course is taught by <a href="https://cs.stanford.edu/people/jure/">Prof. Jure Leskovec</a>, an expert in graph machine learning.</li>
 </ul>
-<p>Today, we'll walk through the [Lecture 3: Graph neural networks slides], which I've downloaded and stored in the <code>L15c/docs/</code> directory (<a href="https://github.com/varnerlab/CHEME-5820-Lectures-Spring-2025/blob/main/lectures/week-15/L15c/docs/CS224W-03-GNN-1-2024.pdf">https://github.com/varnerlab/CHEME-5820-Lectures-Spring-2025/blob/main/lectures/week-15/L15c/docs/CS224W-03-GNN-1-2024.pdf</a>). The slides are available in PDF format.</p>
+<p>Today, we'll walk through two Stanford lectures (stored in the <code>L15c/docs/</code> directory):</p>
+<ul>
+<li><a href="https://github.com/varnerlab/CHEME-5820-Lectures-Spring-2025/blob/main/lectures/week-15/L15c/docs/CS224W-L03-GNN-2024.pdf">Lecture 3 : Graph neural networks slides</a>. In this set of slides, we'll introduce GNNs and how information gets passed between nodes in a graph.</li>
+<li><a href="https://github.com/varnerlab/CHEME-5820-Lectures-Spring-2025/blob/main/lectures/week-15/L15c/docs/CS224W-L03-GNN-2024.pdf">Lecture 4 : Graph neural networks slides</a>. In this set of slides, we'll take a closer look at message passing in GNNs.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7523,7 +7527,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Lab">Lab<a class="anchor-link" href="#Lab">¶</a></h2><p>In <code>L15d</code>, we will implement a GNN using <a href="https://github.com/JuliaGraphs/GraphNeuralNetworks.jl">the <code>GraphNeuralNetworks.jl</code> package</a>. Maybe something with biochemistry?</p>
+<h2 id="Lab">Lab<a class="anchor-link" href="#Lab">¶</a></h2><p>In <code>L15d</code>, we will implement a GNN using <a href="https://github.com/JuliaGraphs/GraphNeuralNetworks.jl">the <code>GraphNeuralNetworks.jl</code> package</a>. Maybe something with biochemistry or finance?</p>
 </div>
 </div>
 </div>
